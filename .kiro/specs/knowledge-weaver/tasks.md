@@ -149,14 +149,14 @@
     - Add menu hide/show logic
     - _Requirements: 3.2, 4.2, 5.2_
 
-- [ ] 13. Implement Chrome AI integration
-  - [ ] 13.1 Create SummarizerService class
+- [x] 13. Implement Chrome AI integration
+  - [x] 13.1 Create SummarizerService class
     - Write summarize() method using chrome.ai.summarizer API
     - Add text length validation (100-10,000 chars)
     - Implement 2-second timeout handling
     - Add error handling with user-friendly messages
     - _Requirements: 3.2, 3.3, 3.4, 3.5_
-  - [ ] 13.2 Create RewriterService class
+  - [x] 13.2 Create RewriterService class
     - Write rephrase() method using chrome.ai.rewriter API
     - Configure customer-friendly tone parameter
     - Add text length validation
