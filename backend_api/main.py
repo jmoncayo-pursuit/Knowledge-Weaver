@@ -9,6 +9,10 @@ import os
 import logging
 
 from services.vector_db import VectorDatabase
+from services.gemini_client import GeminiClient
+from services.chat_processor import ChatLogProcessor
+from services.query_service import QueryService
+from routes import api
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -33,26 +37,46 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Global vector database instance
-vector_db: VectorDatabase = None
+# Include API router
+app.include_router(api.router)
+
 
 @app.on_event("startup")
 async def startup_event():
     """Initialize services on application startup"""
-    global vector_db
-    
     logger.info("Knowledge-Weaver API starting up...")
     
-    # Initialize Vector Database
     try:
+        # Initialize Vector Database
         persist_dir = os.getenv("CHROMA_PERSIST_DIR", "./chroma_db")
-        vector_db = VectorDatabase(persist_directory=persist_dir)
-        vector_db.initialize()
+        api.vector_db = VectorDatabase(persist_directory=persist_dir)
+        api.vector_db.initialize()
         
-        stats = vector_db.get_collection_stats()
+        stats = api.vector_db.get_collection_stats()
         logger.info(f"Vector Database initialized: {stats}")
+        
+        # Initialize Gemini Client
+        api.gemini_client = GeminiClient()
+        logger.info("Gemini Client initialized")
+        
+        # Initialize Chat Processor
+        api.chat_processor = ChatLogProcessor(
+            gemini_client=api.gemini_client,
+            vector_db=api.vector_db
+        )
+        logger.info("Chat Processor initialized")
+        
+        # Initialize Query Service
+        api.query_service = QueryService(
+            vector_db=api.vector_db,
+            gemini_client=api.gemini_client
+        )
+        logger.info("Query Service initialized")
+        
+        logger.info("All services initialized successfully")
+        
     except Exception as e:
-        logger.error(f"Failed to initialize Vector Database: {e}")
+        logger.error(f"Failed to initialize services: {e}", exc_info=True)
         raise
 
 @app.get("/")

@@ -75,15 +75,15 @@
     - Add API key configuration in environment variables
     - _Requirements: 10.3_
 
-- [ ] 8. Implement API endpoints
-  - [ ] 8.1 Create /api/v1/chat-logs/process endpoint
+- [x] 8. Implement API endpoints
+  - [x] 8.1 Create /api/v1/chat-logs/process endpoint
     - Write POST endpoint handler
     - Add authentication dependency
     - Validate request body with Pydantic schema
     - Call ChatLogProcessor.process_chat_logs()
     - Return ProcessingResult with success count and errors
     - _Requirements: 1.1, 1.2, 1.3_
-  - [ ] 8.2 Create /api/v1/knowledge/query endpoint
+  - [x] 8.2 Create /api/v1/knowledge/query endpoint
     - Write POST endpoint handler
     - Add authentication dependency
     - Validate request body with query field
@@ -91,18 +91,18 @@
     - Return QueryResult with matches and metadata
     - Add 5-second timeout handling
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
-  - [ ] 8.3 Create /api/v1/metrics/queries endpoint
+  - [x] 8.3 Create /api/v1/metrics/queries endpoint
     - Write GET endpoint handler
     - Add authentication dependency
     - Accept start_date, end_date, limit query parameters
     - Return query log entries from storage
     - _Requirements: 8.1_
-  - [ ] 8.4 Create /api/v1/metrics/unanswered endpoint
+  - [x] 8.4 Create /api/v1/metrics/unanswered endpoint
     - Write GET endpoint handler
     - Add authentication dependency
     - Return unanswered questions from chat log analysis
     - _Requirements: 7.1, 7.2_
-  - [ ] 8.5 Create /api/v1/health endpoint
+  - [x] 8.5 Create /api/v1/health endpoint
     - Write GET endpoint handler (no authentication)
     - Check Vector Database connectivity
     - Return health status JSON
