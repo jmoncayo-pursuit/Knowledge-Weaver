@@ -175,14 +175,14 @@
     - Add error handling for auth and network errors
     - _Requirements: 5.2, 5.5, 10.1, 10.2, 10.4, 10.5_
 
-- [ ] 15. Implement Extension popup UI
-  - [ ] 15.1 Create popup HTML and CSS
+- [x] 15. Implement Extension popup UI
+  - [x] 15.1 Create popup HTML and CSS
     - Design search interface with input field and submit button
     - Create results display area with copy buttons
     - Add settings panel for API endpoint configuration
     - Style with modern, clean design
     - _Requirements: 5.1, 5.4_
-  - [ ] 15.2 Create popup JavaScript logic
+  - [x] 15.2 Create popup JavaScript logic
     - Implement query submission handler
     - Add loading state management
     - Implement results rendering with source metadata
