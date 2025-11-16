@@ -10,6 +10,7 @@ from datetime import datetime
 from models.schemas import ChatMessage, KnowledgeEntry
 from services.gemini_client import GeminiClient
 from services.vector_db import VectorDatabase
+from services.anonymizer import AnonymizerService
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,8 @@ class ChatLogProcessor:
         """
         self.gemini_client = gemini_client
         self.vector_db = vector_db
-        logger.info("ChatLogProcessor initialized")
+        self.anonymizer = AnonymizerService()
+        logger.info("ChatLogProcessor initialized with HIPAA-compliant anonymization")
     
     def process_chat_logs(self, chat_logs: List[ChatMessage]) -> Dict[str, Any]:
         """
@@ -54,9 +56,13 @@ class ChatLogProcessor:
         processed_ids = []
         
         try:
-            # Step 1: Extract knowledge from chat messages using Gemini
-            logger.info("Step 1: Extracting knowledge from chat messages")
-            knowledge_dicts = self.gemini_client.process_messages_in_batches(chat_logs)
+            # Step 0: Anonymize chat logs for HIPAA compliance
+            logger.info("Step 0: Anonymizing chat logs for HIPAA compliance")
+            anonymized_logs = self._anonymize_chat_logs(chat_logs)
+            
+            # Step 1: Extract knowledge from anonymized chat messages using Gemini
+            logger.info("Step 1: Extracting knowledge from anonymized chat messages")
+            knowledge_dicts = self.gemini_client.process_messages_in_batches(anonymized_logs)
             
             if not knowledge_dicts:
                 logger.warning("No knowledge extracted from chat logs")
@@ -109,6 +115,35 @@ class ChatLogProcessor:
                 "errors": errors,
                 "processed_ids": processed_ids
             }
+    
+    def _anonymize_chat_logs(self, chat_logs: List[ChatMessage]) -> List[ChatMessage]:
+        """
+        Anonymize sensitive data in chat logs before processing
+        HIPAA compliance requirement
+        
+        Args:
+            chat_logs: List of ChatMessage objects with potentially sensitive data
+        
+        Returns:
+            List of ChatMessage objects with anonymized content
+        """
+        anonymized_logs = []
+        
+        for log in chat_logs:
+            # Create a copy of the message with anonymized content
+            anonymized_log = ChatMessage(
+                id=log.id,
+                timestamp=log.timestamp,
+                sender=log.sender,
+                content=self.anonymizer.anonymize_text(log.content),
+                platform=log.platform,
+                thread_id=log.thread_id,
+                metadata=log.metadata
+            )
+            anonymized_logs.append(anonymized_log)
+        
+        logger.info(f"Anonymized {len(chat_logs)} chat messages for HIPAA compliance")
+        return anonymized_logs
     
     def _create_embeddings(self, knowledge_dicts: List[Dict[str, Any]]) -> Dict[str, List]:
         """
