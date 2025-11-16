@@ -1,0 +1,247 @@
+/* Knowledge-Weaver Leadership Dashboard - Dark Theme */
+/* "Costume Contest" Dark Mode Theme */
+
+:root {
+    --background-primary: #1a1a1a;
+    --background-secondary: #2d2d2d;
+    --background-tertiary: #3a3a3a;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --accent-primary: #6366f1;
+    --accent-secondary: #8b5cf6;
+    --border-color: #404040;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --error-color: #ef4444;
+}
+
+/* Main app background */
+.stApp {
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+}
+
+/* Dashboard title */
+.dashboard-title {
+    color: var(--text-primary);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.dashboard-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Metric cards */
+div[data-testid="stMetricValue"] {
+    color: var(--text-primary);
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+div[data-testid="stMetricLabel"] {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+div[data-testid="stMetricDelta"] {
+    color: var(--success-color);
+}
+
+/* Metric container */
+div[data-testid="metric-container"] {
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Headers */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--text-primary);
+}
+
+/* Subheaders */
+.stMarkdown h2 {
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--accent-primary);
+    padding-bottom: 0.5rem;
+    margin-top: 2rem;
+}
+
+/* Text */
+p,
+span,
+div {
+    color: var(--text-primary);
+}
+
+/* Info boxes */
+div[data-testid="stAlert"] {
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+}
+
+/* Dataframes */
+div[data-testid="stDataFrame"] {
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+/* Tables */
+table {
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
+}
+
+thead tr th {
+    background-color: var(--background-tertiary);
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--accent-primary);
+}
+
+tbody tr {
+    border-bottom: 1px solid var(--border-color);
+}
+
+tbody tr:hover {
+    background-color: var(--background-tertiary);
+}
+
+/* Plotly charts */
+.js-plotly-plot {
+    background-color: var(--background-secondary);
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+/* Buttons */
+button {
+    background-color: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: var(--accent-secondary);
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: var(--background-secondary);
+    border-right: 1px solid var(--border-color);
+}
+
+/* Dividers */
+hr {
+    border-color: var(--border-color);
+    margin: 2rem 0;
+}
+
+/* Columns */
+div[data-testid="column"] {
+    padding: 0.5rem;
+}
+
+/* Expander */
+div[data-testid="stExpander"] {
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+/* Input fields */
+input,
+textarea,
+select {
+    background-color: var(--background-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--accent-primary);
+    outline: none;
+}
+
+/* Spinner */
+div[data-testid="stSpinner"]>div {
+    border-top-color: var(--accent-primary);
+}
+
+/* Success message */
+.success-message {
+    background-color: rgba(16, 185, 129, 0.1);
+    border-left: 4px solid var(--success-color);
+    padding: 1rem;
+    border-radius: 4px;
+    color: var(--success-color);
+}
+
+/* Warning message */
+.warning-message {
+    background-color: rgba(245, 158, 11, 0.1);
+    border-left: 4px solid var(--warning-color);
+    padding: 1rem;
+    border-radius: 4px;
+    color: var(--warning-color);
+}
+
+/* Error message */
+.error-message {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-left: 4px solid var(--error-color);
+    padding: 1rem;
+    border-radius: 4px;
+    color: var(--error-color);
+}
+
+/* Card styling */
+.metric-card {
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Chart container */
+.chart-container {
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Section header */
+.section-header {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-primary);
+}
