@@ -30,8 +30,9 @@ class GeminiClient:
         genai.configure(api_key=self.api_key)
         
         # Initialize models
-        self.generation_model = genai.GenerativeModel('gemini-pro')
-        self.embedding_model = 'models/embedding-001'
+        # Using latest stable model names for google-generativeai v0.8+
+        self.generation_model = genai.GenerativeModel('gemini-2.5-flash')
+        self.embedding_model = 'models/text-embedding-004'
         
         logger.info("GeminiClient initialized successfully")
     

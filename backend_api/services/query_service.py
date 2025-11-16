@@ -112,14 +112,14 @@ class QueryService:
     def _search_similar_knowledge(
         self,
         embedding: List[float],
-        threshold: float = 0.7
+        threshold: float = 0.5
     ) -> List[Dict[str, Any]]:
         """
         Search for similar knowledge entries using vector similarity
         
         Args:
             embedding: Query embedding vector
-            threshold: Minimum similarity score threshold (default: 0.7)
+            threshold: Minimum similarity score threshold (default: 0.5)
         
         Returns:
             List of matching knowledge entries with metadata

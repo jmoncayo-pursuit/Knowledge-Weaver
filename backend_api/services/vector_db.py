@@ -78,7 +78,7 @@ class VectorDatabase:
         self,
         query_embedding: List[float],
         top_k: int = 3,
-        threshold: float = 0.7
+        threshold: float = 0.5
     ) -> List[Dict[str, Any]]:
         """
         Search for similar knowledge entries using vector similarity
@@ -86,7 +86,7 @@ class VectorDatabase:
         Args:
             query_embedding: Query vector embedding
             top_k: Number of top results to return (default: 3)
-            threshold: Minimum similarity score threshold (default: 0.7)
+            threshold: Minimum similarity score threshold (default: 0.5)
         
         Returns:
             List of matching knowledge entries with metadata and similarity scores
@@ -108,6 +108,9 @@ class VectorDatabase:
                     distance = results['distances'][0][i]
                     similarity_score = 1 - distance  # Convert distance to similarity
                     
+                    # Log distances for debugging
+                    logger.debug(f"Result {i}: distance={distance}, similarity={similarity_score}")
+                    
                     if similarity_score >= threshold:
                         matches.append({
                             'id': results['ids'][0][i],
@@ -116,7 +119,7 @@ class VectorDatabase:
                             'similarity_score': similarity_score
                         })
             
-            logger.info(f"Search returned {len(matches)} matches above threshold {threshold}")
+            logger.info(f"Search returned {len(matches)} matches above threshold {threshold} (total results: {len(results['ids'][0]) if results['ids'] else 0})")
             return matches
         
         except Exception as e:
