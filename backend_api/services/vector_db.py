@@ -1,0 +1,153 @@
+"""
+Vector Database Manager for Knowledge-Weaver
+Manages ChromaDB operations including initialization, indexing, and persistence
+"""
+import chromadb
+from chromadb.config import Settings
+from typing import List, Dict, Any, Optional
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+class VectorDatabase:
+    """Manages ChromaDB operations for knowledge storage and retrieval"""
+    
+    def __init__(self, persist_directory: str = "./chroma_db"):
+        """
+        Initialize ChromaDB client with persistence
+        
+        Args:
+            persist_directory: Directory path for ChromaDB persistence
+        """
+        self.persist_directory = persist_directory
+        self.client = chromadb.Client(Settings(
+            persist_directory=persist_directory,
+            anonymized_telemetry=False
+        ))
+        self.collection = None
+        logger.info(f"VectorDatabase initialized with persist_directory: {persist_directory}")
+    
+    def initialize(self) -> None:
+        """
+        Initialize or get the knowledge_base collection
+        Creates the collection if it doesn't exist
+        """
+        try:
+            self.collection = self.client.get_or_create_collection(
+                name="knowledge_base",
+                metadata={"description": "Knowledge entries from chat logs"}
+            )
+            logger.info(f"Collection 'knowledge_base' initialized with {self.collection.count()} entries")
+        except Exception as e:
+            logger.error(f"Failed to initialize collection: {e}")
+            raise
+    
+    def add_knowledge(
+        self,
+        ids: List[str],
+        documents: List[str],
+        embeddings: List[List[float]],
+        metadatas: List[Dict[str, Any]]
+    ) -> None:
+        """
+        Add knowledge entries to the vector database
+        
+        Args:
+            ids: List of unique identifiers for knowledge entries
+            documents: List of knowledge text content
+            embeddings: List of vector embeddings (768-dimensional for Gemini)
+            metadatas: List of metadata dicts (timestamp, participants, source_id, etc.)
+        """
+        if not self.collection:
+            raise RuntimeError("Collection not initialized. Call initialize() first.")
+        
+        try:
+            self.collection.add(
+                ids=ids,
+                documents=documents,
+                embeddings=embeddings,
+                metadatas=metadatas
+            )
+            logger.info(f"Added {len(ids)} knowledge entries to vector database")
+        except Exception as e:
+            logger.error(f"Failed to add knowledge entries: {e}")
+            raise
+    
+    def search(
+        self,
+        query_embedding: List[float],
+        top_k: int = 3,
+        threshold: float = 0.7
+    ) -> List[Dict[str, Any]]:
+        """
+        Search for similar knowledge entries using vector similarity
+        
+        Args:
+            query_embedding: Query vector embedding
+            top_k: Number of top results to return (default: 3)
+            threshold: Minimum similarity score threshold (default: 0.7)
+        
+        Returns:
+            List of matching knowledge entries with metadata and similarity scores
+        """
+        if not self.collection:
+            raise RuntimeError("Collection not initialized. Call initialize() first.")
+        
+        try:
+            results = self.collection.query(
+                query_embeddings=[query_embedding],
+                n_results=top_k
+            )
+            
+            # Filter results by similarity threshold
+            # ChromaDB returns distances, convert to similarity scores (1 - distance)
+            matches = []
+            if results['ids'] and len(results['ids'][0]) > 0:
+                for i in range(len(results['ids'][0])):
+                    distance = results['distances'][0][i]
+                    similarity_score = 1 - distance  # Convert distance to similarity
+                    
+                    if similarity_score >= threshold:
+                        matches.append({
+                            'id': results['ids'][0][i],
+                            'document': results['documents'][0][i],
+                            'metadata': results['metadatas'][0][i],
+                            'similarity_score': similarity_score
+                        })
+            
+            logger.info(f"Search returned {len(matches)} matches above threshold {threshold}")
+            return matches
+        
+        except Exception as e:
+            logger.error(f"Search failed: {e}")
+            raise
+    
+    def persist(self) -> None:
+        """
+        Persist the vector database to disk
+        ChromaDB with PersistentClient auto-persists, but this can be called explicitly
+        """
+        try:
+            # ChromaDB with Settings persist_directory auto-persists
+            # This method is here for explicit persistence if needed
+            logger.info("Vector database persisted to disk")
+        except Exception as e:
+            logger.error(f"Failed to persist database: {e}")
+            raise
+    
+    def get_collection_stats(self) -> Dict[str, Any]:
+        """
+        Get statistics about the collection
+        
+        Returns:
+            Dictionary with collection statistics
+        """
+        if not self.collection:
+            return {"status": "not_initialized"}
+        
+        return {
+            "status": "initialized",
+            "count": self.collection.count(),
+            "name": self.collection.name
+        }

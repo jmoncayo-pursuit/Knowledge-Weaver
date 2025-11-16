@@ -6,6 +6,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+import logging
+
+from services.vector_db import VectorDatabase
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
@@ -26,11 +33,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Global vector database instance
+vector_db: VectorDatabase = None
+
 @app.on_event("startup")
 async def startup_event():
     """Initialize services on application startup"""
-    print("Knowledge-Weaver API starting up...")
-    # Vector database initialization will be added here
+    global vector_db
+    
+    logger.info("Knowledge-Weaver API starting up...")
+    
+    # Initialize Vector Database
+    try:
+        persist_dir = os.getenv("CHROMA_PERSIST_DIR", "./chroma_db")
+        vector_db = VectorDatabase(persist_directory=persist_dir)
+        vector_db.initialize()
+        
+        stats = vector_db.get_collection_stats()
+        logger.info(f"Vector Database initialized: {stats}")
+    except Exception as e:
+        logger.error(f"Failed to initialize Vector Database: {e}")
+        raise
 
 @app.get("/")
 async def root():
