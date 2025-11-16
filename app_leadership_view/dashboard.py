@@ -7,7 +7,9 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
-import requests
+import time
+
+from api_client import APIClient
 
 # Page configuration
 st.set_page_config(
@@ -19,50 +21,131 @@ st.set_page_config(
 
 # Load custom CSS
 def load_css():
-    with open('styles/dark_theme.css') as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    try:
+        with open('styles/dark_theme.css') as f:
+            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    except FileNotFoundError:
+        pass  # CSS file not found, use default styling
 
-try:
-    load_css()
-except FileNotFoundError:
-    pass  # CSS file not found, use default styling
+load_css()
+
+# Initialize API client
+@st.cache_resource
+def get_api_client():
+    return APIClient()
+
+api_client = get_api_client()
+
+# Auto-refresh every 60 seconds
+st_autorefresh = st.empty()
+with st_autorefresh:
+    st.caption(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} • Auto-refresh: 60s")
 
 # Title
 st.markdown('<h1 class="dashboard-title">Knowledge-Weaver Leadership Dashboard</h1>', unsafe_allow_html=True)
 st.markdown('<p class="dashboard-subtitle">Monitor team performance and knowledge gaps</p>', unsafe_allow_html=True)
 
-# Placeholder content
-st.info("Dashboard functionality will be implemented in upcoming tasks")
+# Metrics functions
+def render_response_time_metric():
+    """Render average leadership response time metric"""
+    # Placeholder implementation
+    response_time = "1h 15m"
+    delta = "-15m"
+    
+    st.metric(
+        label="Avg Response Time",
+        value=response_time,
+        delta=delta,
+        help="Average time for leadership to respond to agent questions"
+    )
 
-# Sample metrics layout
+def render_query_volume_metric():
+    """Render query volume metric from last 7 days"""
+    try:
+        # Fetch query logs from last 7 days
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=7)
+        
+        logs = api_client.fetch_query_logs(
+            start_date=start_date.isoformat(),
+            end_date=end_date.isoformat(),
+            limit=1000
+        )
+        
+        query_count = len(logs)
+        
+        # Calculate delta (placeholder - would need historical data)
+        delta = "+15%"
+        
+        st.metric(
+            label="Query Volume (7d)",
+            value=f"{query_count:,}",
+            delta=delta,
+            help="Total queries in the last 7 days"
+        )
+    except Exception as e:
+        st.metric(
+            label="Query Volume (7d)",
+            value="Error",
+            help=f"Failed to fetch data: {str(e)}"
+        )
+
+def render_knowledge_gap_metric():
+    """Render knowledge gaps metric"""
+    # Placeholder implementation
+    gap_count = 8
+    delta = "-2"
+    
+    st.metric(
+        label="Knowledge Gaps",
+        value=gap_count,
+        delta=delta,
+        help="Queries with no relevant results found"
+    )
+
+# Render metrics
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.metric(
-        label="Avg Response Time",
-        value="2.5 hrs",
-        delta="-0.5 hrs"
-    )
+    render_response_time_metric()
 
 with col2:
-    st.metric(
-        label="Query Volume (7d)",
-        value="1,234",
-        delta="+15%"
-    )
+    render_query_volume_metric()
 
 with col3:
-    st.metric(
-        label="Knowledge Gaps",
-        value="8",
-        delta="-2"
-    )
+    render_knowledge_gap_metric()
 
-# Sample sections
+# Unanswered Questions Section
 st.markdown("---")
 st.subheader("Unanswered Questions")
-st.info("Unanswered questions tracking will be implemented in upcoming tasks")
 
+try:
+    unanswered = api_client.fetch_unanswered_questions()
+    
+    if unanswered:
+        df = pd.DataFrame(unanswered)
+        st.dataframe(df, use_container_width=True)
+    else:
+        st.info("No unanswered questions at this time")
+except Exception as e:
+    st.warning(f"Unable to fetch unanswered questions: {str(e)}")
+
+# Trending Topics Section
 st.markdown("---")
 st.subheader("Trending Topics")
 st.info("Trending topics analysis will be implemented in upcoming tasks")
+
+# Backend connection status
+with st.sidebar:
+    st.subheader("Backend Status")
+    if api_client.test_connection():
+        st.success("✓ Connected to backend")
+    else:
+        st.error("✗ Backend unavailable")
+    
+    if st.button("Refresh Dashboard"):
+        st.rerun()
+
+# Auto-refresh after 60 seconds
+time.sleep(60)
+st.rerun()
