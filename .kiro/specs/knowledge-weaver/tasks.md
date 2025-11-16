@@ -136,13 +136,13 @@
   - Create directory structure for scripts, popup, and styles
   - _Requirements: 12.1, 12.3, 12.4_
 
-- [ ] 12. Implement content script for text selection
-  - [ ] 12.1 Create TextSelectionHandler class
+- [x] 12. Implement content script for text selection
+  - [x] 12.1 Create TextSelectionHandler class
     - Write selection detection logic using mouseup event
     - Implement text validation (100-10,000 characters)
     - Add position calculation for action menu
     - _Requirements: 3.1, 4.1_
-  - [ ] 12.2 Create ActionMenu component
+  - [x] 12.2 Create ActionMenu component
     - Write menu rendering logic with Summarize, Rephrase, Query buttons
     - Implement positioning near text selection
     - Add click handlers for each action
