@@ -247,8 +247,8 @@
     - Display with highlighting
     - _Requirements: 8.4_
 
-- [ ] 21. Implement unanswered questions tracker
-  - [ ] 21.1 Create unanswered questions component
+- [x] 21. Implement unanswered questions tracker
+  - [x] 21.1 Create unanswered questions component
     - Fetch unanswered questions from Backend API
     - Filter questions older than 24 hours
     - Sort by age (oldest first)
