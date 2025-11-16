@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge-Weaver</title>
+    <link rel="stylesheet" href="styles/popup.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Knowledge-Weaver</h1>
+            <p class="subtitle">Query the Knowledge Base</p>
+        </header>
+
+        <main>
+            <div class="search-section">
+                <textarea id="queryInput" placeholder="Ask a question about policies, procedures, or past decisions..."
+                    rows="3"></textarea>
+                <button id="searchBtn" class="primary-btn">Search Knowledge Base</button>
+            </div>
+
+            <div id="loadingIndicator" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Searching...</p>
+            </div>
+
+            <div id="resultsSection" class="results hidden">
+                <h2>Results</h2>
+                <div id="resultsList"></div>
+            </div>
+
+            <div id="errorSection" class="error hidden">
+                <p id="errorMessage"></p>
+                <button id="retryBtn" class="secondary-btn">Retry</button>
+            </div>
+
+            <div id="emptyState" class="empty-state">
+                <p>Enter a question to search the knowledge base</p>
+            </div>
+        </main>
+
+        <footer>
+            <div class="settings-link">
+                <a href="#" id="settingsLink">⚙️ Settings</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="scripts/popup.js"></script>
+</body>
+
+</html>
