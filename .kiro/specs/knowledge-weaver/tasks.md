@@ -9,14 +9,14 @@
   - Set up environment variable loading from .env file
   - _Requirements: 11.1_
 
-- [ ] 2. Implement data models and schemas
-  - [ ] 2.1 Create Pydantic models for ChatMessage, KnowledgeEntry, QueryResult
+- [x] 2. Implement data models and schemas
+  - [x] 2.1 Create Pydantic models for ChatMessage, KnowledgeEntry, QueryResult
     - Write ChatMessage model with id, timestamp, sender, content, platform fields
     - Write KnowledgeEntry model with id, content, entry_type, source_messages, timestamp, participants
     - Write QueryResult and KnowledgeMatch models for API responses
     - Write SourceMetadata model for result metadata
     - _Requirements: 1.1, 2.4_
-  - [ ] 2.2 Create request/response schemas for API endpoints
+  - [x] 2.2 Create request/response schemas for API endpoints
     - Write ProcessChatLogsRequest schema
     - Write QueryRequest schema with query field
     - Write ProcessingResult and error response schemas
