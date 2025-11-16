@@ -33,7 +33,7 @@ def load_sample_data(file_path: str) -> List[Dict]:
 def format_chat_logs(raw_logs: List[Dict]) -> List[Dict]:
     """
     Format raw chat logs to match the ChatMessage schema
-    Adds 'platform' field and ensures proper structure
+    Ensures proper structure without adding platform field
     """
     formatted_logs = []
     for log in raw_logs:
@@ -42,7 +42,6 @@ def format_chat_logs(raw_logs: List[Dict]) -> List[Dict]:
             "timestamp": log["timestamp"],
             "sender": log["sender"],
             "content": log["content"],
-            "platform": "teams",  # Default platform
             "thread_id": None,
             "metadata": {}
         }

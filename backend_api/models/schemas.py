@@ -12,7 +12,7 @@ class ChatMessage(BaseModel):
     timestamp: datetime
     sender: str
     content: str
-    platform: str = Field(description="Chat platform, e.g., 'teams'")
+    platform: Optional[str] = None
     thread_id: Optional[str] = None
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
