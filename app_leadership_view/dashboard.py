@@ -175,7 +175,55 @@ except Exception as e:
 # Trending Topics Section
 st.markdown("---")
 st.subheader("Trending Topics")
-st.info("Trending topics analysis will be implemented in upcoming tasks")
+
+try:
+    # Fetch query logs from last 7 days
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=7)
+    
+    logs = api_client.fetch_query_logs(
+        start_date=start_date.isoformat(),
+        end_date=end_date.isoformat(),
+        limit=1000
+    )
+    
+    if logs and len(logs) > 0:
+        # Extract query texts
+        queries = [log.get('query_text', '') for log in logs if log.get('query_text')]
+        
+        if queries:
+            # Simple keyword extraction - extract first 3-5 words as "topic"
+            topics = []
+            for query in queries:
+                # Take first 50 characters as topic (simple approach for hackathon)
+                words = query.split()[:5]  # First 5 words
+                topic = ' '.join(words)
+                if topic:
+                    topics.append(topic)
+            
+            if topics:
+                # Create DataFrame and get value counts
+                df_topics = pd.DataFrame({'topic': topics})
+                topic_counts = df_topics['topic'].value_counts().head(10)
+                
+                # Display as bar chart
+                st.bar_chart(topic_counts)
+                
+                # Also show as table
+                st.caption("Top 10 Most Frequent Query Topics (Last 7 Days)")
+                topic_df = pd.DataFrame({
+                    'Topic': topic_counts.index,
+                    'Count': topic_counts.values
+                })
+                st.dataframe(topic_df, use_container_width=True, hide_index=True)
+            else:
+                st.info("No topics extracted from queries")
+        else:
+            st.info("No query data available for analysis")
+    else:
+        st.info("No query logs available for trending topics analysis")
+except Exception as e:
+    st.warning(f"Unable to analyze trending topics: {str(e)}")
 
 # Backend connection status
 with st.sidebar:
