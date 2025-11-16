@@ -1,0 +1,74 @@
+[
+    {
+        "id": "convo_1_msg_1",
+        "timestamp": "2025-11-12T14:00:00",
+        "sender": "Agent_1",
+        "content": "Employee [ID_PLACEHOLDER] completed enrollment on [RECENT_DATE] with a [State_A] address. Their assignment has changed and they are now in [State_B]. They are a travelling Professional with [Client_Name]. Benefits are based on address, do they have to be changed?"
+    },
+    {
+        "id": "convo_1_msg_2",
+        "timestamp": "2025-11-12T14:15:00",
+        "sender": "Agent_2",
+        "content": "Agent_1 I just hung up with them. They called [Insurance_Carrier] and they had no record... I told them it all goes over in a feed."
+    },
+    {
+        "id": "convo_1_msg_3",
+        "timestamp": "2025-11-12T14:30:00",
+        "sender": "Agent_1",
+        "content": "The real issue is they completed enrollment when they lived in [State_A]... now they have a new assignment in [State_B]. Do we need to change the address in the system and then they make new selections based on their new address? Like a qualifying life event?"
+    },
+    {
+        "id": "convo_1_msg_6",
+        "timestamp": "2025-11-12T16:20:00",
+        "sender": "Team_Lead_1",
+        "content": "Have the team member change their address in the benefits system, and the address change will trigger a transaction if the benefit offering changes."
+    },
+    {
+        "id": "convo_2_msg_1",
+        "timestamp": "2025-11-12T15:50:00",
+        "sender": "Agent_1",
+        "content": "Employee [ID_PLACEHOLDER] - terminated on [RECENT_DATE], will not be getting a new assignment and was looking for a [Continuation_Insurance] packet. They called the [Continuation_Insurance] provider and they said they did not have anything for them."
+    },
+    {
+        "id": "convo_2_msg_2",
+        "timestamp": "2025-11-12T15:55:00",
+        "sender": "Team_Lead_1",
+        "content": "The team member remains in Active status for [XX] days after their contract ends - then the [Continuation_Insurance] provider will be notified to provide the packet."
+    },
+    {
+        "id": "convo_2_msg_3",
+        "timestamp": "2025-11-12T15:56:00",
+        "sender": "Agent_1",
+        "content": "Thank you! So [XX] days would have been [RECENT_DATE]. Do we have a schedule or does it happen automatically?"
+    },
+    {
+        "id": "convo_2_msg_4",
+        "timestamp": "2025-11-12T15:58:00",
+        "sender": "Team_Lead_1",
+        "content": "Correct, but please remember files are sent once per week and to allow for processing time."
+    },
+    {
+        "id": "convo_3_msg_1",
+        "timestamp": "2025-11-13T09:10:00",
+        "sender": "Agent_3",
+        "content": "Employee [ID_PLACEHOLDER] wants to cancel coverage, but for the life event (gaining other coverage), the occurrence date cannot be more than 30 days away. The team member started new medical coverage through their spouse's work on [DATE_PLACEHOLDER] but never called in to cancel their [Client_Name] [Insurance_Carrier] coverage with us."
+    },
+    {
+        "id": "convo_3_msg_2",
+        "timestamp": "2025-11-13T09:15:00",
+        "sender": "SME_1",
+        "content": "The employee is outside of the life event window and cannot cancel current plan year coverage. The employee can only make changes for the new plan year that begins [FUTURE_DATE] during the annual enrollment."
+    },
+    {
+        "id": "convo_4_msg_1",
+        "timestamp": "2025-11-13T12:50:00",
+        "sender": "Agent_4",
+        "content": "Hello. Employee [ID_PLACEHOLDER] would like to change their health savings contribution amount for [CURRENT_YEAR]. Where and how can I make these changes for them?"
+    },
+    {
+        "id": "convo_4_msg_2",
+        "timestamp": "2025-11-13T13:00:00",
+        "sender": "Team_Lead_2",
+        "content": "Create a support ticket with the requested change."
+    }
+]
