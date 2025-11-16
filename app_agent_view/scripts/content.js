@@ -5,6 +5,10 @@
 
 console.log('Knowledge-Weaver content script loaded on Teams page');
 
+// Initialize Chrome AI services
+const summarizerService = new SummarizerService();
+const rewriterService = new RewriterService();
+
 /**
  * TextSelectionHandler - Detects text selection and shows action menu
  */
@@ -143,18 +147,48 @@ class TextSelectionHandler {
         }
     }
 
-    handleSummarize() {
-        console.log('Summarize clicked - functionality will be implemented in next task');
+    async handleSummarize() {
+        console.log('Summarize clicked');
         console.log('Selected text:', this.selectedText.substring(0, 100) + '...');
-        alert('Summarize functionality coming soon!');
+
         this.hideActionMenu();
+
+        try {
+            // Show loading indicator
+            this.showLoadingPopup('Summarizing...');
+
+            // Call summarizer service
+            const summary = await summarizerService.summarize(this.selectedText);
+
+            // Show result
+            this.showResultPopup('Summary', summary);
+
+        } catch (error) {
+            console.error('Summarization error:', error);
+            this.showErrorPopup('Summarization Failed', error.message);
+        }
     }
 
-    handleRephrase() {
-        console.log('Rephrase clicked - functionality will be implemented in next task');
+    async handleRephrase() {
+        console.log('Rephrase clicked');
         console.log('Selected text:', this.selectedText.substring(0, 100) + '...');
-        alert('Rephrase functionality coming soon!');
+
         this.hideActionMenu();
+
+        try {
+            // Show loading indicator
+            this.showLoadingPopup('Rephrasing for customer...');
+
+            // Call rewriter service with customer-friendly tone
+            const rephrased = await rewriterService.rephrase(this.selectedText, 'more-formal');
+
+            // Show result
+            this.showResultPopup('Rephrased Text', rephrased);
+
+        } catch (error) {
+            console.error('Rephrasing error:', error);
+            this.showErrorPopup('Rephrasing Failed', error.message);
+        }
     }
 
     handleQuery() {
@@ -162,6 +196,106 @@ class TextSelectionHandler {
         console.log('Selected text:', this.selectedText.substring(0, 100) + '...');
         alert('Query KB functionality coming soon!');
         this.hideActionMenu();
+    }
+
+    showLoadingPopup(message) {
+        this.hidePopup();
+
+        const overlay = document.createElement('div');
+        overlay.className = 'kw-overlay';
+        overlay.id = 'kw-popup-overlay';
+
+        const popup = document.createElement('div');
+        popup.className = 'kw-result-popup';
+        popup.innerHTML = `
+            <div class="kw-result-header">
+                <div class="kw-result-title">${message}</div>
+            </div>
+            <div class="kw-result-content" style="text-align: center; padding: 20px;">
+                <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #6366f1; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+        document.body.appendChild(popup);
+    }
+
+    showResultPopup(title, content) {
+        this.hidePopup();
+
+        const overlay = document.createElement('div');
+        overlay.className = 'kw-overlay';
+        overlay.id = 'kw-popup-overlay';
+
+        const popup = document.createElement('div');
+        popup.className = 'kw-result-popup';
+        popup.innerHTML = `
+            <div class="kw-result-header">
+                <div class="kw-result-title">${title}</div>
+                <button class="kw-close-btn">×</button>
+            </div>
+            <div class="kw-result-content">${content}</div>
+            <button class="kw-copy-btn">Copy to Clipboard</button>
+        `;
+
+        // Add event listeners
+        const closeBtn = popup.querySelector('.kw-close-btn');
+        closeBtn.addEventListener('click', () => this.hidePopup());
+
+        const copyBtn = popup.querySelector('.kw-copy-btn');
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(content);
+            copyBtn.textContent = '✓ Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = 'Copy to Clipboard';
+            }, 2000);
+        });
+
+        overlay.addEventListener('click', () => this.hidePopup());
+
+        document.body.appendChild(overlay);
+        document.body.appendChild(popup);
+    }
+
+    showErrorPopup(title, message) {
+        this.hidePopup();
+
+        const overlay = document.createElement('div');
+        overlay.className = 'kw-overlay';
+        overlay.id = 'kw-popup-overlay';
+
+        const popup = document.createElement('div');
+        popup.className = 'kw-result-popup';
+        popup.innerHTML = `
+            <div class="kw-result-header">
+                <div class="kw-result-title" style="color: #d32f2f;">${title}</div>
+                <button class="kw-close-btn">×</button>
+            </div>
+            <div class="kw-result-content" style="color: #d32f2f;">${message}</div>
+            <button class="kw-copy-btn" style="background: #d32f2f;">Close</button>
+        `;
+
+        // Add event listeners
+        const closeBtn = popup.querySelector('.kw-close-btn');
+        closeBtn.addEventListener('click', () => this.hidePopup());
+
+        const closeButton = popup.querySelector('.kw-copy-btn');
+        closeButton.addEventListener('click', () => this.hidePopup());
+
+        overlay.addEventListener('click', () => this.hidePopup());
+
+        document.body.appendChild(overlay);
+        document.body.appendChild(popup);
+    }
+
+    hidePopup() {
+        const overlay = document.getElementById('kw-popup-overlay');
+        if (overlay) {
+            overlay.remove();
+        }
+
+        const popups = document.querySelectorAll('.kw-result-popup');
+        popups.forEach(popup => popup.remove());
     }
 }
 
