@@ -9,6 +9,9 @@ console.log('Knowledge-Weaver content script loaded on Teams page');
 const summarizerService = new SummarizerService();
 const rewriterService = new RewriterService();
 
+// Initialize Backend API client
+const apiClient = new BackendAPIClient();
+
 /**
  * TextSelectionHandler - Detects text selection and shows action menu
  */
@@ -191,11 +194,62 @@ class TextSelectionHandler {
         }
     }
 
-    handleQuery() {
-        console.log('Query KB clicked - functionality will be implemented in next task');
+    async handleQuery() {
+        console.log('Query KB clicked');
         console.log('Selected text:', this.selectedText.substring(0, 100) + '...');
-        alert('Query KB functionality coming soon!');
+
         this.hideActionMenu();
+
+        try {
+            // Show loading indicator
+            this.showLoadingPopup('Querying Knowledge Base...');
+
+            // Call backend API to query knowledge base
+            const result = await apiClient.queryKnowledgeBase(this.selectedText);
+
+            // Format and display results
+            if (result.results && result.results.length > 0) {
+                const formattedResults = this.formatQueryResults(result.results);
+                this.showResultPopup('Knowledge Base Results', formattedResults);
+            } else {
+                this.showErrorPopup('No Results Found', 'No relevant knowledge found in the database for your query.');
+            }
+
+        } catch (error) {
+            console.error('Query error:', error);
+            this.showErrorPopup('Query Failed', error.message);
+        }
+    }
+
+    formatQueryResults(results) {
+        let html = '<div style="max-height: 400px; overflow-y: auto;">';
+
+        results.forEach((result, index) => {
+            const score = (result.similarity_score * 100).toFixed(0);
+            const participants = result.source.participants.join(', ');
+            const date = new Date(result.source.timestamp).toLocaleDateString();
+
+            html += `
+                <div style="margin-bottom: 20px; padding: 15px; background: #f5f5f5; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <strong>Result ${index + 1}</strong>
+                        <span style="background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 4px; font-size: 12px;">
+                            ${score}% match
+                        </span>
+                    </div>
+                    <div style="margin-bottom: 10px; line-height: 1.6;">
+                        ${result.content}
+                    </div>
+                    <div style="font-size: 12px; color: #666;">
+                        <div>Source: ${participants}</div>
+                        <div>Date: ${date}</div>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += '</div>';
+        return html;
     }
 
     showLoadingPopup(message) {
