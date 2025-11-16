@@ -147,13 +147,36 @@ The dashboard will open in your browser at `http://localhost:8501`
 
 ## How to Use
 
-### Processing Chat Logs
+### Quick Start: Ingest Sample Data
 
-Use the Backend API to process historical chat logs:
+The easiest way to populate your database with sample data:
+
+1. Make sure the backend is running:
+```bash
+cd backend_api
+source ../venv/bin/activate
+uvicorn main:app --reload --port 8000
+```
+
+2. In a new terminal, run the ingestion script:
+```bash
+source venv/bin/activate
+python ingest_sample_data.py
+```
+
+The script will:
+- Check backend health
+- Load sample chat logs from `sample_chat_logs.json`
+- Process and ingest them into the vector database
+- Display a summary of the ingestion results
+
+### Processing Chat Logs (Manual)
+
+You can also manually process chat logs via the API:
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/chat-logs/process \
-  -H "X-API-Key: your_api_key" \
+  -H "X-API-Key: dev-secret-key-12345" \
   -H "Content-Type: application/json" \
   -d '{
     "chat_logs": [
