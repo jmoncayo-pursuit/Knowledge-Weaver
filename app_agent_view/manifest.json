@@ -32,6 +32,7 @@
             ],
             "js": [
                 "scripts/chrome_ai.js",
+                "scripts/api_client.js",
                 "scripts/content.js"
             ],
             "css": [

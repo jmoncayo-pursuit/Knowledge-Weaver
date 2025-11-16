@@ -165,8 +165,8 @@
     - Add error handling with user-friendly messages
     - _Requirements: 4.2, 4.3, 4.4, 4.5_
 
-- [ ] 14. Implement Backend API client for Extension
-  - [ ] 14.1 Create BackendAPIClient class
+- [x] 14. Implement Backend API client for Extension
+  - [x] 14.1 Create BackendAPIClient class
     - Write constructor accepting baseURL and apiKey
     - Implement queryKnowledgeBase() method
     - Add API key authentication in request headers
