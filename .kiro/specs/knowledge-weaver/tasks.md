@@ -57,8 +57,8 @@
     - Add error logging with timestamp and source identifier
     - _Requirements: 1.1, 1.2, 1.3, 1.4_
 
-- [ ] 6. Implement Query Service
-  - [ ] 6.1 Create QueryService class
+- [x] 6. Implement Query Service
+  - [x] 6.1 Create QueryService class
     - Write __init__ method accepting VectorDatabase and GeminiClient dependencies
     - Implement query_knowledge_base() method for natural language queries
     - Implement generate_query_embedding() to create query vectors
