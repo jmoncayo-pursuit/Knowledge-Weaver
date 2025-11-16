@@ -296,7 +296,7 @@
     - Configure port 8501 exposure
     - _Requirements: 9.1_
 
-- [ ] 26. Create README documentation
+- [x] 26. Create README documentation
   - Write setup instructions for Backend API
   - Write installation guide for Chrome Extension
   - Write deployment guide for Leadership View
