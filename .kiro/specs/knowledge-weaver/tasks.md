@@ -36,14 +36,14 @@
     - Verify collection exists or create it
     - _Requirements: 11.1_
 
-- [ ] 4. Implement Gemini API client
-  - [ ] 4.1 Create GeminiClient class for API interactions
+- [x] 4. Implement Gemini API client
+  - [x] 4.1 Create GeminiClient class for API interactions
     - Write __init__ method to configure Gemini API with key from environment
     - Implement extract_knowledge() method to analyze chat messages
     - Implement generate_embedding() method for text embeddings
     - Add error handling with retry logic for transient failures
     - _Requirements: 1.1, 1.2, 1.4_
-  - [ ] 4.2 Add batch processing logic for chat messages
+  - [x] 4.2 Add batch processing logic for chat messages
     - Implement batch splitting to max 100 messages per request
     - Add validation for batch size limits
     - _Requirements: 1.5_
