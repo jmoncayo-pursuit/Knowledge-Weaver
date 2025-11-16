@@ -208,19 +208,19 @@
   - _Requirements: 9.1_
 
 - [ ] 18. Implement dark mode theme and styling
-  - [ ] 18.1 Create custom CSS theme
+  - [x] 18.1 Create custom CSS theme
     - Define CSS variables for dark color scheme (#1a1a1a background)
     - Set accent colors with 4.5:1 contrast ratio
     - Create metric card styles with borders and spacing
     - Apply consistent typography and 8px grid spacing
     - _Requirements: 9.1, 9.2, 9.3, 9.5_
-  - [ ] 18.2 Apply theme to Streamlit app
+  - [x] 18.2 Apply theme to Streamlit app
     - Load custom CSS in dashboard.py
     - Configure Streamlit theme settings
     - _Requirements: 9.1_
 
-- [ ] 19. Implement Backend API client for Dashboard
-  - [ ] 19.1 Create API client utility
+- [x] 19. Implement Backend API client for Dashboard
+  - [x] 19.1 Create API client utility
     - Write functions to fetch metrics from Backend API
     - Implement fetch_query_logs() for trending analysis
     - Implement fetch_unanswered_questions() for question tracking
