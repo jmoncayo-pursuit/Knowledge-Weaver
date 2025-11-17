@@ -266,17 +266,10 @@ class TextSelectionHandler {
         // Create content with spinner
         const content = document.createElement('div');
         content.className = 'kw-result-content';
-        content.style.textAlign = 'center';
-        content.style.padding = '20px';
+        content.setAttribute('style', 'text-align: center; padding: 20px;');
 
         const spinner = document.createElement('div');
-        spinner.style.display = 'inline-block';
-        spinner.style.width = '40px';
-        spinner.style.height = '40px';
-        spinner.style.border = '4px solid #f3f3f3';
-        spinner.style.borderTop = '4px solid #6366f1';
-        spinner.style.borderRadius = '50%';
-        spinner.style.animation = 'spin 1s linear infinite';
+        spinner.setAttribute('style', 'display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #6366f1; border-radius: 50%; animation: spin 1s linear infinite;');
 
         content.appendChild(spinner);
 
@@ -313,7 +306,7 @@ class TextSelectionHandler {
         header.appendChild(titleDiv);
         header.appendChild(closeBtn);
 
-        // Create content
+        // Create content - use textContent to avoid TrustedHTML issues
         const content = document.createElement('div');
         content.className = 'kw-result-content';
         content.textContent = contentText;
@@ -323,11 +316,14 @@ class TextSelectionHandler {
         copyBtn.className = 'kw-copy-btn';
         copyBtn.textContent = 'Copy to Clipboard';
         copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(contentText);
-            copyBtn.textContent = '✓ Copied!';
-            setTimeout(() => {
-                copyBtn.textContent = 'Copy to Clipboard';
-            }, 2000);
+            navigator.clipboard.writeText(contentText).then(() => {
+                copyBtn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy to Clipboard';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
         });
 
         overlay.addEventListener('click', () => this.hidePopup());
@@ -356,7 +352,7 @@ class TextSelectionHandler {
 
         const titleDiv = document.createElement('div');
         titleDiv.className = 'kw-result-title';
-        titleDiv.style.color = '#d32f2f';
+        titleDiv.setAttribute('style', 'color: #d32f2f;');
         titleDiv.textContent = title;
 
         const closeBtn = document.createElement('button');
@@ -367,16 +363,16 @@ class TextSelectionHandler {
         header.appendChild(titleDiv);
         header.appendChild(closeBtn);
 
-        // Create content
+        // Create content - use textContent to avoid TrustedHTML issues
         const content = document.createElement('div');
         content.className = 'kw-result-content';
-        content.style.color = '#d32f2f';
+        content.setAttribute('style', 'color: #d32f2f;');
         content.textContent = message;
 
         // Create close button
         const closeButton = document.createElement('button');
         closeButton.className = 'kw-copy-btn';
-        closeButton.style.background = '#d32f2f';
+        closeButton.setAttribute('style', 'background: #d32f2f;');
         closeButton.textContent = 'Close';
         closeButton.addEventListener('click', () => this.hidePopup());
 

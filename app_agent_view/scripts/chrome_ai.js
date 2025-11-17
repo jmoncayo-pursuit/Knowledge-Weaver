@@ -10,6 +10,7 @@ class SummarizerService {
     constructor() {
         this.summarizer = null;
         this.isAvailable = false;
+        this.availabilityChecked = false;
         this.checkAvailability();
     }
 
@@ -19,6 +20,7 @@ class SummarizerService {
             if ('ai' in self && 'summarizer' in self.ai) {
                 const availability = await self.ai.summarizer.capabilities();
                 this.isAvailable = availability.available === 'readily';
+                this.availabilityChecked = true;
 
                 if (this.isAvailable) {
                     console.log('Chrome Summarizer API is available');
@@ -27,9 +29,11 @@ class SummarizerService {
                 }
             } else {
                 console.warn('Chrome AI Summarizer API not found');
+                this.availabilityChecked = true;
             }
         } catch (error) {
             console.error('Error checking Summarizer API availability:', error);
+            this.availabilityChecked = true;
         }
     }
 
@@ -51,6 +55,11 @@ class SummarizerService {
         try {
             // Validate text length
             this.validateTextLength(text);
+
+            // Wait for availability check to complete if it hasn't yet
+            if (!this.availabilityChecked) {
+                await this.checkAvailability();
+            }
 
             // Check if API is available
             if (!this.isAvailable) {
@@ -116,6 +125,7 @@ class RewriterService {
     constructor() {
         this.rewriter = null;
         this.isAvailable = false;
+        this.availabilityChecked = false;
         this.checkAvailability();
     }
 
@@ -125,6 +135,7 @@ class RewriterService {
             if ('ai' in self && 'rewriter' in self.ai) {
                 const availability = await self.ai.rewriter.capabilities();
                 this.isAvailable = availability.available === 'readily';
+                this.availabilityChecked = true;
 
                 if (this.isAvailable) {
                     console.log('Chrome Rewriter API is available');
@@ -133,9 +144,11 @@ class RewriterService {
                 }
             } else {
                 console.warn('Chrome AI Rewriter API not found');
+                this.availabilityChecked = true;
             }
         } catch (error) {
             console.error('Error checking Rewriter API availability:', error);
+            this.availabilityChecked = true;
         }
     }
 
@@ -157,6 +170,11 @@ class RewriterService {
         try {
             // Validate text length
             this.validateTextLength(text);
+
+            // Wait for availability check to complete if it hasn't yet
+            if (!this.availabilityChecked) {
+                await this.checkAvailability();
+            }
 
             // Check if API is available
             if (!this.isAvailable) {

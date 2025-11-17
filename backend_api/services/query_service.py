@@ -5,6 +5,8 @@ Handles natural language queries and retrieves relevant knowledge from Vector Da
 import logging
 import uuid
 import time
+import json
+import os
 from typing import List, Dict, Any
 from datetime import datetime
 
@@ -28,7 +30,7 @@ class QueryService:
         """
         self.vector_db = vector_db
         self.gemini_client = gemini_client
-        self.query_log = []  # In-memory query log for analytics
+        self.query_log_file = 'query_log.jsonl'
         logger.info("QueryService initialized")
     
     def query_knowledge_base(self, query: str) -> QueryResult:
@@ -112,14 +114,14 @@ class QueryService:
     def _search_similar_knowledge(
         self,
         embedding: List[float],
-        threshold: float = 0.5
+        threshold: float = 0.1
     ) -> List[Dict[str, Any]]:
         """
         Search for similar knowledge entries using vector similarity
         
         Args:
             embedding: Query embedding vector
-            threshold: Minimum similarity score threshold (default: 0.5)
+            threshold: Minimum similarity score threshold (default: 0.1)
         
         Returns:
             List of matching knowledge entries with metadata
@@ -199,6 +201,7 @@ class QueryService:
     ) -> None:
         """
         Log query for analytics and trending topics analysis
+        Appends query as JSON line to query_log.jsonl file
         
         Args:
             query_id: Unique query identifier
@@ -215,13 +218,13 @@ class QueryService:
             'has_results': result_count > 0
         }
         
-        self.query_log.append(log_entry)
-        
-        # Keep only last 1000 queries in memory
-        if len(self.query_log) > 1000:
-            self.query_log = self.query_log[-1000:]
-        
-        logger.debug(f"Logged query {query_id}")
+        # Append query as JSON line to file
+        try:
+            with open(self.query_log_file, 'a', encoding='utf-8') as f:
+                f.write(json.dumps(log_entry) + '\n')
+            logger.debug(f"Logged query {query_id} to {self.query_log_file}")
+        except Exception as e:
+            logger.error(f"Failed to write query log: {e}", exc_info=True)
     
     def get_query_logs(
         self,
@@ -231,6 +234,7 @@ class QueryService:
     ) -> List[Dict[str, Any]]:
         """
         Retrieve query logs for analytics
+        Reads from query_log.jsonl file
         
         Args:
             start_date: Start date filter (ISO format)
@@ -240,7 +244,23 @@ class QueryService:
         Returns:
             List of query log entries
         """
-        logs = self.query_log.copy()
+        logs = []
+        
+        # Read logs from JSONL file
+        if os.path.exists(self.query_log_file):
+            try:
+                with open(self.query_log_file, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        line = line.strip()
+                        if line:
+                            try:
+                                log_entry = json.loads(line)
+                                logs.append(log_entry)
+                            except json.JSONDecodeError as e:
+                                logger.warning(f"Failed to parse log line: {e}")
+                                continue
+            except Exception as e:
+                logger.error(f"Failed to read query log file: {e}", exc_info=True)
         
         # Apply date filters if provided
         if start_date:
