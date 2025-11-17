@@ -33,13 +33,13 @@
         "id": "convo_2_msg_2",
         "timestamp": "2025-11-12T15:55:00",
         "sender": "Team_Lead_1",
-        "content": "The team member remains in Active status for [XX] days after their contract ends - then the [Continuation_Insurance] provider will be notified to provide the packet."
+        "content": "The team member remains in Active status for 24 days after their contract ends - then the [Continuation_Insurance] provider will be notified to provide the packet."
     },
     {
         "id": "convo_2_msg_3",
         "timestamp": "2025-11-12T15:56:00",
         "sender": "Agent_1",
-        "content": "Thank you! So [XX] days would have been [RECENT_DATE]. Do we have a schedule or does it happen automatically?"
+        "content": "Thank you! So 24 days would have been [RECENT_DATE]. Do we have a schedule or does it happen automatically?"
     },
     {
         "id": "convo_2_msg_4",
