@@ -222,34 +222,25 @@ class TextSelectionHandler {
     }
 
     formatQueryResults(results) {
-        let html = '<div style="max-height: 400px; overflow-y: auto;">';
+        // Format results as plain text instead of HTML
+        let text = '';
 
         results.forEach((result, index) => {
             const score = (result.similarity_score * 100).toFixed(0);
             const participants = result.source.participants.join(', ');
             const date = new Date(result.source.timestamp).toLocaleDateString();
 
-            html += `
-                <div style="margin-bottom: 20px; padding: 15px; background: #f5f5f5; border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <strong>Result ${index + 1}</strong>
-                        <span style="background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 4px; font-size: 12px;">
-                            ${score}% match
-                        </span>
-                    </div>
-                    <div style="margin-bottom: 10px; line-height: 1.6;">
-                        ${result.content}
-                    </div>
-                    <div style="font-size: 12px; color: #666;">
-                        <div>Source: ${participants}</div>
-                        <div>Date: ${date}</div>
-                    </div>
-                </div>
-            `;
+            text += `Result ${index + 1} (${score}% match)\n\n`;
+            text += `${result.content}\n\n`;
+            text += `Source: ${participants}\n`;
+            text += `Date: ${date}\n`;
+
+            if (index < results.length - 1) {
+                text += '\n---\n\n';
+            }
         });
 
-        html += '</div>';
-        return html;
+        return text;
     }
 
     showLoadingPopup(message) {
@@ -261,20 +252,42 @@ class TextSelectionHandler {
 
         const popup = document.createElement('div');
         popup.className = 'kw-result-popup';
-        popup.innerHTML = `
-            <div class="kw-result-header">
-                <div class="kw-result-title">${message}</div>
-            </div>
-            <div class="kw-result-content" style="text-align: center; padding: 20px;">
-                <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #6366f1; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-            </div>
-        `;
+
+        // Create header
+        const header = document.createElement('div');
+        header.className = 'kw-result-header';
+
+        const title = document.createElement('div');
+        title.className = 'kw-result-title';
+        title.textContent = message;
+
+        header.appendChild(title);
+
+        // Create content with spinner
+        const content = document.createElement('div');
+        content.className = 'kw-result-content';
+        content.style.textAlign = 'center';
+        content.style.padding = '20px';
+
+        const spinner = document.createElement('div');
+        spinner.style.display = 'inline-block';
+        spinner.style.width = '40px';
+        spinner.style.height = '40px';
+        spinner.style.border = '4px solid #f3f3f3';
+        spinner.style.borderTop = '4px solid #6366f1';
+        spinner.style.borderRadius = '50%';
+        spinner.style.animation = 'spin 1s linear infinite';
+
+        content.appendChild(spinner);
+
+        popup.appendChild(header);
+        popup.appendChild(content);
 
         document.body.appendChild(overlay);
         document.body.appendChild(popup);
     }
 
-    showResultPopup(title, content) {
+    showResultPopup(title, contentText) {
         this.hidePopup();
 
         const overlay = document.createElement('div');
@@ -283,22 +296,34 @@ class TextSelectionHandler {
 
         const popup = document.createElement('div');
         popup.className = 'kw-result-popup';
-        popup.innerHTML = `
-            <div class="kw-result-header">
-                <div class="kw-result-title">${title}</div>
-                <button class="kw-close-btn">×</button>
-            </div>
-            <div class="kw-result-content">${content}</div>
-            <button class="kw-copy-btn">Copy to Clipboard</button>
-        `;
 
-        // Add event listeners
-        const closeBtn = popup.querySelector('.kw-close-btn');
+        // Create header
+        const header = document.createElement('div');
+        header.className = 'kw-result-header';
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'kw-result-title';
+        titleDiv.textContent = title;
+
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'kw-close-btn';
+        closeBtn.textContent = '×';
         closeBtn.addEventListener('click', () => this.hidePopup());
 
-        const copyBtn = popup.querySelector('.kw-copy-btn');
+        header.appendChild(titleDiv);
+        header.appendChild(closeBtn);
+
+        // Create content
+        const content = document.createElement('div');
+        content.className = 'kw-result-content';
+        content.textContent = contentText;
+
+        // Create copy button
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'kw-copy-btn';
+        copyBtn.textContent = 'Copy to Clipboard';
         copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(content);
+            navigator.clipboard.writeText(contentText);
             copyBtn.textContent = '✓ Copied!';
             setTimeout(() => {
                 copyBtn.textContent = 'Copy to Clipboard';
@@ -306,6 +331,10 @@ class TextSelectionHandler {
         });
 
         overlay.addEventListener('click', () => this.hidePopup());
+
+        popup.appendChild(header);
+        popup.appendChild(content);
+        popup.appendChild(copyBtn);
 
         document.body.appendChild(overlay);
         document.body.appendChild(popup);
@@ -320,23 +349,42 @@ class TextSelectionHandler {
 
         const popup = document.createElement('div');
         popup.className = 'kw-result-popup';
-        popup.innerHTML = `
-            <div class="kw-result-header">
-                <div class="kw-result-title" style="color: #d32f2f;">${title}</div>
-                <button class="kw-close-btn">×</button>
-            </div>
-            <div class="kw-result-content" style="color: #d32f2f;">${message}</div>
-            <button class="kw-copy-btn" style="background: #d32f2f;">Close</button>
-        `;
 
-        // Add event listeners
-        const closeBtn = popup.querySelector('.kw-close-btn');
+        // Create header
+        const header = document.createElement('div');
+        header.className = 'kw-result-header';
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'kw-result-title';
+        titleDiv.style.color = '#d32f2f';
+        titleDiv.textContent = title;
+
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'kw-close-btn';
+        closeBtn.textContent = '×';
         closeBtn.addEventListener('click', () => this.hidePopup());
 
-        const closeButton = popup.querySelector('.kw-copy-btn');
+        header.appendChild(titleDiv);
+        header.appendChild(closeBtn);
+
+        // Create content
+        const content = document.createElement('div');
+        content.className = 'kw-result-content';
+        content.style.color = '#d32f2f';
+        content.textContent = message;
+
+        // Create close button
+        const closeButton = document.createElement('button');
+        closeButton.className = 'kw-copy-btn';
+        closeButton.style.background = '#d32f2f';
+        closeButton.textContent = 'Close';
         closeButton.addEventListener('click', () => this.hidePopup());
 
         overlay.addEventListener('click', () => this.hidePopup());
+
+        popup.appendChild(header);
+        popup.appendChild(content);
+        popup.appendChild(closeButton);
 
         document.body.appendChild(overlay);
         document.body.appendChild(popup);
