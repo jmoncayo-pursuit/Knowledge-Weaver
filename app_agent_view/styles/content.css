@@ -106,3 +106,18 @@
 .kw-copy-btn:hover {
     background: #5558e3;
 }
+
+@keyframes kw-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.kw-spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #6366f1;
+  border-radius: 50%;
+  animation: kw-spin 1s linear infinite;
+}

@@ -30,8 +30,10 @@ class QueryService:
         """
         self.vector_db = vector_db
         self.gemini_client = gemini_client
-        self.query_log_file = 'query_log.jsonl'
-        logger.info("QueryService initialized")
+        # Use absolute path to ensure file is always in backend_api directory
+        backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.query_log_file = os.path.join(backend_dir, 'query_log.jsonl')
+        logger.info(f"QueryService initialized, query log file: {self.query_log_file}")
     
     def query_knowledge_base(self, query: str) -> QueryResult:
         """

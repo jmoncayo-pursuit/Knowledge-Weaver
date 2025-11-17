@@ -270,13 +270,7 @@ class TextSelectionHandler {
         content.style.padding = '20px';
 
         const spinner = document.createElement('div');
-        spinner.style.display = 'inline-block';
-        spinner.style.width = '40px';
-        spinner.style.height = '40px';
-        spinner.style.border = '4px solid #f3f3f3';
-        spinner.style.borderTop = '4px solid #6366f1';
-        spinner.style.borderRadius = '50%';
-        spinner.style.animation = 'spin 1s linear infinite';
+        spinner.className = 'kw-spinner';
 
         content.appendChild(spinner);
 
