@@ -30,7 +30,7 @@ def load_css():
 load_css()
 
 # Initialize API client
-@st.cache_resource
+# Caching disabled to ensure fresh data on every refresh
 def get_api_client():
     return APIClient()
 
