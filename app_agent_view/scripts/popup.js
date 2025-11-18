@@ -27,12 +27,24 @@ const apiKeyInput = document.getElementById('apiKey');
 const saveSettingsBtn = document.getElementById('saveSettings');
 const settingsMessage = document.getElementById('settingsMessage');
 
+// Quick test queries based on sample data
+const QUERIES = [
+    'missed life event deadline',
+    'domestic partner verification',
+    'gym reimbursement',
+    'adult orthodontia',
+    'FSA vs HSA conflict'
+];
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Popup initialized');
 
     // Load saved settings
     loadSettings();
+
+    // Initialize quick test chips
+    initializeQuickTestChips();
 
     // Event listeners
     searchBtn.addEventListener('click', handleSearch);
@@ -49,6 +61,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+/**
+ * Initialize quick test chips for easy testing
+ */
+function initializeQuickTestChips() {
+    const chipsContainer = document.getElementById('quick-test-chips');
+
+    QUERIES.forEach(query => {
+        const chip = document.createElement('button');
+        chip.className = 'chip';
+        chip.textContent = query;
+        chip.addEventListener('click', () => {
+            queryInput.value = query;
+            handleSearch();
+        });
+        chipsContainer.appendChild(chip);
+    });
+
+    console.log('Quick test chips initialized');
+}
 
 /**
  * Load settings from Chrome storage
