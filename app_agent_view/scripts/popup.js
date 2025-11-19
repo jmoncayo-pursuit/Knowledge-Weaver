@@ -40,6 +40,21 @@ const QUERIES = [
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Popup initialized');
 
+    // Debug: Check if all elements are found
+    console.log('DOM Elements Check:');
+    console.log('queryInput:', queryInput);
+    console.log('searchBtn:', searchBtn);
+    console.log('loadingIndicator:', loadingIndicator);
+    console.log('resultsSection:', resultsSection);
+    console.log('resultsList:', resultsList);
+    console.log('errorSection:', errorSection);
+
+    // Verify critical elements exist
+    if (!queryInput || !searchBtn) {
+        console.error('CRITICAL: Search elements not found!');
+        return;
+    }
+
     // Load saved settings
     loadSettings();
 
@@ -47,7 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeQuickTestChips();
 
     // Event listeners
-    searchBtn.addEventListener('click', handleSearch);
+    console.log('Attaching search button click listener...');
+    searchBtn.addEventListener('click', () => {
+        console.log('Search button clicked!');
+        handleSearch();
+    });
+
     retryBtn.addEventListener('click', handleSearch);
     settingsLink.addEventListener('click', openSettings);
     closeSettings.addEventListener('click', closeSettingsModal);
@@ -57,9 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
     queryInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
+            console.log('Enter key pressed, triggering search...');
             handleSearch();
         }
     });
+
+    console.log('All event listeners attached successfully');
 });
 
 /**
@@ -152,9 +175,13 @@ function showSettingsMessage(message, type) {
  * Handle search button click
  */
 async function handleSearch() {
+    console.log('handleSearch() called');
+
     const query = queryInput.value.trim();
+    console.log('Query value:', query);
 
     if (!query) {
+        console.log('Empty query, showing error');
         showError('Please enter a question');
         return;
     }
@@ -164,20 +191,24 @@ async function handleSearch() {
 
     // Show loading
     loadingIndicator.classList.remove('hidden');
+    console.log('Loading indicator shown');
 
     try {
         console.log('Querying knowledge base:', query);
 
         // Query the knowledge base
         const result = await apiClient.queryKnowledgeBase(query);
+        console.log('Query result:', result);
 
         // Hide loading
         loadingIndicator.classList.add('hidden');
 
         // Display results
         if (result.results && result.results.length > 0) {
+            console.log('Displaying', result.results.length, 'results');
             displayResults(result.results);
         } else {
+            console.log('No results found');
             showError('No relevant knowledge found for your query');
         }
 
