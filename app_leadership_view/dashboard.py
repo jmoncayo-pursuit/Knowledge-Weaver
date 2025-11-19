@@ -234,8 +234,7 @@ with st.sidebar:
         st.error("✗ Backend unavailable")
     
     if st.button("Refresh Dashboard"):
+        # Clear all caches to ensure fresh data
+        st.cache_data.clear()
+        st.cache_resource.clear()
         st.rerun()
-
-# Auto-refresh after 60 seconds
-time.sleep(60)
-st.rerun()
