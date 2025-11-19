@@ -4,8 +4,26 @@
 
 console.log('Knowledge-Weaver popup loaded');
 
-// Initialize API client
-const apiClient = new BackendAPIClient();
+/**
+ * Critical UI Error Handler - Shows errors directly in the popup
+ */
+function showCriticalError(message) {
+    document.body.innerHTML = `
+        <div style="padding: 20px; background: #ffebee; border: 2px solid #c62828; border-radius: 8px; margin: 20px;">
+            <h2 style="color: #c62828; margin: 0 0 10px 0;">⚠️ Critical Error</h2>
+            <p style="color: #333; margin: 0; white-space: pre-wrap; font-family: monospace;">${message}</p>
+        </div>
+    `;
+}
+
+// Initialize API client with error handling
+let apiClient;
+try {
+    apiClient = new BackendAPIClient();
+} catch (error) {
+    showCriticalError(`Failed to initialize API client:\n${error.message}\n\nStack: ${error.stack}`);
+    throw error;
+}
 
 // DOM elements
 const queryInput = document.getElementById('queryInput');
@@ -18,6 +36,19 @@ const errorMessage = document.getElementById('errorMessage');
 const retryBtn = document.getElementById('retryBtn');
 const emptyState = document.getElementById('emptyState');
 const settingsLink = document.getElementById('settingsLink');
+
+// Critical element check - must happen immediately
+const missingElements = [];
+if (!queryInput) missingElements.push('queryInput');
+if (!searchBtn) missingElements.push('searchBtn');
+if (!resultsSection) missingElements.push('resultsSection');
+if (!errorSection) missingElements.push('errorSection');
+if (!errorMessage) missingElements.push('errorMessage');
+
+if (missingElements.length > 0) {
+    showCriticalError(`Missing DOM elements:\n${missingElements.join('\n')}\n\nThe HTML structure may have changed.`);
+    throw new Error('Critical DOM elements missing');
+}
 
 // Settings modal elements
 const settingsModal = document.getElementById('settingsModal');
@@ -40,49 +71,49 @@ const QUERIES = [
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Popup initialized');
 
-    // Debug: Check if all elements are found
-    console.log('DOM Elements Check:');
-    console.log('queryInput:', queryInput);
-    console.log('searchBtn:', searchBtn);
-    console.log('loadingIndicator:', loadingIndicator);
-    console.log('resultsSection:', resultsSection);
-    console.log('resultsList:', resultsList);
-    console.log('errorSection:', errorSection);
+    try {
+        // Load saved settings
+        loadSettings();
 
-    // Verify critical elements exist
-    if (!queryInput || !searchBtn) {
-        console.error('CRITICAL: Search elements not found!');
-        return;
-    }
+        // Initialize quick test chips
+        initializeQuickTestChips();
 
-    // Load saved settings
-    loadSettings();
-
-    // Initialize quick test chips
-    initializeQuickTestChips();
-
-    // Event listeners
-    console.log('Attaching search button click listener...');
-    searchBtn.addEventListener('click', () => {
-        console.log('Search button clicked!');
-        handleSearch();
-    });
-
-    retryBtn.addEventListener('click', handleSearch);
-    settingsLink.addEventListener('click', openSettings);
-    closeSettings.addEventListener('click', closeSettingsModal);
-    saveSettingsBtn.addEventListener('click', saveSettings);
-
-    // Allow Enter key to submit query
-    queryInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            console.log('Enter key pressed, triggering search...');
+        // Event listeners
+        console.log('Attaching search button click listener...');
+        searchBtn.addEventListener('click', () => {
+            console.log('Search button clicked!');
             handleSearch();
-        }
-    });
+        });
 
-    console.log('All event listeners attached successfully');
+        if (retryBtn) {
+            retryBtn.addEventListener('click', handleSearch);
+        }
+
+        if (settingsLink) {
+            settingsLink.addEventListener('click', openSettings);
+        }
+
+        if (closeSettings) {
+            closeSettings.addEventListener('click', closeSettingsModal);
+        }
+
+        if (saveSettingsBtn) {
+            saveSettingsBtn.addEventListener('click', saveSettings);
+        }
+
+        // Allow Enter key to submit query
+        queryInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                console.log('Enter key pressed, triggering search...');
+                handleSearch();
+            }
+        });
+
+        console.log('All event listeners attached successfully');
+    } catch (error) {
+        showCriticalError(`Initialization failed:\n${error.message}\n\nStack: ${error.stack}`);
+    }
 });
 
 /**
@@ -177,45 +208,63 @@ function showSettingsMessage(message, type) {
 async function handleSearch() {
     console.log('handleSearch() called');
 
-    const query = queryInput.value.trim();
-    console.log('Query value:', query);
-
-    if (!query) {
-        console.log('Empty query, showing error');
-        showError('Please enter a question');
-        return;
-    }
-
-    // Hide all sections
-    hideAllSections();
-
-    // Show loading
-    loadingIndicator.classList.remove('hidden');
-    console.log('Loading indicator shown');
-
     try {
-        console.log('Querying knowledge base:', query);
+        const query = queryInput.value.trim();
+        console.log('Query value:', query);
 
-        // Query the knowledge base
-        const result = await apiClient.queryKnowledgeBase(query);
-        console.log('Query result:', result);
-
-        // Hide loading
-        loadingIndicator.classList.add('hidden');
-
-        // Display results
-        if (result.results && result.results.length > 0) {
-            console.log('Displaying', result.results.length, 'results');
-            displayResults(result.results);
-        } else {
-            console.log('No results found');
-            showError('No relevant knowledge found for your query');
+        if (!query) {
+            console.log('Empty query, showing error');
+            showError('Please enter a question');
+            return;
         }
 
-    } catch (error) {
-        console.error('Query error:', error);
-        loadingIndicator.classList.add('hidden');
-        showError(error.message);
+        // Hide all sections
+        hideAllSections();
+
+        // Show loading
+        loadingIndicator.classList.remove('hidden');
+        console.log('Loading indicator shown');
+
+        try {
+            console.log('Querying knowledge base:', query);
+
+            // Query the knowledge base
+            const result = await apiClient.queryKnowledgeBase(query);
+            console.log('Query result:', result);
+
+            // Hide loading
+            loadingIndicator.classList.add('hidden');
+
+            // Display results
+            if (result.results && result.results.length > 0) {
+                console.log('Displaying', result.results.length, 'results');
+                displayResults(result.results);
+            } else {
+                console.log('No results found');
+                showError('No relevant knowledge found for your query');
+            }
+
+        } catch (error) {
+            console.error('Query error:', error);
+            loadingIndicator.classList.add('hidden');
+
+            // Show detailed error message
+            const errorDetails = `
+Error: ${error.message}
+
+Type: ${error.name}
+
+Stack: ${error.stack || 'No stack trace available'}
+
+API Client Status: ${apiClient ? 'Initialized' : 'Not initialized'}
+            `.trim();
+
+            showError(errorDetails);
+        }
+    } catch (outerError) {
+        // Catch any errors in the outer try block
+        console.error('Critical error in handleSearch:', outerError);
+        showCriticalError(`Search function failed:\n${outerError.message}\n\nStack: ${outerError.stack}`);
     }
 }
 
@@ -266,9 +315,18 @@ function displayResults(results) {
  * Show error message
  */
 function showError(message) {
-    hideAllSections();
-    errorMessage.textContent = message;
-    errorSection.classList.remove('hidden');
+    try {
+        hideAllSections();
+        if (errorMessage && errorSection) {
+            errorMessage.textContent = message;
+            errorSection.classList.remove('hidden');
+        } else {
+            // Fallback if error elements don't exist
+            showCriticalError(`Error display failed. Original error:\n${message}`);
+        }
+    } catch (error) {
+        showCriticalError(`Failed to show error:\n${error.message}\n\nOriginal error:\n${message}`);
+    }
 }
 
 /**
