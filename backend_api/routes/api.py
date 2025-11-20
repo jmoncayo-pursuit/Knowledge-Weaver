@@ -4,12 +4,17 @@ API Routes for Knowledge-Weaver Backend
 import logging
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 
 from models.schemas import (
     ProcessChatLogsRequest,
     ProcessingResult,
     QueryRequest,
     QueryResult,
+    IngestRequest,
+    IngestResponse,
+    IngestResponse,
+    AnalyzeResponse,
     HealthResponse
 )
 from auth import verify_api_key
@@ -228,3 +233,88 @@ async def get_unanswered_questions(
         "count": 0,
         "message": "Unanswered questions tracking not yet implemented"
     }
+
+
+@router.post("/ingest", response_model=IngestResponse)
+async def ingest_knowledge(
+    request: IngestRequest,
+    api_key: str = Depends(verify_api_key),
+    services: dict = Depends(get_services)
+):
+    """
+    Manually ingest knowledge into the vector database
+    """
+    try:
+        logger.info(f"Received manual ingestion request for URL: {request.url}")
+        
+        # Generate unique ID
+        import uuid
+        entry_id = str(uuid.uuid4())
+        
+        # Generate embedding
+        embedding = services["gemini_client"].generate_embedding(request.text)
+        
+        # Prepare metadata
+        metadata = {
+            "url": request.url,
+            "timestamp": request.timestamp.isoformat(),
+            "type": "manual_ingestion",
+            "has_screenshot": bool(request.screenshot),
+            "category": request.category or "Uncategorized",
+            "tags": ",".join(request.tags) if request.tags else "",
+            "summary": request.summary or ""
+        }
+        
+        # Add to vector database
+        services["vector_db"].add_knowledge(
+            ids=[entry_id],
+            documents=[request.text],
+            embeddings=[embedding],
+            metadatas=[metadata]
+        )
+        
+        return IngestResponse(
+            status="success",
+            message="Knowledge ingested successfully",
+            id=entry_id
+        )
+        
+    except Exception as e:
+        logger.error(f"Ingestion failed: {e}", exc_info=True)
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={
+                "status": "error",
+                "message": f"Ingestion failed: {str(e)}"
+            }
+        )
+
+@router.post("/analyze", response_model=AnalyzeResponse)
+async def analyze_content(
+    request: IngestRequest,
+    x_api_key: str = Depends(verify_api_key),
+    services: dict = Depends(get_services)
+):
+    """
+    Analyze content to extract category, tags, and summary
+    """
+    try:
+        logger.info(f"Analyzing content for URL: {request.url}")
+        
+        analysis = services["gemini_client"].analyze_content(request.text)
+        
+        return AnalyzeResponse(
+            category=analysis["category"],
+            tags=analysis["tags"],
+            summary=analysis["summary"]
+        )
+        
+    except Exception as e:
+        logger.error(f"Analysis failed: {e}", exc_info=True)
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={
+                "status": "error",
+                "message": f"Analysis failed: {str(e)}"
+            }
+        )
