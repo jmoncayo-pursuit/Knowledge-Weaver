@@ -96,3 +96,25 @@ class HealthResponse(BaseModel):
     status: str
     vector_db: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)
+
+class IngestRequest(BaseModel):
+    """Request model for manual knowledge ingestion"""
+    text: str = Field(..., description="The text content to ingest")
+    url: str = Field(..., description="Source URL of the content")
+    screenshot: Optional[str] = Field(None, description="Base64 encoded screenshot")
+    timestamp: datetime = Field(default_factory=datetime.utcnow, description="Timestamp of the content")
+    category: Optional[str] = Field(None, description="Category of the content")
+    tags: Optional[List[str]] = Field(None, description="Tags for the content")
+    summary: Optional[str] = Field(None, description="Summary of the content")
+
+class IngestResponse(BaseModel):
+    """Response model for ingestion"""
+    status: str
+    message: str
+    id: Optional[str] = None
+
+class AnalyzeResponse(BaseModel):
+    """Response model for content analysis"""
+    category: str
+    tags: List[str]
+    summary: str

@@ -1,3 +1,4 @@
+
 /**
  * Backend API Client for Knowledge-Weaver Chrome Extension
  * Handles communication with the FastAPI backend
@@ -8,7 +9,7 @@ class BackendAPIClient {
         this.baseURL = null;
         this.apiKey = null;
         this.maxRetries = 2;
-        this.timeout = 5000; // 5 seconds
+        this.timeout = 60000; // 60 seconds timeout for AI operations
     }
 
     /**
@@ -119,7 +120,7 @@ class BackendAPIClient {
             clearTimeout(timeoutId);
 
             if (error.name === 'AbortError') {
-                throw new Error('Request timeout (5 seconds exceeded)');
+                throw new Error('Request timeout (30 seconds exceeded)');
             }
 
             if (error.message.includes('Failed to fetch')) {
@@ -165,6 +166,93 @@ class BackendAPIClient {
      */
     sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    /**
+     * Analyze content for category, tags, and summary
+     * @param {Object} payload - { text, url, screenshot, timestamp }
+     * @returns {Promise<Object>} - Analysis result
+     */
+    async analyzeContent(payload) {
+        // Load settings if not already loaded
+        if (!this.baseURL || !this.apiKey) {
+            await this.loadSettings();
+        }
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+
+        try {
+            const response = await fetch(`${this.baseURL}/api/v1/analyze`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-API-Key': this.apiKey
+                },
+                body: JSON.stringify(payload),
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Analysis failed: ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            clearTimeout(timeoutId);
+            if (error.name === 'AbortError') {
+                throw new Error('Request timed out. The AI analysis is taking longer than expected.');
+            }
+            throw error;
+        }
+    }
+
+    /**
+     * Ingest knowledge manually
+     * @param {Object} payload - Ingestion payload {text, screenshot, url, timestamp}
+     * @returns {Promise<Object>} API response
+     */
+    async ingestKnowledge(payload) {
+        if (!payload || !payload.text) {
+            throw new Error('Payload must contain text');
+        }
+
+        // Load settings if not already loaded
+        if (!this.baseURL || !this.apiKey) {
+            await this.loadSettings();
+        }
+
+        const url = `${this.baseURL}/api/v1/ingest`;
+        console.log('Ingesting knowledge:', url);
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-API-Key': this.apiKey
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                await this.handleHTTPError(response);
+            }
+
+            const data = await response.json();
+            console.log('Ingestion successful:', data);
+            return data;
+
+        } catch (error) {
+            console.error('Ingestion failed:', error);
+            if (error.message.includes('Failed to fetch')) {
+                throw new Error('Network error: Unable to reach backend API.');
+            }
+            throw error;
+        }
     }
 
     /**

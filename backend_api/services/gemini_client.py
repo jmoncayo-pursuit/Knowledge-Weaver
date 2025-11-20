@@ -313,3 +313,74 @@ Extract knowledge:"""
         
         logger.info(f"Total knowledge entries extracted: {len(all_knowledge)}")
         return all_knowledge
+    def analyze_content(
+        self,
+        text: str,
+        max_retries: int = 3
+    ) -> Dict[str, Any]:
+        """
+        Analyze content to extract category, tags, and summary
+        
+        Args:
+            text: Text content to analyze
+            max_retries: Maximum number of retry attempts
+        
+        Returns:
+            Dictionary with category, tags, and summary
+        """
+        if not text:
+            raise ValueError("Text cannot be empty")
+            
+        prompt = f"""Analyze the following text and provide:
+1. A category (e.g., "Policy", "Procedure", "Q&A", "Announcement")
+2. A list of relevant tags (max 5)
+3. A concise summary (max 2 sentences)
+
+Text:
+{text}
+
+Format your response as a JSON object with keys: "category", "tags", "summary".
+"""
+        
+        for attempt in range(max_retries):
+            try:
+                response = self.generation_model.generate_content(prompt)
+                
+                # Parse JSON response
+                import json
+                import re
+                
+                # Try to find JSON block
+                json_match = re.search(r'\{.*\}', response.text, re.DOTALL)
+                if json_match:
+                    json_str = json_match.group(0)
+                    result = json.loads(json_str)
+                    
+                    # Validate structure
+                    return {
+                        "category": result.get("category", "Uncategorized"),
+                        "tags": result.get("tags", []),
+                        "summary": result.get("summary", "No summary available")
+                    }
+                
+                # Fallback if no JSON found
+                logger.warning("No JSON found in analysis response")
+                return {
+                    "category": "Uncategorized",
+                    "tags": [],
+                    "summary": "Analysis failed to produce structured output"
+                }
+                
+            except Exception as e:
+                logger.warning(f"Analysis attempt {attempt + 1}/{max_retries} failed: {e}")
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)
+                else:
+                    logger.error("Failed to analyze content")
+                    raise
+        
+        return {
+            "category": "Uncategorized",
+            "tags": [],
+            "summary": "Analysis failed"
+        }

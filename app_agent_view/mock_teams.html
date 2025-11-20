@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Teams - Support Chat</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f2f1;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .teams-container {
+            background: white;
+            width: 800px;
+            height: 600px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #464775;
+            color: white;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .chat-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #fff;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+
+        .author {
+            font-weight: 600;
+            color: #242424;
+            margin-right: 10px;
+        }
+
+        .timestamp {
+            font-size: 12px;
+            color: #616161;
+        }
+
+        .content {
+            background: #f3f2f1;
+            padding: 10px 15px;
+            border-radius: 0 8px 8px 8px;
+            color: #242424;
+            line-height: 1.5;
+            max-width: 80%;
+        }
+
+        .message.self .content {
+            background: #e1e1f2;
+            align-self: flex-start;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ddd;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="teams-container">
+        <div class="header">
+            <h1>Login Support Thread #4921</h1>
+        </div>
+        <div class="chat-area">
+            <div class="message">
+                <div class="message-header">
+                    <div class="avatar">JD</div>
+                    <span class="author">John Doe (Agent)</span>
+                    <span class="timestamp">10:42 AM</span>
+                </div>
+                <div class="content">
+                    Hey, I have an EE on the line who can't create their account. I tried the standard login
+                    troubleshooting steps but it's still failing. What do I do?
+                </div>
+            </div>
+
+            <div class="message self">
+                <div class="message-header">
+                    <div class="avatar" style="background: #464775; color: white;">TL</div>
+                    <span class="author">Sarah Smith (Team Lead)</span>
+                    <span class="timestamp">10:45 AM</span>
+                </div>
+                <div class="content">
+                    Okay, if those steps failed, we need to pivot. Use the Empathy + Pivot script: "Thank you for trying
+                    that. It looks like there's a technical issue... I am going to create an issue ticket." Then go
+                    ahead and create the ticket for them.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

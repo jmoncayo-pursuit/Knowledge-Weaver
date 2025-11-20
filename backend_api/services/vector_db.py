@@ -21,13 +21,14 @@ class VectorDatabase:
             persist_directory: Directory path for ChromaDB persistence
         """
         self.persist_directory = persist_directory
-        self.client = chromadb.Client(Settings(
-            persist_directory=persist_directory,
+        self.client = chromadb.PersistentClient(path=persist_directory, settings=Settings(
             anonymized_telemetry=False
         ))
         self.collection = None
         logger.info(f"VectorDatabase initialized with persist_directory: {persist_directory}")
     
+    COLLECTION_NAME = "knowledge_base"
+
     def initialize(self) -> None:
         """
         Initialize or get the knowledge_base collection
@@ -35,7 +36,7 @@ class VectorDatabase:
         """
         try:
             self.collection = self.client.get_or_create_collection(
-                name="knowledge_base",
+                name=self.COLLECTION_NAME,
                 metadata={"description": "Knowledge entries from chat logs"}
             )
             logger.info(f"Collection 'knowledge_base' initialized with {self.collection.count()} entries")
@@ -78,7 +79,7 @@ class VectorDatabase:
         self,
         query_embedding: List[float],
         top_k: int = 3,
-        threshold: float = 0.5
+        threshold: float = 0.1
     ) -> List[Dict[str, Any]]:
         """
         Search for similar knowledge entries using vector similarity
