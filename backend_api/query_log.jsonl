@@ -64,3 +64,4 @@
 {"query_id": "b3f0d234-6ce2-4ca3-943f-a8c1b2611f09", "query_text": "adult orthodontia", "result_count": 0, "processing_time_ms": 389, "timestamp": "2025-11-20T20:30:32.256661", "has_results": false}
 {"query_id": "46d71a73-4a37-440c-b2b2-ab3595b648d9", "query_text": "domestic partner verification", "result_count": 0, "processing_time_ms": 207, "timestamp": "2025-11-20T20:30:33.008940", "has_results": false}
 {"query_id": "ad8c7325-d6ab-4d9d-92e4-72ba27a2f420", "query_text": "FSA vs HSA conflict", "result_count": 1, "processing_time_ms": 205, "timestamp": "2025-11-20T20:30:34.207530", "has_results": true}
+{"query_id": "f6f0544a-9ecc-49f9-a178-fe0ce2b226e1", "query_text": "Login Support", "result_count": 1, "processing_time_ms": 382, "timestamp": "2025-11-20T23:33:42.540870", "has_results": true}

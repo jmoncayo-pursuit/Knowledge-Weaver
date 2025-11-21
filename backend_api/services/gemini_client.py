@@ -332,11 +332,21 @@ Extract knowledge:"""
             raise ValueError("Text cannot be empty")
             
         prompt = f"""Analyze the following text and provide:
-1. A category (e.g., "Policy", "Procedure", "Q&A", "Announcement")
+1. A category (e.g., "Policy", "Procedure", "Q&A", "Announcement", "Policy / Enrollment Denied", "Compliance / Authorization")
 2. A list of relevant tags (max 5)
 3. A concise summary (max 2 sentences)
 
-Text:
+Here are some examples of how to classify specific scenarios:
+
+Example 1 (Policy Denial):
+Input: "Agent: EE sent marriage certificate today, wedding was 45 days ago. Lead: Denied. QLE Policy requires docs within 31 days."
+Output Category: "Policy / Enrollment Denied"
+
+Example 2 (HIPAA Compliance):
+Input: "Agent: Wife on line asking about husband's dental, he can't talk. Lead: Do not discuss unless she is Authorized Rep. Need EE permission."
+Output Category: "Compliance / Authorization"
+
+Text to Analyze:
 {text}
 
 Format your response as a JSON object with keys: "category", "tags", "summary".

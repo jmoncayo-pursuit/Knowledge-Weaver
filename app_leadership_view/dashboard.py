@@ -172,6 +172,36 @@ try:
 except Exception as e:
     st.warning(f"Unable to fetch unanswered questions: {str(e)}")
 
+    st.warning(f"Unable to fetch unanswered questions: {str(e)}")
+
+# Recent Knowledge Ingestions Section
+st.markdown("---")
+st.subheader("Recent Knowledge Ingestions")
+
+try:
+    recent_entries = api_client.fetch_recent_knowledge(limit=5)
+    
+    if recent_entries:
+        # Process entries for display
+        display_entries = []
+        for entry in recent_entries:
+            metadata = entry.get('metadata', {})
+            display_entries.append({
+                'Content': entry.get('document', '')[:100] + "..." if len(entry.get('document', '')) > 100 else entry.get('document', ''),
+                'Category': metadata.get('category', 'Uncategorized'),
+                'Tags': metadata.get('tags', ''),
+                'Source': metadata.get('url', 'Unknown'),
+                'Timestamp': metadata.get('timestamp', '')
+            })
+            
+        df_recent = pd.DataFrame(display_entries)
+        st.dataframe(df_recent, use_container_width=True, hide_index=True)
+    else:
+        st.info("No recent knowledge entries found")
+        
+except Exception as e:
+    st.warning(f"Unable to fetch recent knowledge: {str(e)}")
+
 # Trending Topics Section
 st.markdown("---")
 st.subheader("Trending Topics")

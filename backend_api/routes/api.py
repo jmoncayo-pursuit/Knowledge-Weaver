@@ -164,6 +164,30 @@ async def query_knowledge(
         )
 
 
+@router.get("/knowledge/recent")
+async def get_recent_knowledge(
+    limit: int = 10,
+    api_key: str = Depends(verify_api_key),
+    services: dict = Depends(get_services)
+):
+    """
+    Get recent knowledge entries
+    Requires API key authentication
+    """
+    logger.info(f"Fetching recent knowledge (limit: {limit})")
+    
+    try:
+        entries = services["vector_db"].get_recent_entries(limit=limit)
+        return entries
+    
+    except Exception as e:
+        logger.error(f"Failed to fetch recent knowledge: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch recent knowledge: {str(e)}"
+        )
+
+
 @router.get("/metrics/queries")
 async def get_query_metrics(
     start_date: Optional[str] = None,

@@ -162,3 +162,19 @@ class APIClient:
         except Exception as e:
             logger.error(f"Failed to get health status: {e}")
             return {"status": "error", "message": str(e)}
+
+    def fetch_recent_knowledge(self, limit: int = 10) -> List[Dict[str, Any]]:
+        """
+        Fetch recent knowledge entries
+        
+        Args:
+            limit: Maximum number of entries to return
+            
+        Returns:
+            List of knowledge entries
+        """
+        try:
+            return self._make_request("GET", "/api/v1/knowledge/recent", params={"limit": limit})
+        except Exception as e:
+            logger.error(f"Failed to fetch recent knowledge: {e}")
+            return []

@@ -120,6 +120,16 @@ class VectorDatabase:
                             'similarity_score': similarity_score
                         })
             
+            # Re-ranking logic: Boost "verified_human" entries to the top
+            # Sort by verification_status (verified first) then by similarity_score (descending)
+            matches.sort(
+                key=lambda x: (
+                    1 if x['metadata'].get('verification_status') == 'verified_human' else 0,
+                    x['similarity_score']
+                ),
+                reverse=True
+            )
+            
             logger.info(f"Search returned {len(matches)} matches above threshold {threshold} (total results: {len(results['ids'][0]) if results['ids'] else 0})")
             return matches
         
@@ -155,3 +165,45 @@ class VectorDatabase:
             "count": self.collection.count(),
             "name": self.collection.name
         }
+
+    def get_recent_entries(self, limit: int = 10) -> List[Dict[str, Any]]:
+        """
+        Get most recent knowledge entries
+        
+        Args:
+            limit: Maximum number of entries to return
+            
+        Returns:
+            List of knowledge entries sorted by timestamp (newest first)
+        """
+        if not self.collection:
+            return []
+            
+        try:
+            # Fetch more than limit to ensure we get recent ones after sorting
+            # ChromaDB doesn't support server-side sorting by metadata yet
+            results = self.collection.get(
+                limit=limit * 2,
+                include=['documents', 'metadatas']
+            )
+            
+            entries = []
+            if results['ids']:
+                for i in range(len(results['ids'])):
+                    entries.append({
+                        'id': results['ids'][i],
+                        'document': results['documents'][i],
+                        'metadata': results['metadatas'][i]
+                    })
+            
+            # Sort by timestamp in metadata (descending)
+            entries.sort(
+                key=lambda x: x['metadata'].get('timestamp', ''),
+                reverse=True
+            )
+            
+            return entries[:limit]
+            
+        except Exception as e:
+            logger.error(f"Failed to get recent entries: {e}")
+            return []
