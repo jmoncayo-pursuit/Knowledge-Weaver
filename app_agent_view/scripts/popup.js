@@ -19,8 +19,8 @@ function showCriticalError(message) {
 // Initialize API client with error handling
 let apiClient;
 try {
-    // Mock Chrome API for local testing (file protocol only)
-    if (window.location.protocol === 'file:' && (typeof chrome === 'undefined' || !chrome.tabs)) {
+    // Mock Chrome API for local testing (file protocol or localhost)
+    if ((window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && (typeof chrome === 'undefined' || !chrome.tabs)) {
         console.log('Running in Local Test Mode (Mocking Chrome API)');
         window.chrome = {
             tabs: {
@@ -354,11 +354,15 @@ function displayResults(results) {
         const participants = result.source.participants.join(', ');
         const date = new Date(result.source.timestamp).toLocaleDateString();
 
+        // Check for verified status
+        const isVerified = result.metadata && result.metadata.verification_status === 'verified_human';
+        const verifiedBadge = isVerified ? '<span class="verified-badge">✅ Verified</span>' : '';
+
         resultItem.innerHTML = `
             <div class="result-content">${result.content}</div>
             <div class="result-meta">
                 <div>
-                    <small>Source: ${participants} • ${date}</small>
+                    <small>Source: ${participants} • ${date} ${verifiedBadge}</small>
                 </div>
                 <div>
                     <span class="similarity-score">${score}%</span>

@@ -286,7 +286,8 @@ async def ingest_knowledge(
             "has_screenshot": bool(request.screenshot),
             "category": request.category or "Uncategorized",
             "tags": ",".join(request.tags) if request.tags else "",
-            "summary": request.summary or ""
+            "summary": request.summary or "",
+            "verification_status": "verified_human"
         }
         
         # Add to vector database

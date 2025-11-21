@@ -65,3 +65,7 @@
 {"query_id": "46d71a73-4a37-440c-b2b2-ab3595b648d9", "query_text": "domestic partner verification", "result_count": 0, "processing_time_ms": 207, "timestamp": "2025-11-20T20:30:33.008940", "has_results": false}
 {"query_id": "ad8c7325-d6ab-4d9d-92e4-72ba27a2f420", "query_text": "FSA vs HSA conflict", "result_count": 1, "processing_time_ms": 205, "timestamp": "2025-11-20T20:30:34.207530", "has_results": true}
 {"query_id": "f6f0544a-9ecc-49f9-a178-fe0ce2b226e1", "query_text": "Login Support", "result_count": 1, "processing_time_ms": 382, "timestamp": "2025-11-20T23:33:42.540870", "has_results": true}
+{"query_id": "31c0f3c9-2c9a-4c33-b879-32981ad14376", "query_text": "What is the policy on X?", "result_count": 0, "processing_time_ms": 485, "timestamp": "2025-11-21T14:55:39.995425", "has_results": false}
+{"query_id": "0ae12e5c-c7fa-4dcd-9373-f9637d1b62a8", "query_text": "What is the policy on X?", "result_count": 0, "processing_time_ms": 370, "timestamp": "2025-11-21T14:56:19.532079", "has_results": false}
+{"query_id": "a5011693-8249-4b7c-b896-96f47d925bf7", "query_text": "What is the policy on X?", "result_count": 1, "processing_time_ms": 297, "timestamp": "2025-11-21T14:56:39.703733", "has_results": true}
+{"query_id": "851e66b9-fc2e-45a2-b1e2-fbe76d6042b1", "query_text": "What is the policy on X?", "result_count": 2, "processing_time_ms": 193, "timestamp": "2025-11-21T14:56:57.458459", "has_results": true}

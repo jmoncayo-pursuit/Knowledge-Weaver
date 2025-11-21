@@ -183,7 +183,8 @@ class QueryService:
                     knowledge_id=match.get('id', ''),
                     content=match.get('document', ''),
                     similarity_score=match.get('similarity_score', 0.0),
-                    source=source
+                    source=source,
+                    metadata=metadata
                 )
                 
                 knowledge_matches.append(knowledge_match)

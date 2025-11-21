@@ -43,6 +43,7 @@ class KnowledgeMatch(BaseModel):
     content: str
     similarity_score: float = Field(ge=0.0, le=1.0)
     source: SourceMetadata
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 class QueryResult(BaseModel):
