@@ -115,64 +115,7 @@ with col2:
 with col3:
     render_knowledge_gap_metric()
 
-# Unanswered Questions Section
-st.markdown("---")
-st.subheader("Unanswered Questions")
 
-try:
-    unanswered = api_client.fetch_unanswered_questions()
-    
-    if unanswered and len(unanswered) > 0:
-        # Create DataFrame from unanswered questions
-        df = pd.DataFrame(unanswered)
-        
-        # Filter to only show questions older than 24 hours
-        if 'age_hours' in df.columns:
-            df_filtered = df[df['age_hours'] >= 24].copy()
-        else:
-            # If age_hours not in data, show all
-            df_filtered = df.copy()
-        
-        if len(df_filtered) > 0:
-            # Sort by age (oldest first)
-            if 'age_hours' in df_filtered.columns:
-                df_filtered = df_filtered.sort_values('age_hours', ascending=False)
-            
-            # Display top 20
-            df_display = df_filtered.head(20)
-            
-            # Format columns for display
-            display_columns = []
-            if 'question_text' in df_display.columns:
-                display_columns.append('question_text')
-            if 'agent' in df_display.columns:
-                display_columns.append('agent')
-            if 'age_hours' in df_display.columns:
-                # Format age_hours to be more readable
-                df_display['age_hours'] = df_display['age_hours'].apply(lambda x: f"{x:.1f}h")
-                display_columns.append('age_hours')
-            if 'timestamp' in df_display.columns:
-                display_columns.append('timestamp')
-            
-            # Display the dataframe
-            if display_columns:
-                st.dataframe(
-                    df_display[display_columns],
-                    use_container_width=True,
-                    hide_index=True
-                )
-            else:
-                st.dataframe(df_display, use_container_width=True, hide_index=True)
-            
-            st.caption(f"Showing {len(df_display)} of {len(df_filtered)} unanswered questions (older than 24 hours)")
-        else:
-            st.info("No unanswered questions older than 24 hours")
-    else:
-        st.info("No unanswered questions at this time")
-except Exception as e:
-    st.warning(f"Unable to fetch unanswered questions: {str(e)}")
-
-    st.warning(f"Unable to fetch unanswered questions: {str(e)}")
 
 # Recent Knowledge Ingestions Section
 st.markdown("---")

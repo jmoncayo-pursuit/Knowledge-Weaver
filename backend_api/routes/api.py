@@ -229,34 +229,7 @@ async def get_query_metrics(
         )
 
 
-@router.get("/metrics/unanswered")
-async def get_unanswered_questions(
-    api_key: str = Depends(verify_api_key),
-    services: dict = Depends(get_services)
-):
-    """
-    Get unanswered questions from chat logs
-    Requires API key authentication
-    
-    Note: This is a placeholder endpoint. Full implementation requires
-    additional logic to track unanswered questions from chat logs.
-    
-    Args:
-        api_key: Validated API key from header
-        services: Injected services
-    
-    Returns:
-        Array of unanswered question entries
-    """
-    logger.info("Fetching unanswered questions")
-    
-    # Placeholder implementation
-    # In a full implementation, this would query a separate tracking system
-    return {
-        "unanswered_questions": [],
-        "count": 0,
-        "message": "Unanswered questions tracking not yet implemented"
-    }
+
 
 
 @router.post("/ingest", response_model=IngestResponse)
