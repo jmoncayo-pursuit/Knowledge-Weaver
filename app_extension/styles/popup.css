@@ -24,7 +24,7 @@ body {
     width: 400px;
     min-height: 500px;
     font-family: var(--font-family);
-    background-color: var(--bg-color);
+    background-color: var(--bg-color) !important;
     color: var(--text-primary);
 }
 

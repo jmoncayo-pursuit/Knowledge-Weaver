@@ -16,8 +16,8 @@
         </header>
 
         <nav class="tabs">
-            <button id="askTabBtn" class="tab-btn active">Ask</button>
-            <button id="contributeTabBtn" class="tab-btn">Contribute</button>
+            <button id="askTabBtn" class="tab-btn active" data-testid="ask-tab-btn">Ask</button>
+            <button id="contributeTabBtn" class="tab-btn" data-testid="contribute-tab-btn">Contribute</button>
         </nav>
 
         <main>
@@ -60,7 +60,7 @@
 
             <div id="contributeTab" class="tab-content hidden">
                 <div class="contribute-section">
-                    <textarea id="ingestInput"
+                    <textarea id="ingestInput" data-testid="capture-input"
                         placeholder="Paste chat logs or text here to add to the knowledge base..." rows="6"></textarea>
 
                     <div id="screenshotPreview" class="screenshot-preview hidden">
