@@ -15,7 +15,9 @@ from models.schemas import (
     IngestRequest,
     IngestResponse,
     UpdateKnowledgeRequest,
+    UpdateKnowledgeRequest,
     AnalyzeResponse,
+    DashboardMetricsResponse,
     HealthResponse
 )
 from auth import verify_api_key
@@ -232,6 +234,47 @@ async def get_query_metrics(
             detail=f"Failed to fetch metrics: {str(e)}"
         )
 
+
+
+@router.get("/metrics/dashboard", response_model=DashboardMetricsResponse)
+async def get_dashboard_metrics(
+    api_key: str = Depends(verify_api_key),
+    services: dict = Depends(get_services)
+):
+    """
+    Get aggregated metrics for the leadership dashboard
+    Requires API key authentication
+    """
+    logger.info("Fetching dashboard metrics")
+    
+    try:
+        # 1. Get Total Knowledge Count
+        collection_stats = services["vector_db"].get_collection_stats()
+        total_knowledge = collection_stats.get("count", 0) if collection_stats.get("status") == "initialized" else 0
+        
+        # 2. Get Verified Count
+        verified_count = services["vector_db"].get_verified_count()
+        
+        # 3. Calculate Verified Ratio
+        verified_ratio = (verified_count / total_knowledge * 100) if total_knowledge > 0 else 0.0
+        
+        # 4. Get Query Stats (Volume & Gaps)
+        query_stats = services["query_service"].get_query_stats(days=7)
+        
+        return DashboardMetricsResponse(
+            total_knowledge=total_knowledge,
+            verified_count=verified_count,
+            verified_ratio=round(verified_ratio, 1),
+            query_volume_7d=query_stats["total_volume"],
+            knowledge_gaps_7d=query_stats["knowledge_gaps"]
+        )
+        
+    except Exception as e:
+        logger.error(f"Failed to fetch dashboard metrics: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch dashboard metrics: {str(e)}"
+        )
 
 
 

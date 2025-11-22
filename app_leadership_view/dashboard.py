@@ -46,74 +46,51 @@ st.markdown('<h1 class="dashboard-title">Knowledge-Weaver Leadership Dashboard</
 st.markdown('<p class="dashboard-subtitle">Monitor team performance and knowledge gaps</p>', unsafe_allow_html=True)
 
 # Metrics functions
-def render_response_time_metric():
-    """Render average leadership response time metric"""
-    # Placeholder implementation
-    response_time = "1h 15m"
-    delta = "-15m"
-    
-    st.metric(
-        label="Avg Response Time",
-        value=response_time,
-        delta=delta,
-        help="Average time for leadership to respond to agent questions"
-    )
-
-def render_query_volume_metric():
-    """Render query volume metric from last 7 days"""
+# Metrics functions
+def render_metrics():
+    """Render dashboard metrics using real data"""
     try:
-        # Fetch query logs from last 7 days
-        end_date = datetime.now()
-        start_date = end_date - timedelta(days=7)
+        metrics = api_client.fetch_dashboard_metrics()
         
-        logs = api_client.fetch_query_logs(
-            start_date=start_date.isoformat(),
-            end_date=end_date.isoformat(),
-            limit=1000
-        )
-        
-        query_count = len(logs)
-        
-        # Calculate delta (placeholder - would need historical data)
-        delta = "+15%"
-        
-        st.metric(
-            label="Query Volume (7d)",
-            value=f"{query_count:,}",
-            delta=delta,
-            help="Total queries in the last 7 days"
-        )
-    except Exception as e:
-        st.metric(
-            label="Query Volume (7d)",
-            value="Error",
-            help=f"Failed to fetch data: {str(e)}"
-        )
+        if not metrics:
+            st.error("Failed to load metrics")
+            return
 
-def render_knowledge_gap_metric():
-    """Render knowledge gaps metric"""
-    # Placeholder implementation
-    gap_count = 8
-    delta = "-2"
-    
-    st.metric(
-        label="Knowledge Gaps",
-        value=gap_count,
-        delta=delta,
-        help="Queries with no relevant results found"
-    )
+        col1, col2, col3, col4 = st.columns(4)
+
+        with col1:
+            st.metric(
+                label="Total Knowledge",
+                value=metrics.get("total_knowledge", 0),
+                help="Total number of entries in the knowledge base"
+            )
+
+        with col2:
+            st.metric(
+                label="Verified Ratio",
+                value=f"{metrics.get('verified_ratio', 0)}%",
+                help="Percentage of entries verified by humans"
+            )
+
+        with col3:
+            st.metric(
+                label="Query Volume (7d)",
+                value=metrics.get("query_volume_7d", 0),
+                help="Total queries in the last 7 days"
+            )
+
+        with col4:
+            st.metric(
+                label="Knowledge Gaps",
+                value=metrics.get("knowledge_gaps_7d", 0),
+                help="Queries with 0 results in the last 7 days"
+            )
+            
+    except Exception as e:
+        st.error(f"Error rendering metrics: {e}")
 
 # Render metrics
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    render_response_time_metric()
-
-with col2:
-    render_query_volume_metric()
-
-with col3:
-    render_knowledge_gap_metric()
+render_metrics()
 
 
 

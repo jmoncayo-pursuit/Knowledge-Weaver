@@ -205,3 +205,12 @@ class APIClient:
         except Exception as e:
             print(f"Error updating entry: {e}")
             return False
+
+    def fetch_dashboard_metrics(self) -> dict:
+        """Fetch aggregated dashboard metrics"""
+        try:
+            result = self._make_request("GET", "/api/v1/metrics/dashboard")
+            return result
+        except Exception as e:
+            print(f"Error fetching dashboard metrics: {e}")
+            return None

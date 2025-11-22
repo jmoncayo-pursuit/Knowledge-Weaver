@@ -126,3 +126,11 @@ class AnalyzeResponse(BaseModel):
     category: str
     tags: List[str]
     summary: str
+
+class DashboardMetricsResponse(BaseModel):
+    """Response model for dashboard metrics"""
+    total_knowledge: int
+    verified_count: int
+    verified_ratio: float
+    query_volume_7d: int
+    knowledge_gaps_7d: int

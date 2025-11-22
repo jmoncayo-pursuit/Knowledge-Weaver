@@ -329,3 +329,28 @@ class VectorDatabase:
         except Exception as e:
             logger.error(f"Failed to update entry {entry_id}: {e}")
             return False
+
+    def get_verified_count(self) -> int:
+        """
+        Get count of verified knowledge entries
+        
+        Returns:
+            Number of entries with verification_status='verified_human'
+        """
+        if not self.collection:
+            return 0
+            
+        try:
+            # Query for verified entries
+            # Note: ChromaDB count() doesn't support filtering directly in all versions
+            # So we use get() with where clause and count IDs
+            results = self.collection.get(
+                where={"verification_status": "verified_human"},
+                include=[] # We only need IDs/count, don't fetch data
+            )
+            
+            return len(results['ids']) if results['ids'] else 0
+            
+        except Exception as e:
+            logger.error(f"Failed to get verified count: {e}")
+            return 0

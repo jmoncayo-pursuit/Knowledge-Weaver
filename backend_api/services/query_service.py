@@ -8,7 +8,7 @@ import time
 import json
 import os
 from typing import List, Dict, Any
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from models.schemas import QueryResult, KnowledgeMatch, SourceMetadata
 from services.gemini_client import GeminiClient
@@ -288,3 +288,59 @@ class QueryService:
         logs = logs[-limit:] if limit else logs
         
         return logs
+
+    def get_query_stats(self, days: int = 7) -> Dict[str, int]:
+        """
+        Get query statistics for the last N days
+        
+        Args:
+            days: Number of days to look back
+            
+        Returns:
+            Dictionary with 'total_volume' and 'knowledge_gaps'
+        """
+        stats = {
+            "total_volume": 0,
+            "knowledge_gaps": 0
+        }
+        
+        if not os.path.exists(self.query_log_file):
+            return stats
+            
+        try:
+            cutoff_date = datetime.utcnow() - timedelta(days=days)
+            
+            with open(self.query_log_file, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                        
+                    try:
+                        log = json.loads(line)
+                        timestamp_str = log.get('timestamp')
+                        if not timestamp_str:
+                            continue
+                            
+                        # Parse timestamp
+                        try:
+                            log_dt = datetime.fromisoformat(timestamp_str)
+                        except ValueError:
+                            continue
+                            
+                        # Check if within time window
+                        if log_dt >= cutoff_date:
+                            stats["total_volume"] += 1
+                            
+                            # Check for knowledge gap (0 results)
+                            if log.get('result_count', 0) == 0:
+                                stats["knowledge_gaps"] += 1
+                                
+                    except json.JSONDecodeError:
+                        continue
+                        
+            return stats
+            
+        except Exception as e:
+            logger.error(f"Failed to calculate query stats: {e}")
+            return stats
