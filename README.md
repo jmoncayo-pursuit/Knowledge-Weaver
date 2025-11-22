@@ -50,6 +50,10 @@ AI is powerful, but not perfect. Knowledge-Weaver puts humans in control:
 - **Review**: Users verify and edit the AI's suggestions before saving.
 - **Search**: Verified content is boosted in search results, ensuring reliability.
 
+![Extension Search](docs/images/extension_dark.png)
+![Review Modal](docs/images/review_modal.png)
+*Screenshots captured by internal AI Agent*
+
 ### 2. Active Learning (Dynamic Few-Shot Prompting)
 The system gets smarter as you use it.
 - When analyzing new content, the AI looks at **similar verified examples** from the vector database.
@@ -61,6 +65,9 @@ Identify and fill knowledge gaps in real-time.
 - **Tracking**: The system tracks queries that return zero results.
 - **Dashboard**: Leaders can see these "Knowledge Gaps" on the dashboard.
 - **Bridge the Gap**: A dedicated UI allows experts to answer these missing questions directly, instantly turning a gap into a golden nugget of knowledge.
+
+![Dashboard View](docs/images/dashboard_dark.png)
+*Screenshot captured by internal AI Agent*
 
 ### 4. Recycle Bin (Soft Deletes)
 Mistakes happen.
