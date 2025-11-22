@@ -1,7 +1,7 @@
 INFO:     Will watch for changes in these directories: ['/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api']
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [51748] using WatchFiles
-INFO:     Started server process [51848]
+INFO:     Started reloader process [54481] using WatchFiles
+INFO:     Started server process [54570]
 INFO:     Waiting for application startup.
 INFO:main:Knowledge-Weaver API starting up...
 INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
@@ -17,100 +17,152 @@ INFO:main:Query Service initialized
 INFO:main:All services initialized successfully
 INFO:     Application startup complete.
 INFO:routes.api:Fetching query metrics (limit: 1000)
-INFO:     127.0.0.1:50731 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A19%3A13.339433&end_date=2025-11-21T19%3A19%3A13.339433 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51158 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A47%3A27.295998&end_date=2025-11-21T19%3A47%3A27.295998 HTTP/1.1" 200 OK
 INFO:routes.api:Fetching recent knowledge (limit: 10)
-INFO:     127.0.0.1:50732 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51159 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
 INFO:routes.api:Fetching query metrics (limit: 1000)
-INFO:     127.0.0.1:50733 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A19%3A13.364572&end_date=2025-11-21T19%3A19%3A13.364572 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51160 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A47%3A27.312246&end_date=2025-11-21T19%3A47%3A27.312246 HTTP/1.1" 200 OK
 INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
-INFO:     127.0.0.1:50734 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51162 - "GET /api/v1/health HTTP/1.1" 200 OK
 INFO:routes.api:Fetching query metrics (limit: 1000)
-INFO:     127.0.0.1:50831 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A28%3A28.784024&end_date=2025-11-21T19%3A28%3A28.784024 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51177 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A14.261632&end_date=2025-11-21T19%3A49%3A14.261632 HTTP/1.1" 200 OK
 INFO:routes.api:Fetching recent knowledge (limit: 10)
-INFO:     127.0.0.1:50832 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51178 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
 INFO:routes.api:Fetching query metrics (limit: 1000)
-INFO:     127.0.0.1:50835 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A28%3A28.830713&end_date=2025-11-21T19%3A28%3A28.830713 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51180 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A14.282065&end_date=2025-11-21T19%3A49%3A14.282065 HTTP/1.1" 200 OK
 INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
-INFO:     127.0.0.1:50836 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51181 - "GET /api/v1/health HTTP/1.1" 200 OK
 INFO:routes.api:Fetching query metrics (limit: 1000)
-INFO:     127.0.0.1:50837 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A28%3A29.083734&end_date=2025-11-21T19%3A28%3A29.083734 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51183 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A30.553801&end_date=2025-11-21T19%3A49%3A30.553801 HTTP/1.1" 200 OK
 INFO:routes.api:Fetching recent knowledge (limit: 10)
-INFO:     127.0.0.1:50838 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51184 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/dcad1576-2564-48cc-8dcc-3d824e87de73
+INFO:     127.0.0.1:51185 - "DELETE /knowledge/dcad1576-2564-48cc-8dcc-3d824e87de73 HTTP/1.1" 404 Not Found
 INFO:routes.api:Fetching query metrics (limit: 1000)
-INFO:     127.0.0.1:50839 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A28%3A29.118387&end_date=2025-11-21T19%3A28%3A29.118387 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51186 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A30.579465&end_date=2025-11-21T19%3A49%3A30.579465 HTTP/1.1" 200 OK
 INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
-INFO:     127.0.0.1:50841 - "GET /api/v1/health HTTP/1.1" 200 OK
-WARNING:  WatchFiles detected changes in 'services/vector_db.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [51848]
-INFO:     Started server process [53544]
-INFO:     Waiting for application startup.
-INFO:main:Knowledge-Weaver API starting up...
-INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
-INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
-INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
-INFO:services.gemini_client:GeminiClient initialized successfully
-INFO:main:Gemini Client initialized
-INFO:services.anonymizer:AnonymizerService initialized
-INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
-INFO:main:Chat Processor initialized
-INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
-INFO:main:Query Service initialized
-INFO:main:All services initialized successfully
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'models/schemas.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [53544]
-INFO:     Started server process [53550]
-INFO:     Waiting for application startup.
-INFO:main:Knowledge-Weaver API starting up...
-INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
-INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
-INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
-INFO:services.gemini_client:GeminiClient initialized successfully
-INFO:main:Gemini Client initialized
-INFO:services.anonymizer:AnonymizerService initialized
-INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
-INFO:main:Chat Processor initialized
-INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
-INFO:main:Query Service initialized
-INFO:main:All services initialized successfully
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'routes/api.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [53550]
-INFO:     Started server process [53568]
-INFO:     Waiting for application startup.
-INFO:main:Knowledge-Weaver API starting up...
-INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
-INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
-INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
-INFO:services.gemini_client:GeminiClient initialized successfully
-INFO:main:Gemini Client initialized
-INFO:services.anonymizer:AnonymizerService initialized
-INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
-INFO:main:Chat Processor initialized
-INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
-INFO:main:Query Service initialized
-INFO:main:All services initialized successfully
-INFO:     Application startup complete.
+INFO:     127.0.0.1:51187 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51188 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A33.381744&end_date=2025-11-21T19%3A49%3A33.381744 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51189 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51190 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A33.402856&end_date=2025-11-21T19%3A49%3A33.402856 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51191 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51192 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A34.539224&end_date=2025-11-21T19%3A49%3A34.539224 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51193 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/2f68d6cc-715f-4488-89d7-6b8ac5a9f8ab
+INFO:     127.0.0.1:51194 - "DELETE /knowledge/2f68d6cc-715f-4488-89d7-6b8ac5a9f8ab HTTP/1.1" 404 Not Found
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51195 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A34.563027&end_date=2025-11-21T19%3A49%3A34.563027 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51196 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51199 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A35.469960&end_date=2025-11-21T19%3A49%3A35.469960 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51200 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51201 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A35.492252&end_date=2025-11-21T19%3A49%3A35.492252 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51202 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51203 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A36.327573&end_date=2025-11-21T19%3A49%3A36.327573 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51204 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/2f68d6cc-715f-4488-89d7-6b8ac5a9f8ab
+INFO:     127.0.0.1:51205 - "DELETE /knowledge/2f68d6cc-715f-4488-89d7-6b8ac5a9f8ab HTTP/1.1" 404 Not Found
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51206 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A36.350825&end_date=2025-11-21T19%3A49%3A36.350825 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51207 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51208 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A38.215219&end_date=2025-11-21T19%3A49%3A38.215219 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51209 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/2f68d6cc-715f-4488-89d7-6b8ac5a9f8ab
+INFO:     127.0.0.1:51210 - "DELETE /knowledge/2f68d6cc-715f-4488-89d7-6b8ac5a9f8ab HTTP/1.1" 404 Not Found
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/7e5ec553-f01d-42d6-8e3c-c41412fadc98
+INFO:     127.0.0.1:51211 - "DELETE /knowledge/7e5ec553-f01d-42d6-8e3c-c41412fadc98 HTTP/1.1" 404 Not Found
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51212 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A38.243406&end_date=2025-11-21T19%3A49%3A38.243406 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51213 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51214 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A40.681445&end_date=2025-11-21T19%3A49%3A40.681445 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51215 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/7e5ec553-f01d-42d6-8e3c-c41412fadc98
+INFO:     127.0.0.1:51216 - "DELETE /knowledge/7e5ec553-f01d-42d6-8e3c-c41412fadc98 HTTP/1.1" 404 Not Found
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51217 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A40.704805&end_date=2025-11-21T19%3A49%3A40.704805 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51218 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51219 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A41.269617&end_date=2025-11-21T19%3A49%3A41.269617 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51220 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/dcad1576-2564-48cc-8dcc-3d824e87de73
+INFO:     127.0.0.1:51221 - "DELETE /knowledge/dcad1576-2564-48cc-8dcc-3d824e87de73 HTTP/1.1" 404 Not Found
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/7e5ec553-f01d-42d6-8e3c-c41412fadc98
+INFO:     127.0.0.1:51222 - "DELETE /knowledge/7e5ec553-f01d-42d6-8e3c-c41412fadc98 HTTP/1.1" 404 Not Found
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51223 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A41.295542&end_date=2025-11-21T19%3A49%3A41.295542 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51224 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51225 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A41.977213&end_date=2025-11-21T19%3A49%3A41.977213 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51226 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/dcad1576-2564-48cc-8dcc-3d824e87de73
+INFO:     127.0.0.1:51227 - "DELETE /knowledge/dcad1576-2564-48cc-8dcc-3d824e87de73 HTTP/1.1" 404 Not Found
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51228 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A42.000595&end_date=2025-11-21T19%3A49%3A42.000595 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51229 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51230 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A42.617863&end_date=2025-11-21T19%3A49%3A42.617863 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51231 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51232 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A49%3A42.639369&end_date=2025-11-21T19%3A49%3A42.639369 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51233 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51236 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A50%3A15.361336&end_date=2025-11-21T19%3A50%3A15.361336 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51237 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/2f68d6cc-715f-4488-89d7-6b8ac5a9f8ab
+INFO:     127.0.0.1:51238 - "PATCH /knowledge/2f68d6cc-715f-4488-89d7-6b8ac5a9f8ab HTTP/1.1" 404 Not Found
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51239 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A50%3A15.386305&end_date=2025-11-21T19%3A50%3A15.386305 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51240 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51245 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A50%3A43.139171&end_date=2025-11-21T19%3A50%3A43.139171 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51246 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/2f68d6cc-715f-4488-89d7-6b8ac5a9f8ab
+INFO:     127.0.0.1:51247 - "PATCH /knowledge/2f68d6cc-715f-4488-89d7-6b8ac5a9f8ab HTTP/1.1" 404 Not Found
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/69396f75-9bb3-4ecf-8738-28d615d91de3
+INFO:     127.0.0.1:51248 - "PATCH /knowledge/69396f75-9bb3-4ecf-8738-28d615d91de3 HTTP/1.1" 404 Not Found
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51249 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A50%3A43.165320&end_date=2025-11-21T19%3A50%3A43.165320 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51250 - "GET /api/v1/health HTTP/1.1" 200 OK
 INFO:routes.api:Received manual ingestion request for URL: http://internal.com/food
 INFO:services.vector_db:Added 1 knowledge entries to vector database
-INFO:     127.0.0.1:51073 - "POST /api/v1/ingest HTTP/1.1" 200 OK
-INFO:routes.api:Updating knowledge entry: 53862972-29bd-4301-82bd-809f474a503d
-INFO:services.vector_db:Updated entry 53862972-29bd-4301-82bd-809f474a503d with {'category': 'Culture', 'tags': 'food,friday', 'summary': 'Friday pizza tradition', 'verification_status': 'verified_human'}
-INFO:     127.0.0.1:51077 - "PATCH /api/v1/knowledge/53862972-29bd-4301-82bd-809f474a503d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51308 - "POST /api/v1/ingest HTTP/1.1" 200 OK
+INFO:routes.api:Updating knowledge entry: 56729d5b-36b9-4253-8427-0abd36309ae0
+INFO:services.vector_db:Updated entry 56729d5b-36b9-4253-8427-0abd36309ae0 with {'category': 'Culture', 'tags': 'food,friday', 'summary': 'Friday pizza tradition', 'verification_status': 'verified_human'}
+INFO:     127.0.0.1:51312 - "PATCH /api/v1/knowledge/56729d5b-36b9-4253-8427-0abd36309ae0 HTTP/1.1" 200 OK
 INFO:routes.api:Querying knowledge base: cafeteria pizza friday...
-INFO:services.query_service:Processing query 6630fc1c-e9bc-4850-81b1-861231c4c270: cafeteria pizza friday... (verified_only=False)
+INFO:services.query_service:Processing query bf71a06b-3b80-494f-a6e4-d1f213757086: cafeteria pizza friday... (verified_only=False)
 INFO:services.vector_db:Search returned 1 matches above threshold 0.1 (total results: 3)
-INFO:services.query_service:Query 6630fc1c-e9bc-4850-81b1-861231c4c270 completed: 1 matches in 206ms
-INFO:     127.0.0.1:51080 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
-INFO:routes.api:Deleting knowledge entry: 53862972-29bd-4301-82bd-809f474a503d
-INFO:services.vector_db:Deleted entry 53862972-29bd-4301-82bd-809f474a503d from vector database
-INFO:     127.0.0.1:51082 - "DELETE /api/v1/knowledge/53862972-29bd-4301-82bd-809f474a503d HTTP/1.1" 200 OK
+INFO:services.query_service:Query bf71a06b-3b80-494f-a6e4-d1f213757086 completed: 1 matches in 212ms
+INFO:     127.0.0.1:51315 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
+INFO:routes.api:Deleting knowledge entry: 56729d5b-36b9-4253-8427-0abd36309ae0
+INFO:services.vector_db:Deleted entry 56729d5b-36b9-4253-8427-0abd36309ae0 from vector database
+INFO:     127.0.0.1:51317 - "DELETE /api/v1/knowledge/56729d5b-36b9-4253-8427-0abd36309ae0 HTTP/1.1" 200 OK
