@@ -239,8 +239,45 @@ try:
             num_rows="fixed"
         )
         
-        # Handle updates
-        if st.session_state.get("knowledge_editor"):
+        # Check for delete requests first (before handling edits)
+        rows_to_delete = []
+        for idx, row in edited_df.iterrows():
+            if row.get("Delete", False):
+                rows_to_delete.append({
+                    "idx": idx,
+                    "id": row["id"],
+                    "content": row["Content"]
+                })
+        
+        # If there are items to delete, show confirmation
+        if rows_to_delete:
+            st.warning(f"⚠️ You have marked {len(rows_to_delete)} item(s) for deletion.")
+            
+            with st.expander("🗑️ Confirm Deletion", expanded=True):
+                st.markdown("**Items to be deleted:**")
+                for item in rows_to_delete:
+                    st.markdown(f"- {item['content']}")
+                
+                col1, col2 = st.columns([1, 4])
+                with col1:
+                    if st.button("✅ Confirm Delete", type="primary", use_container_width=True):
+                        deleted_count = 0
+                        for item in rows_to_delete:
+                            if api_client.delete_knowledge_entry(item["id"]):
+                                deleted_count += 1
+                        
+                        if deleted_count > 0:
+                            st.success(f"Deleted {deleted_count} item(s)!")
+                            time.sleep(1.5)
+                            st.rerun()
+                        else:
+                            st.error("Failed to delete items.")
+                with col2:
+                    if st.button("❌ Cancel", use_container_width=True):
+                        st.rerun()
+        
+        # Handle edits (only process if no deletes pending)
+        elif st.session_state.get("knowledge_editor"):
             changes = st.session_state["knowledge_editor"]
             
             # Handle edits
@@ -248,7 +285,7 @@ try:
                 for idx, updates in changes["edited_rows"].items():
                     entry_id = df.iloc[idx]["id"]
                     
-                    # Prepare API updates
+                    # Prepare API updates (skip Delete field)
                     api_updates = {}
                     if "Category" in updates:
                         api_updates["category"] = updates["Category"]
@@ -259,18 +296,9 @@ try:
                     if "Summary" in updates:
                         api_updates["summary"] = updates["Summary"]
                     
-                    # Handle Delete checkbox separately or here?
-                    # If Delete is checked, we should probably delete instead of update
-                    if "Delete" in updates and updates["Delete"] is True:
-                        if api_client.delete_knowledge_entry(entry_id):
-                            st.toast(f"Deleted entry", icon="🗑️")
-                            time.sleep(1)
-                            st.rerun()
-                    elif api_updates:
+                    if api_updates:
                         if api_client.update_knowledge_entry(entry_id, api_updates):
                             st.toast(f"Updated entry and verified!", icon="✅")
-                            # We don't strictly need to rerun if we trust the UI update, 
-                            # but rerunning ensures sync with backend
                             time.sleep(1) 
                             st.rerun()
             
