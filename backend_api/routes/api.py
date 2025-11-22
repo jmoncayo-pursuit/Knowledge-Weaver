@@ -12,8 +12,9 @@ from models.schemas import (
     QueryRequest,
     QueryResult,
     IngestRequest,
+    IngestRequest,
     IngestResponse,
-    IngestResponse,
+    UpdateKnowledgeRequest,
     AnalyzeResponse,
     HealthResponse
 )
@@ -323,6 +324,61 @@ async def delete_knowledge_entry(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Delete failed: {str(e)}"
+        )
+
+@router.patch("/knowledge/{entry_id}")
+async def update_knowledge_entry(
+    entry_id: str,
+    request: UpdateKnowledgeRequest,
+    api_key: str = Depends(verify_api_key),
+    services: dict = Depends(get_services)
+):
+    """
+    Update a knowledge entry
+    Automatically sets verification_status to 'verified_human'
+    Requires API key authentication
+    """
+    logger.info(f"Updating knowledge entry: {entry_id}")
+    
+    try:
+        # Prepare updates
+        updates = {}
+        if request.category is not None:
+            updates["category"] = request.category
+        if request.tags is not None:
+            updates["tags"] = ",".join(request.tags)
+        if request.summary is not None:
+            updates["summary"] = request.summary
+            
+        # Force verification status update (Active Learning)
+        updates["verification_status"] = "verified_human"
+        
+        if not updates:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No updates provided"
+            )
+            
+        success = services["vector_db"].update_entry(entry_id, updates)
+        
+        if success:
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={"status": "success", "message": f"Entry {entry_id} updated"}
+            )
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Entry not found or update failed"
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Update failed: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Update failed: {str(e)}"
         )
 
 @router.post("/analyze", response_model=AnalyzeResponse)

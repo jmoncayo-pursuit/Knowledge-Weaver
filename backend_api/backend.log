@@ -40,3 +40,77 @@ INFO:routes.api:Fetching query metrics (limit: 1000)
 INFO:     127.0.0.1:50839 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A28%3A29.118387&end_date=2025-11-21T19%3A28%3A29.118387 HTTP/1.1" 200 OK
 INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
 INFO:     127.0.0.1:50841 - "GET /api/v1/health HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'services/vector_db.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [51848]
+INFO:     Started server process [53544]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized successfully
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'models/schemas.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [53544]
+INFO:     Started server process [53550]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized successfully
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'routes/api.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [53550]
+INFO:     Started server process [53568]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized successfully
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+INFO:routes.api:Received manual ingestion request for URL: http://internal.com/food
+INFO:services.vector_db:Added 1 knowledge entries to vector database
+INFO:     127.0.0.1:51073 - "POST /api/v1/ingest HTTP/1.1" 200 OK
+INFO:routes.api:Updating knowledge entry: 53862972-29bd-4301-82bd-809f474a503d
+INFO:services.vector_db:Updated entry 53862972-29bd-4301-82bd-809f474a503d with {'category': 'Culture', 'tags': 'food,friday', 'summary': 'Friday pizza tradition', 'verification_status': 'verified_human'}
+INFO:     127.0.0.1:51077 - "PATCH /api/v1/knowledge/53862972-29bd-4301-82bd-809f474a503d HTTP/1.1" 200 OK
+INFO:routes.api:Querying knowledge base: cafeteria pizza friday...
+INFO:services.query_service:Processing query 6630fc1c-e9bc-4850-81b1-861231c4c270: cafeteria pizza friday... (verified_only=False)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.1 (total results: 3)
+INFO:services.query_service:Query 6630fc1c-e9bc-4850-81b1-861231c4c270 completed: 1 matches in 206ms
+INFO:     127.0.0.1:51080 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
+INFO:routes.api:Deleting knowledge entry: 53862972-29bd-4301-82bd-809f474a503d
+INFO:services.vector_db:Deleted entry 53862972-29bd-4301-82bd-809f474a503d from vector database
+INFO:     127.0.0.1:51082 - "DELETE /api/v1/knowledge/53862972-29bd-4301-82bd-809f474a503d HTTP/1.1" 200 OK

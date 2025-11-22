@@ -125,59 +125,95 @@ try:
     recent_entries = api_client.fetch_recent_knowledge(limit=10)
     
     if recent_entries:
-        # Header
-        col1, col2, col3, col4, col5 = st.columns([3, 2, 2, 2, 1])
-        col1.markdown("**Content**")
-        col2.markdown("**Category**")
-        col3.markdown("**Tags**")
-        col4.markdown("**Timestamp**")
-        col5.markdown("**Action**")
-        
-        st.markdown("---")
-        
+        # Prepare data for editor
+        data = []
         for entry in recent_entries:
             metadata = entry.get('metadata', {})
-            entry_id = entry.get('id')
-            
-            col1, col2, col3, col4, col5 = st.columns([3, 2, 2, 2, 1])
-            
             content = entry.get('document', '')
             short_content = content[:50] + "..." if len(content) > 50 else content
             
-            col1.text(short_content)
-            col1.caption(metadata.get('url', 'Unknown Source'))
-            
-            col2.text(metadata.get('category', 'Uncategorized'))
-            
-            tags = metadata.get('tags', '')
-            if tags:
-                # Display tags as chips
-                tags_list = tags.split(',')[:3] # Show max 3 tags
-                col3.caption(", ".join(tags_list))
-            else:
-                col3.text("-")
-                
             timestamp = metadata.get('timestamp', '')
             if timestamp:
                 try:
-                    # Format timestamp nicely
                     dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
-                    col4.text(dt.strftime('%Y-%m-%d %H:%M'))
+                    timestamp_str = dt.strftime('%Y-%m-%d %H:%M')
                 except:
-                    col4.text(timestamp)
+                    timestamp_str = timestamp
             else:
-                col4.text("-")
+                timestamp_str = "-"
+                
+            data.append({
+                "id": entry.get('id'),
+                "Content": short_content,
+                "Category": metadata.get('category', 'Uncategorized'),
+                "Tags": metadata.get('tags', ''),
+                "Summary": metadata.get('summary', ''),
+                "Timestamp": timestamp_str,
+                "Delete": False # Checkbox for deletion
+            })
             
-            # Delete button
-            if col5.button("🗑️", key=f"del_{entry_id}", help="Delete this entry"):
-                if api_client.delete_knowledge_entry(entry_id):
-                    st.success("Deleted!")
-                    time.sleep(0.5)
-                    st.rerun()
-                else:
-                    st.error("Failed to delete")
+        df = pd.DataFrame(data)
+        
+        # Configure column settings
+        column_config = {
+            "id": None, # Hide ID
+            "Content": st.column_config.TextColumn("Content", disabled=True, width="medium"),
+            "Category": st.column_config.SelectboxColumn(
+                "Category",
+                options=["Policy", "Procedure", "Decision", "Meeting", "Technical", "HR", "Sales", "Uncategorized"],
+                required=True,
+                width="small"
+            ),
+            "Tags": st.column_config.TextColumn("Tags (comma-separated)", width="medium"),
+            "Summary": st.column_config.TextColumn("Summary", width="large"),
+            "Timestamp": st.column_config.TextColumn("Timestamp", disabled=True, width="small"),
+            "Delete": st.column_config.CheckboxColumn("Delete", width="small")
+        }
+        
+        # Display editor
+        edited_df = st.data_editor(
+            df,
+            column_config=column_config,
+            hide_index=True,
+            use_container_width=True,
+            key="knowledge_editor",
+            num_rows="fixed"
+        )
+        
+        # Handle updates
+        if st.session_state.get("knowledge_editor"):
+            changes = st.session_state["knowledge_editor"]
             
-            st.markdown("---")
+            # Handle edits
+            if changes.get("edited_rows"):
+                for idx, updates in changes["edited_rows"].items():
+                    entry_id = df.iloc[idx]["id"]
+                    
+                    # Prepare API updates
+                    api_updates = {}
+                    if "Category" in updates:
+                        api_updates["category"] = updates["Category"]
+                    if "Tags" in updates:
+                        # Split tags string into list
+                        tags_str = updates["Tags"]
+                        api_updates["tags"] = [t.strip() for t in tags_str.split(",") if t.strip()]
+                    if "Summary" in updates:
+                        api_updates["summary"] = updates["Summary"]
+                    
+                    # Handle Delete checkbox separately or here?
+                    # If Delete is checked, we should probably delete instead of update
+                    if "Delete" in updates and updates["Delete"] is True:
+                        if api_client.delete_knowledge_entry(entry_id):
+                            st.toast(f"Deleted entry", icon="🗑️")
+                            time.sleep(1)
+                            st.rerun()
+                    elif api_updates:
+                        if api_client.update_knowledge_entry(entry_id, api_updates):
+                            st.toast(f"Updated entry and verified!", icon="✅")
+                            # We don't strictly need to rerun if we trust the UI update, 
+                            # but rerunning ensures sync with backend
+                            time.sleep(1) 
+                            st.rerun()
             
     else:
         st.info("No recent knowledge entries found")

@@ -109,6 +109,12 @@ class IngestRequest(BaseModel):
     tags: Optional[List[str]] = Field(None, description="Tags for the content")
     summary: Optional[str] = Field(None, description="Summary of the content")
 
+class UpdateKnowledgeRequest(BaseModel):
+    """Request model for updating knowledge entry"""
+    category: Optional[str] = None
+    tags: Optional[List[str]] = None
+    summary: Optional[str] = None
+
 class IngestResponse(BaseModel):
     """Response model for ingestion"""
     status: str

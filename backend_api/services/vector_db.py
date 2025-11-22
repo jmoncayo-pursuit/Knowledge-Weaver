@@ -290,3 +290,42 @@ class VectorDatabase:
         except Exception as e:
             logger.error(f"Failed to delete entry {entry_id}: {e}")
             return False
+
+    def update_entry(self, entry_id: str, updates: Dict[str, Any]) -> bool:
+        """
+        Update a knowledge entry's metadata
+        
+        Args:
+            entry_id: ID of the entry to update
+            updates: Dictionary of metadata fields to update
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        if not self.collection:
+            return False
+            
+        try:
+            # Get existing entry to preserve other metadata
+            existing = self.collection.get(ids=[entry_id], include=['metadatas'])
+            if not existing['ids']:
+                logger.warning(f"Entry {entry_id} not found for update")
+                return False
+                
+            current_metadata = existing['metadatas'][0]
+            
+            # Update metadata
+            current_metadata.update(updates)
+            
+            # Update in ChromaDB
+            self.collection.update(
+                ids=[entry_id],
+                metadatas=[current_metadata]
+            )
+            
+            logger.info(f"Updated entry {entry_id} with {updates}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Failed to update entry {entry_id}: {e}")
+            return False

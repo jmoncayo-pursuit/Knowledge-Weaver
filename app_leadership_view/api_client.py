@@ -180,18 +180,28 @@ class APIClient:
             return []
 
     def delete_knowledge_entry(self, entry_id: str) -> bool:
-        """
-        Delete a knowledge entry
-        
-        Args:
-            entry_id: ID of the entry to delete
-            
-        Returns:
-            True if successful, False otherwise
-        """
+        """Delete a knowledge entry"""
         try:
-            result = self._make_request("DELETE", f"/api/v1/knowledge/{entry_id}")
-            return result.get("status") == "success"
+            response = requests.delete(
+                f"{self.base_url}/knowledge/{entry_id}",
+                headers=self.headers,
+                timeout=10
+            )
+            return response.status_code == 200
         except Exception as e:
-            logger.error(f"Failed to delete entry {entry_id}: {e}")
+            print(f"Error deleting entry: {e}")
+            return False
+
+    def update_knowledge_entry(self, entry_id: str, updates: dict) -> bool:
+        """Update a knowledge entry"""
+        try:
+            response = requests.patch(
+                f"{self.base_url}/knowledge/{entry_id}",
+                headers=self.headers,
+                json=updates,
+                timeout=10
+            )
+            return response.status_code == 200
+        except Exception as e:
+            print(f"Error updating entry: {e}")
             return False
