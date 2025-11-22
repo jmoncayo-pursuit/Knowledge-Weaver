@@ -184,7 +184,7 @@ class APIClient:
         """Delete a knowledge entry"""
         try:
             response = requests.delete(
-                f"{self.base_url}/knowledge/{entry_id}",
+                f"{self.base_url}/api/v1/knowledge/{entry_id}",
                 headers=self.headers,
                 timeout=10
             )

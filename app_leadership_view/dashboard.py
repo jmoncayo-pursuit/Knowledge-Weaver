@@ -240,13 +240,21 @@ try:
         )
         
         # Check for delete requests first (before handling edits)
+        # Use the original df to get IDs since the id column is hidden in edited_df
         rows_to_delete = []
         for idx, row in edited_df.iterrows():
             if row.get("Delete", False):
+                # Look up the ID from the original df using the index
+                entry_id = df.iloc[idx]["id"]
+                content = row["Content"]
+                
+                # Debug logging
+                print(f"[DELETE REQUEST] Index: {idx}, ID: {entry_id}, Content: {content}")
+                
                 rows_to_delete.append({
                     "idx": idx,
-                    "id": row["id"],
-                    "content": row["Content"]
+                    "id": entry_id,
+                    "content": content
                 })
         
         # If there are items to delete, show confirmation
@@ -263,8 +271,12 @@ try:
                     if st.button("✅ Confirm Delete", type="primary", use_container_width=True):
                         deleted_count = 0
                         for item in rows_to_delete:
+                            print(f"[DELETE API CALL] Attempting to delete ID: {item['id']}")
                             if api_client.delete_knowledge_entry(item["id"]):
+                                print(f"[DELETE SUCCESS] Deleted ID: {item['id']}")
                                 deleted_count += 1
+                            else:
+                                print(f"[DELETE FAILED] Failed to delete ID: {item['id']}")
                         
                         if deleted_count > 0:
                             st.success(f"Deleted {deleted_count} item(s)!")

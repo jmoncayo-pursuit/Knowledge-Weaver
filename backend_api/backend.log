@@ -168,3 +168,95 @@ INFO:routes.api:Fetching query metrics (limit: 1000)
 INFO:     127.0.0.1:52458 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T21%3A58%3A58.809362&end_date=2025-11-21T21%3A58%3A58.809362 HTTP/1.1" 200 OK
 INFO:routes.api:Health check: {'status': 'initialized', 'count': 19, 'name': 'knowledge_base'}
 INFO:     127.0.0.1:52459 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:52515 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:52516 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:52518 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T22%3A04%3A04.081481&end_date=2025-11-21T22%3A04%3A04.081481 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 19, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52519 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:52520 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:52521 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:52522 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T22%3A04%3A07.025107&end_date=2025-11-21T22%3A04%3A07.025107 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 19, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52523 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:52524 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:52525 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:52526 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T22%3A04%3A15.997505&end_date=2025-11-21T22%3A04%3A15.997505 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 19, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52527 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:52528 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:52529 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:52530 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T22%3A04%3A32.163983&end_date=2025-11-21T22%3A04%3A32.163983 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 19, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52531 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:52533 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:52534 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/47e5936d-80fa-4b5b-9311-fc9c3b43df21
+INFO:     127.0.0.1:52535 - "DELETE /knowledge/47e5936d-80fa-4b5b-9311-fc9c3b43df21 HTTP/1.1" 404 Not Found
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:52536 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T22%3A04%3A35.126835&end_date=2025-11-21T22%3A04%3A35.126835 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 19, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52537 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:52565 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:52566 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:52568 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T22%3A09%3A32.837442&end_date=2025-11-21T22%3A09%3A32.837442 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 19, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52569 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:52571 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:52572 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:52573 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T22%3A09%3A43.079113&end_date=2025-11-21T22%3A09%3A43.079113 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 19, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52574 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:52579 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:52580 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://127.0.0.1:8000/knowledge/47e5936d-80fa-4b5b-9311-fc9c3b43df21
+INFO:     127.0.0.1:52581 - "DELETE /knowledge/47e5936d-80fa-4b5b-9311-fc9c3b43df21 HTTP/1.1" 404 Not Found
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:52582 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T22%3A09%3A47.395490&end_date=2025-11-21T22%3A09%3A47.395490 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 19, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52583 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:52656 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:52657 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:52658 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T22%3A11%3A17.311444&end_date=2025-11-21T22%3A11%3A17.311444 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 19, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52659 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Received manual ingestion request for URL: http://test.com/delete-test
+INFO:services.vector_db:Added 1 knowledge entries to vector database
+INFO:     127.0.0.1:52664 - "POST /api/v1/ingest HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://localhost:8000/knowledge/f4e287f2-89f3-498f-8b5f-b5fc23bc56d8
+INFO:     127.0.0.1:52667 - "DELETE /knowledge/f4e287f2-89f3-498f-8b5f-b5fc23bc56d8 HTTP/1.1" 404 Not Found
+INFO:routes.api:Received manual ingestion request for URL: http://test.com/delete-test
+INFO:services.vector_db:Added 1 knowledge entries to vector database
+INFO:     127.0.0.1:52686 - "POST /api/v1/ingest HTTP/1.1" 200 OK
+INFO:routes.api:Deleting knowledge entry: 66032e05-9bff-4e38-8aff-915588fc348a
+INFO:services.vector_db:Deleted entry 66032e05-9bff-4e38-8aff-915588fc348a from vector database
+INFO:     127.0.0.1:52688 - "DELETE /api/v1/knowledge/66032e05-9bff-4e38-8aff-915588fc348a HTTP/1.1" 200 OK
+INFO:routes.api:Querying knowledge base: To Be Deleted...
+INFO:services.query_service:Processing query 33aec3df-f5b7-494d-9646-7d3c0bb67b57: To Be Deleted... (verified_only=False)
+INFO:services.vector_db:Search returned 3 matches above threshold 0.1 (total results: 3)
+INFO:services.query_service:Query 33aec3df-f5b7-494d-9646-7d3c0bb67b57 completed: 3 matches in 190ms
+INFO:     127.0.0.1:52690 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
