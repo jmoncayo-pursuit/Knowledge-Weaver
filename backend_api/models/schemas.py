@@ -127,6 +127,12 @@ class AnalyzeResponse(BaseModel):
     tags: List[str]
     summary: str
 
+class KnowledgeGap(BaseModel):
+    """Model for knowledge gap (unanswered query)"""
+    query: str
+    count: int
+    last_asked: datetime
+
 class DashboardMetricsResponse(BaseModel):
     """Response model for dashboard metrics"""
     total_knowledge: int
@@ -134,3 +140,4 @@ class DashboardMetricsResponse(BaseModel):
     verified_ratio: float
     query_volume_7d: int
     knowledge_gaps_7d: int
+    recent_gaps: List[KnowledgeGap] = Field(default_factory=list)

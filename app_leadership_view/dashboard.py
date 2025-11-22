@@ -86,6 +86,38 @@ def render_metrics():
                 help="Queries with 0 results in the last 7 days"
             )
             
+        # Knowledge Gaps Table
+        recent_gaps = metrics.get("recent_gaps", [])
+        if recent_gaps:
+            st.markdown("### 🚨 Knowledge Gaps (Needs Attention)")
+            st.caption("Top unanswered queries from the team")
+            
+            gap_data = []
+            for gap in recent_gaps:
+                timestamp = gap.get('last_asked', '')
+                try:
+                    dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+                    timestamp_str = dt.strftime('%Y-%m-%d %H:%M')
+                except:
+                    timestamp_str = timestamp
+                    
+                gap_data.append({
+                    "Query": gap.get('query', ''),
+                    "Frequency": gap.get('count', 0),
+                    "Last Asked": timestamp_str
+                })
+            
+            st.dataframe(
+                pd.DataFrame(gap_data),
+                column_config={
+                    "Query": st.column_config.TextColumn("Missing Topic", width="large"),
+                    "Frequency": st.column_config.NumberColumn("Attempts", width="small"),
+                    "Last Asked": st.column_config.TextColumn("Last Attempt", width="medium")
+                },
+                hide_index=True,
+                use_container_width=True
+            )
+            
     except Exception as e:
         st.error(f"Error rendering metrics: {e}")
 

@@ -261,12 +261,16 @@ async def get_dashboard_metrics(
         # 4. Get Query Stats (Volume & Gaps)
         query_stats = services["query_service"].get_query_stats(days=7)
         
+        # 5. Get Recent Knowledge Gaps
+        recent_gaps = services["query_service"].get_knowledge_gaps(limit=5)
+        
         return DashboardMetricsResponse(
             total_knowledge=total_knowledge,
             verified_count=verified_count,
             verified_ratio=round(verified_ratio, 1),
             query_volume_7d=query_stats["total_volume"],
-            knowledge_gaps_7d=query_stats["knowledge_gaps"]
+            knowledge_gaps_7d=query_stats["knowledge_gaps"],
+            recent_gaps=recent_gaps
         )
         
     except Exception as e:

@@ -344,3 +344,64 @@ class QueryService:
         except Exception as e:
             logger.error(f"Failed to calculate query stats: {e}")
             return stats
+
+    def get_knowledge_gaps(self, limit: int = 5) -> List[Dict[str, Any]]:
+        """
+        Get recent knowledge gaps (queries with 0 results)
+        Aggregates by query text to show most frequent gaps
+        
+        Args:
+            limit: Maximum number of gaps to return
+            
+        Returns:
+            List of knowledge gaps with query, count, and last_asked
+        """
+        gaps = {}
+        
+        if not os.path.exists(self.query_log_file):
+            return []
+            
+        try:
+            with open(self.query_log_file, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                        
+                    try:
+                        log = json.loads(line)
+                        
+                        # Check for knowledge gap (0 results)
+                        if log.get('result_count', 0) == 0:
+                            query_text = log.get('query_text', '').strip()
+                            timestamp_str = log.get('timestamp')
+                            
+                            if not query_text or not timestamp_str:
+                                continue
+                                
+                            if query_text in gaps:
+                                gaps[query_text]['count'] += 1
+                                # Update timestamp if newer
+                                if timestamp_str > gaps[query_text]['last_asked']:
+                                    gaps[query_text]['last_asked'] = timestamp_str
+                            else:
+                                gaps[query_text] = {
+                                    'query': query_text,
+                                    'count': 1,
+                                    'last_asked': timestamp_str
+                                }
+                                
+                    except json.JSONDecodeError:
+                        continue
+            
+            # Convert to list and sort
+            gap_list = list(gaps.values())
+            
+            # Sort by count (desc) then by last_asked (desc)
+            gap_list.sort(key=lambda x: (x['count'], x['last_asked']), reverse=True)
+            
+            return gap_list[:limit]
+            
+        except Exception as e:
+            logger.error(f"Failed to get knowledge gaps: {e}")
+            return []

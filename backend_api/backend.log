@@ -110,3 +110,118 @@ INFO:main:All services initialized successfully
 INFO:     Application startup complete.
 INFO:routes.api:Fetching dashboard metrics
 INFO:     127.0.0.1:51657 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:51711 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51713 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51714 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T20%3A51%3A16.071665&end_date=2025-11-21T20%3A51%3A16.071665 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51715 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:51720 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:51721 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:51722 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T20%3A51%3A26.221804&end_date=2025-11-21T20%3A51%3A26.221804 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:51724 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Analyzing content for URL: http://test.com
+INFO:routes.api:Found 3 similar verified entries for context
+INFO:     127.0.0.1:51743 - "POST /api/v1/analyze HTTP/1.1" 200 OK
+INFO:routes.api:Received manual ingestion request for URL: http://internal.wiki/printers
+INFO:services.vector_db:Added 1 knowledge entries to vector database
+INFO:     127.0.0.1:51749 - "POST /api/v1/ingest HTTP/1.1" 200 OK
+INFO:routes.api:Analyzing content for URL: http://test.com/new
+INFO:routes.api:Found 3 similar verified entries for context
+INFO:     127.0.0.1:51751 - "POST /api/v1/analyze HTTP/1.1" 200 OK
+INFO:routes.api:Deleting knowledge entry: 04a31d8a-056e-44d9-88f0-c2a9bd86f95a
+INFO:services.vector_db:Deleted entry 04a31d8a-056e-44d9-88f0-c2a9bd86f95a from vector database
+INFO:     127.0.0.1:51753 - "DELETE /api/v1/knowledge/04a31d8a-056e-44d9-88f0-c2a9bd86f95a HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'services/query_service.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [57771]
+INFO:     Started server process [58749]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized successfully
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'models/schemas.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [58749]
+INFO:     Started server process [58758]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized successfully
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'routes/api.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [58758]
+INFO:     Started server process [58765]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized successfully
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+INFO:routes.api:Querying knowledge base: how to teleport to mars...
+INFO:services.query_service:Processing query 8cbb7da7-80fb-40dc-b171-321a7188b88e: how to teleport to mars... (verified_only=False)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.1 (total results: 3)
+INFO:services.query_service:Query 8cbb7da7-80fb-40dc-b171-321a7188b88e completed: 0 matches in 294ms
+INFO:     127.0.0.1:51873 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
+INFO:routes.api:Querying knowledge base: how to teleport to mars...
+INFO:services.query_service:Processing query 125ab061-13f3-40b6-9a5e-eaa7b4ef934e: how to teleport to mars... (verified_only=False)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.1 (total results: 3)
+INFO:services.query_service:Query 125ab061-13f3-40b6-9a5e-eaa7b4ef934e completed: 0 matches in 268ms
+INFO:     127.0.0.1:51877 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
+INFO:routes.api:Querying knowledge base: how to teleport to mars...
+INFO:services.query_service:Processing query 6577bac3-308f-45cb-8c01-82c1f465bb75: how to teleport to mars... (verified_only=False)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.1 (total results: 3)
+INFO:services.query_service:Query 6577bac3-308f-45cb-8c01-82c1f465bb75 completed: 0 matches in 213ms
+INFO:     127.0.0.1:51880 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
+INFO:routes.api:Querying knowledge base: recipe for invisibility potion...
+INFO:services.query_service:Processing query 7086d7f7-cf91-488d-9af0-dc2d4eb49807: recipe for invisibility potion... (verified_only=False)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.1 (total results: 3)
+INFO:services.query_service:Query 7086d7f7-cf91-488d-9af0-dc2d4eb49807 completed: 0 matches in 199ms
+INFO:     127.0.0.1:51882 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
+INFO:routes.api:Querying knowledge base: recipe for invisibility potion...
+INFO:services.query_service:Processing query 96b128c0-b8a1-4ece-8a24-916c26185262: recipe for invisibility potion... (verified_only=False)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.1 (total results: 3)
+INFO:services.query_service:Query 96b128c0-b8a1-4ece-8a24-916c26185262 completed: 0 matches in 195ms
+INFO:     127.0.0.1:51884 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:51886 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
