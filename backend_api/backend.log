@@ -1,104 +1,12 @@
 INFO:     Will watch for changes in these directories: ['/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api']
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [57042] using WatchFiles
-Process SpawnProcess-1:
-Traceback (most recent call last):
-  File "/opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
-    self.run()
-    ~~~~~~~~^^
-  File "/opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.13/site-packages/uvicorn/_subprocess.py", line 80, in subprocess_started
-    target(sockets=sockets)
-    ~~~~~~^^^^^^^^^^^^^^^^^
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.13/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
-  File "/opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
-    return runner.run(main)
-           ~~~~~~~~~~^^^^^^
-  File "/opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.13/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.13/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-    ~~~~~~~~~~~^^
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.13/site-packages/uvicorn/config.py", line 439, in load
-    self.loaded_app = import_from_string(self.app)
-                      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.13/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py", line 88, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
-  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/main.py", line 17, in <module>
-    from routes import api
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/routes/api.py", line 236
-    detail=f"Failed to fetch metrics: {str(e)}"
-IndentationError: unexpected indent
-WARNING:  WatchFiles detected changes in 'routes/api.py'. Reloading...
-Process SpawnProcess-2:
-Traceback (most recent call last):
-  File "/opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
-    self.run()
-    ~~~~~~~~^^
-  File "/opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.13/site-packages/uvicorn/_subprocess.py", line 80, in subprocess_started
-    target(sockets=sockets)
-    ~~~~~~^^^^^^^^^^^^^^^^^
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.13/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
-  File "/opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
-    return runner.run(main)
-           ~~~~~~~~~~^^^^^^
-  File "/opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.13/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.13/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-    ~~~~~~~~~~~^^
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.13/site-packages/uvicorn/config.py", line 439, in load
-    self.loaded_app = import_from_string(self.app)
-                      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.13/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py", line 88, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
-  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/main.py", line 17, in <module>
-    from routes import api
-  File "/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/routes/api.py", line 9, in <module>
-    from models.schemas import (
-    ...<12 lines>...
-    )
-ImportError: cannot import name 'AnalyzeResponse' from 'models.schemas' (/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/models/schemas.py)
-WARNING:  WatchFiles detected changes in 'models/schemas.py'. Reloading...
-INFO:     Started server process [57771]
+INFO:     Started reloader process [60410] using WatchFiles
+INFO:     Started server process [60511]
 INFO:     Waiting for application startup.
 INFO:main:Knowledge-Weaver API starting up...
 INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
-INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
-INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 17 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 17, 'name': 'knowledge_base'}
 INFO:services.gemini_client:GeminiClient initialized successfully
 INFO:main:Gemini Client initialized
 INFO:services.anonymizer:AnonymizerService initialized
@@ -109,119 +17,34 @@ INFO:main:Query Service initialized
 INFO:main:All services initialized successfully
 INFO:     Application startup complete.
 INFO:routes.api:Fetching dashboard metrics
-INFO:     127.0.0.1:51657 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
-INFO:routes.api:Fetching dashboard metrics
-INFO:     127.0.0.1:51711 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52227 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
 INFO:routes.api:Fetching recent knowledge (limit: 10)
-INFO:     127.0.0.1:51713 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52228 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
 INFO:routes.api:Fetching query metrics (limit: 1000)
-INFO:     127.0.0.1:51714 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T20%3A51%3A16.071665&end_date=2025-11-21T20%3A51%3A16.071665 HTTP/1.1" 200 OK
-INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
-INFO:     127.0.0.1:51715 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52229 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T21%3A41%3A10.647271&end_date=2025-11-21T21%3A41%3A10.647271 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 17, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52231 - "GET /api/v1/health HTTP/1.1" 200 OK
 INFO:routes.api:Fetching dashboard metrics
-INFO:     127.0.0.1:51720 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52307 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
 INFO:routes.api:Fetching recent knowledge (limit: 10)
-INFO:     127.0.0.1:51721 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52308 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
 INFO:routes.api:Fetching query metrics (limit: 1000)
-INFO:     127.0.0.1:51722 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T20%3A51%3A26.221804&end_date=2025-11-21T20%3A51%3A26.221804 HTTP/1.1" 200 OK
-INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
-INFO:     127.0.0.1:51724 - "GET /api/v1/health HTTP/1.1" 200 OK
-INFO:routes.api:Analyzing content for URL: http://test.com
-INFO:routes.api:Found 3 similar verified entries for context
-INFO:     127.0.0.1:51743 - "POST /api/v1/analyze HTTP/1.1" 200 OK
-INFO:routes.api:Received manual ingestion request for URL: http://internal.wiki/printers
-INFO:services.vector_db:Added 1 knowledge entries to vector database
-INFO:     127.0.0.1:51749 - "POST /api/v1/ingest HTTP/1.1" 200 OK
-INFO:routes.api:Analyzing content for URL: http://test.com/new
-INFO:routes.api:Found 3 similar verified entries for context
-INFO:     127.0.0.1:51751 - "POST /api/v1/analyze HTTP/1.1" 200 OK
-INFO:routes.api:Deleting knowledge entry: 04a31d8a-056e-44d9-88f0-c2a9bd86f95a
-INFO:services.vector_db:Deleted entry 04a31d8a-056e-44d9-88f0-c2a9bd86f95a from vector database
-INFO:     127.0.0.1:51753 - "DELETE /api/v1/knowledge/04a31d8a-056e-44d9-88f0-c2a9bd86f95a HTTP/1.1" 200 OK
-WARNING:  WatchFiles detected changes in 'services/query_service.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [57771]
-INFO:     Started server process [58749]
-INFO:     Waiting for application startup.
-INFO:main:Knowledge-Weaver API starting up...
-INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
-INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
-INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
-INFO:services.gemini_client:GeminiClient initialized successfully
-INFO:main:Gemini Client initialized
-INFO:services.anonymizer:AnonymizerService initialized
-INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
-INFO:main:Chat Processor initialized
-INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
-INFO:main:Query Service initialized
-INFO:main:All services initialized successfully
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'models/schemas.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [58749]
-INFO:     Started server process [58758]
-INFO:     Waiting for application startup.
-INFO:main:Knowledge-Weaver API starting up...
-INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
-INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
-INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
-INFO:services.gemini_client:GeminiClient initialized successfully
-INFO:main:Gemini Client initialized
-INFO:services.anonymizer:AnonymizerService initialized
-INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
-INFO:main:Chat Processor initialized
-INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
-INFO:main:Query Service initialized
-INFO:main:All services initialized successfully
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'routes/api.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [58758]
-INFO:     Started server process [58765]
-INFO:     Waiting for application startup.
-INFO:main:Knowledge-Weaver API starting up...
-INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
-INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
-INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
-INFO:services.gemini_client:GeminiClient initialized successfully
-INFO:main:Gemini Client initialized
-INFO:services.anonymizer:AnonymizerService initialized
-INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
-INFO:main:Chat Processor initialized
-INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
-INFO:main:Query Service initialized
-INFO:main:All services initialized successfully
-INFO:     Application startup complete.
-INFO:routes.api:Querying knowledge base: how to teleport to mars...
-INFO:services.query_service:Processing query 8cbb7da7-80fb-40dc-b171-321a7188b88e: how to teleport to mars... (verified_only=False)
-INFO:services.vector_db:Search returned 0 matches above threshold 0.1 (total results: 3)
-INFO:services.query_service:Query 8cbb7da7-80fb-40dc-b171-321a7188b88e completed: 0 matches in 294ms
-INFO:     127.0.0.1:51873 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
-INFO:routes.api:Querying knowledge base: how to teleport to mars...
-INFO:services.query_service:Processing query 125ab061-13f3-40b6-9a5e-eaa7b4ef934e: how to teleport to mars... (verified_only=False)
-INFO:services.vector_db:Search returned 0 matches above threshold 0.1 (total results: 3)
-INFO:services.query_service:Query 125ab061-13f3-40b6-9a5e-eaa7b4ef934e completed: 0 matches in 268ms
-INFO:     127.0.0.1:51877 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
-INFO:routes.api:Querying knowledge base: how to teleport to mars...
-INFO:services.query_service:Processing query 6577bac3-308f-45cb-8c01-82c1f465bb75: how to teleport to mars... (verified_only=False)
-INFO:services.vector_db:Search returned 0 matches above threshold 0.1 (total results: 3)
-INFO:services.query_service:Query 6577bac3-308f-45cb-8c01-82c1f465bb75 completed: 0 matches in 213ms
-INFO:     127.0.0.1:51880 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
-INFO:routes.api:Querying knowledge base: recipe for invisibility potion...
-INFO:services.query_service:Processing query 7086d7f7-cf91-488d-9af0-dc2d4eb49807: recipe for invisibility potion... (verified_only=False)
-INFO:services.vector_db:Search returned 0 matches above threshold 0.1 (total results: 3)
-INFO:services.query_service:Query 7086d7f7-cf91-488d-9af0-dc2d4eb49807 completed: 0 matches in 199ms
-INFO:     127.0.0.1:51882 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
-INFO:routes.api:Querying knowledge base: recipe for invisibility potion...
-INFO:services.query_service:Processing query 96b128c0-b8a1-4ece-8a24-916c26185262: recipe for invisibility potion... (verified_only=False)
-INFO:services.vector_db:Search returned 0 matches above threshold 0.1 (total results: 3)
-INFO:services.query_service:Query 96b128c0-b8a1-4ece-8a24-916c26185262 completed: 0 matches in 195ms
-INFO:     127.0.0.1:51884 - "POST /api/v1/knowledge/query HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52310 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T21%3A50%3A41.182775&end_date=2025-11-21T21%3A50%3A41.182775 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 17, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52311 - "GET /api/v1/health HTTP/1.1" 200 OK
 INFO:routes.api:Fetching dashboard metrics
-INFO:     127.0.0.1:51886 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52320 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:52321 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:52322 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T21%3A50%3A47.348351&end_date=2025-11-21T21%3A50%3A47.348351 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 17, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52323 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:     127.0.0.1:52326 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:52327 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:52328 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T21%3A50%3A51.136765&end_date=2025-11-21T21%3A50%3A51.136765 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 17, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:52329 - "GET /api/v1/health HTTP/1.1" 200 OK

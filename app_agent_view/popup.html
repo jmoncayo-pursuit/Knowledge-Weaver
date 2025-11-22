@@ -23,7 +23,7 @@
         <main>
             <div id="askTab" class="tab-content active">
                 <div class="search-section">
-                    <textarea id="queryInput"
+                    <textarea id="queryInput" data-testid="search-input"
                         placeholder="Ask a question about policies, procedures, or past decisions..."
                         rows="3"></textarea>
                     <div id="quick-test-chips" class="chips-container"></div>
@@ -33,7 +33,8 @@
                             <span class="checkmark"></span>
                             Verified Only
                         </label>
-                        <button id="searchBtn" class="primary-btn">Search Knowledge Base</button>
+                        <button id="searchBtn" class="primary-btn" data-testid="search-btn">Search Knowledge
+                            Base</button>
                     </div>
                 </div>
 
@@ -69,24 +70,28 @@
 
                     <div class="action-buttons">
                         <button id="screenshotBtn" class="secondary-btn">Attach Screenshot</button>
-                        <button id="ingestBtn" class="primary-btn">Analyze Content</button>
+                        <button id="ingestBtn" class="primary-btn" data-testid="analyze-btn">Analyze Content</button>
                     </div>
 
                     <div id="reviewSection" class="review-section hidden">
                         <h3>Review & Confirm</h3>
                         <div class="form-group">
                             <label for="categoryInput">Category</label>
-                            <input type="text" id="categoryInput" placeholder="e.g., Policy, Procedure">
+                            <input type="text" id="categoryInput" data-testid="category-input"
+                                placeholder="e.g., Policy, Procedure">
                         </div>
                         <div class="form-group">
                             <label for="tagsInput">Tags (comma separated)</label>
-                            <input type="text" id="tagsInput" placeholder="e.g., hr, remote-work, benefits">
+                            <input type="text" id="tagsInput" data-testid="tags-input"
+                                placeholder="e.g., hr, remote-work, benefits">
                         </div>
                         <div class="form-group">
                             <label for="summaryInput">Summary</label>
-                            <textarea id="summaryInput" rows="3" placeholder="Brief summary of the content"></textarea>
+                            <textarea id="summaryInput" data-testid="summary-input" rows="3"
+                                placeholder="Brief summary of the content"></textarea>
                         </div>
-                        <button id="confirmBtn" class="primary-btn success-btn">Confirm & Save</button>
+                        <button id="confirmBtn" class="primary-btn success-btn" data-testid="confirm-ingest-btn">Confirm
+                            & Save</button>
                     </div>
                 </div>
             </div>

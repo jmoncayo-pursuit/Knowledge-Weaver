@@ -129,7 +129,17 @@ def render_metrics():
             
             with col_action:
                 st.markdown("#### Bridge the Gap")
-                selected_gap_str = st.selectbox("Select a gap to answer:", options=gap_options)
+                
+                # Initialize session state for gap selection
+                if 'selected_gap_index' not in st.session_state:
+                    st.session_state.selected_gap_index = 0
+                
+                selected_gap_str = st.selectbox(
+                    "Select a gap to answer:", 
+                    options=gap_options,
+                    index=st.session_state.selected_gap_index,
+                    key="gap_selector"
+                )
                 
                 if selected_gap_str != "Select a gap to answer...":
                     # Extract query from selection string
@@ -150,6 +160,8 @@ def render_metrics():
                                 tags=["#KnowledgeGapFilled"],
                                 summary=selected_query # Use the query as the summary/title
                             ):
+                                # Reset the selection to default
+                                st.session_state.selected_gap_index = 0
                                 st.success("Answer submitted and verified! 🚀")
                                 time.sleep(1.5)
                                 st.rerun()
