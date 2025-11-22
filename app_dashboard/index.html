@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge-Weaver Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕷️</text></svg>">
+</head>
+
+<body>
+    <header>
+        <div class="logo-container">
+            <span class="logo-icon">🕷️</span>
+            <h1>Knowledge-Weaver</h1>
+        </div>
+        <div class="header-controls">
+            <span class="status-badge" data-testid="connection-status">Connecting...</span>
+        </div>
+    </header>
+
+    <main>
+        <!-- Metrics Section -->
+        <section class="metrics-grid" aria-label="Dashboard Metrics">
+            <div class="metric-card" data-testid="metric-total-knowledge">
+                <h3>Total Knowledge</h3>
+                <div class="value">--</div>
+            </div>
+            <div class="metric-card" data-testid="metric-verified-ratio">
+                <h3>Verified Ratio</h3>
+                <div class="value">--%</div>
+            </div>
+            <div class="metric-card" data-testid="metric-query-volume">
+                <h3>Query Volume (7d)</h3>
+                <div class="value">--</div>
+            </div>
+            <div class="metric-card" data-testid="metric-knowledge-gaps">
+                <h3>Knowledge Gaps (7d)</h3>
+                <div class="value">--</div>
+            </div>
+        </section>
+
+        <!-- Bridge the Gap Section -->
+        <section class="dashboard-section" aria-label="Bridge the Gap">
+            <div class="section-header">
+                <h2>Bridge the Gap</h2>
+                <p>Identify and resolve missing knowledge topics.</p>
+            </div>
+
+            <div class="gap-workflow">
+                <div class="gap-list-container">
+                    <h3>Missing Topics</h3>
+                    <div class="gap-list" id="gap-list" data-testid="gap-list">
+                        <!-- Gaps will be injected here -->
+                        <div class="loading-spinner">Loading gaps...</div>
+                    </div>
+                </div>
+
+                <div class="gap-action-container">
+                    <h3>Provide Answer</h3>
+                    <form id="gap-answer-form" data-testid="gap-answer-form">
+                        <div class="selected-gap-display" id="selected-gap-display" data-testid="selected-gap-display">
+                            Select a gap to answer...
+                        </div>
+                        <input type="hidden" id="selected-gap-query">
+
+                        <div class="form-group">
+                            <label for="answer-content">Answer Content</label>
+                            <textarea id="answer-content" name="answer-content" rows="6"
+                                placeholder="Type the verified answer here..." data-testid="answer-input"
+                                disabled></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary" data-testid="submit-answer-btn" disabled>
+                                Submit Answer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Knowledge Base Section -->
+        <section class="dashboard-section" aria-label="Knowledge Base">
+            <div class="section-header">
+                <h2>Recent Knowledge</h2>
+                <button class="btn-secondary" id="refresh-knowledge-btn"
+                    data-testid="refresh-knowledge-btn">Refresh</button>
+            </div>
+
+            <div class="table-container">
+                <table class="knowledge-table" data-testid="knowledge-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Content/Summary</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="knowledge-table-body">
+                        <!-- Rows injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -257,6 +257,31 @@ class APIClient:
             
             result = self._make_request("POST", "/api/v1/ingest", json_data=payload)
             return result.get("status") == "success"
-        except Exception as e:
             print(f"Error ingesting knowledge: {e}")
+            return False
+
+    def log_barrier(self, selector: str, error: str) -> bool:
+        """
+        Log a robot barrier event
+        
+        Args:
+            selector: UI element selector
+            error: Error description
+            
+        Returns:
+            True if logged successfully
+        """
+        try:
+            payload = {
+                "url": "dashboard",
+                "selector": selector,
+                "error": error,
+                "agent": "Antigravity Dashboard",
+                "timestamp": datetime.utcnow().isoformat()
+            }
+            
+            result = self._make_request("POST", "/api/v1/log/barrier", json_data=payload)
+            return result.get("status") == "success"
+        except Exception as e:
+            print(f"Error logging barrier: {e}")
             return False

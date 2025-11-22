@@ -141,3 +141,12 @@ class DashboardMetricsResponse(BaseModel):
     query_volume_7d: int
     knowledge_gaps_7d: int
     recent_gaps: List[KnowledgeGap] = Field(default_factory=list)
+
+
+class BarrierLogRequest(BaseModel):
+    """Request model for logging robot barriers"""
+    url: str
+    selector: str
+    error: str
+    agent: str = "Antigravity"
+    timestamp: Optional[datetime] = Field(default_factory=datetime.utcnow)

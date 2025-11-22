@@ -9,123 +9,29 @@
   $ xcode-select --install
   $ pip install watchdog
             
-2025-11-22 15:37:45.835 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:37:46.057 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:37:46.398 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:37:48.077 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:37:48.097 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:37:48.172 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:38:17.376 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:38:17.426 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:38:17.500 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:38:37.743 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:38:37.774 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:38:37.815 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:38:44.343 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:38:44.389 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 15:38:44.543 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 16:21:01.672 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 16:21:01.683 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 16:21:01.704 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 16:21:06.700 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 16:21:06.710 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 16:21:06.726 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 16:21:56.679 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 16:21:56.688 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
-2025-11-22 16:21:56.707 Please replace `use_container_width` with `width`.
-
-`use_container_width` will be removed after 2025-12-31.
-
-For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.1[0m [31m [0m
+[31m [0m [2m3/site-packages/streamlit/runtime/scriptrunner/[0m[1mexec_code.py[0m:129 in                   [31m [0m
+[31m [0m exec_func_with_error_handling                                                        [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/venv/lib/python3.1[0m [31m [0m
+[31m [0m [2m3/site-packages/streamlit/runtime/scriptrunner/[0m[1mscript_runner.py[0m:669 in code_to_exec  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/app_leadership_vie[0m [31m [0m
+[31m [0m [2mw/[0m[1mdashboard.py[0m:12 in <module>                                                        [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m  9 [0m[94mfrom[0m[90m [0m[4;96mdatetime[0m[90m [0m[94mimport[0m datetime, timedelta                                       [31m [0m
+[31m [0m   [2m 10 [0m[94mimport[0m[90m [0m[4;96mtime[0m                                                                    [31m [0m
+[31m [0m   [2m 11 [0m                                                                               [31m [0m
+[31m [0m [31m❱ [0m 12 [1;4;94mfrom[0m[1;4;90m [0m[1;4;96mapi_client[0m[1;4;90m [0m[1;4;94mimport[0m[1;4m APIClient[0m                                               [31m [0m
+[31m [0m   [2m 13 [0m                                                                               [31m [0m
+[31m [0m   [2m 14 [0m[2m# Page configuration[0m                                                           [31m [0m
+[31m [0m   [2m 15 [0mst.set_page_config(                                                            [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[91m────────────────────────────────────────────────────────────────────────────────────────[0m
+[91m [0m [2m /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/app_leadership_vi[0m [91m [0m
+[91m [0m [2mew/[0m[1mapi_client.py[0m[1m:[0m[1m263[0m                                                                 [91m [0m
+[91m [0m     def [1;35mlog_barrier[0m[1m([0mself, selector: str, error: str[1m)[0m -> bool:                        [91m [0m
+[91m [0m    [1;91m▲[0m                                                                                 [91m [0m
+[91m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mSyntaxError: [0mexpected [32m'except'[0m or [32m'finally'[0m block

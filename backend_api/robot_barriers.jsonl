@@ -1,0 +1,1 @@
+{"url": "http://test.com", "selector": "#missing-button", "error": "Element not found", "agent": "Curl Test", "timestamp": "2025-11-22T21:45:32.559462"}

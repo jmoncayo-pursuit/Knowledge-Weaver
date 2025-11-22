@@ -18,8 +18,13 @@ from models.schemas import (
     UpdateKnowledgeRequest,
     AnalyzeResponse,
     DashboardMetricsResponse,
-    HealthResponse
+    AnalyzeResponse,
+    DashboardMetricsResponse,
+    HealthResponse,
+    BarrierLogRequest
 )
+import json
+import os
 from auth import verify_api_key
 from services.vector_db import VectorDatabase
 from services.gemini_client import GeminiClient
@@ -574,4 +579,39 @@ async def analyze_content(
                 "status": "error",
                 "message": f"Analysis failed: {str(e)}"
             }
+        )
+
+@router.post("/log/barrier")
+async def log_robot_barrier(
+    request: BarrierLogRequest,
+    api_key: str = Depends(verify_api_key)
+):
+    """
+    Log a robot barrier event (UI element not found/clickable)
+    """
+    try:
+        # Use absolute path for log file
+        backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        log_file = os.path.join(backend_dir, 'robot_barriers.jsonl')
+        
+        log_entry = request.dict()
+        log_entry['timestamp'] = log_entry['timestamp'].isoformat()
+        
+        with open(log_file, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(log_entry) + '\n')
+            f.flush()
+            os.fsync(f.fileno())
+            
+        logger.info(f"Logged robot barrier: {request.error} at {request.selector}")
+        
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={"status": "success", "message": "Barrier logged"}
+        )
+        
+    except Exception as e:
+        logger.error(f"Failed to log barrier: {e}", exc_info=True)
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={"status": "error", "message": str(e)}
         )

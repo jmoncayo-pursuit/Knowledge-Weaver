@@ -12,7 +12,8 @@ The system uses a "Frankenstein" architecture, stitching together powerful compo
 graph TD
     subgraph "Frontend Layer"
         CE[Chrome Extension] -->|Capture & Search| API
-        DB[Streamlit Dashboard] -->|Manage & Verify| API
+        CE[Chrome Extension] -->|Capture & Search| API
+        DB[AI-Native HTML/JS Dashboard] -->|Manage & Verify| API
     end
 
     subgraph "Backend Layer"
@@ -32,12 +33,13 @@ graph TD
     style VDB fill:#fdd,stroke:#333,stroke-width:2px
 ```
 
-The system is styled with a **Custom Dark Theme** (configured in `.streamlit/config.toml`) to ensure a premium, consistent look across all components.
+The system is styled with a **Custom Dark Theme** (Spider Theme) to ensure a premium, consistent look across all components.
 
 ## 🤖 AI-Native Design
 
 Knowledge-Weaver is built to be **Robot-Accessible** by design.
 - **Stable Selectors**: All critical UI elements use `data-testid` attributes or stable keys, allowing AI agents (like the one building this!) to reliably navigate, test, and interact with the application.
+- **Barrier Logging**: If an automated agent encounters a UI failure, the system logs it to `robot_barriers.jsonl`, enabling self-healing workflows.
 - **Self-Verification**: The system includes automated verification scripts (`verify_roles.py`, `verify_recycle_bin.py`) that simulate user actions to ensure integrity.
 
 ## Key Features
@@ -78,5 +80,5 @@ Mistakes happen.
 
 ### Running the System
 1. **Backend**: `uvicorn backend_api.main:app --reload`
-2. **Dashboard**: `streamlit run app_leadership_view/dashboard.py`
+2. **Dashboard**: Open `app_dashboard/index.html` in any browser (Served via FastAPI CORS).
 3. **Extension**: Load `app_extension` as an unpacked extension in Chrome.
