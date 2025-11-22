@@ -122,23 +122,63 @@ st.markdown("---")
 st.subheader("Recent Knowledge Ingestions")
 
 try:
-    recent_entries = api_client.fetch_recent_knowledge(limit=5)
+    recent_entries = api_client.fetch_recent_knowledge(limit=10)
     
     if recent_entries:
-        # Process entries for display
-        display_entries = []
+        # Header
+        col1, col2, col3, col4, col5 = st.columns([3, 2, 2, 2, 1])
+        col1.markdown("**Content**")
+        col2.markdown("**Category**")
+        col3.markdown("**Tags**")
+        col4.markdown("**Timestamp**")
+        col5.markdown("**Action**")
+        
+        st.markdown("---")
+        
         for entry in recent_entries:
             metadata = entry.get('metadata', {})
-            display_entries.append({
-                'Content': entry.get('document', '')[:100] + "..." if len(entry.get('document', '')) > 100 else entry.get('document', ''),
-                'Category': metadata.get('category', 'Uncategorized'),
-                'Tags': metadata.get('tags', ''),
-                'Source': metadata.get('url', 'Unknown'),
-                'Timestamp': metadata.get('timestamp', '')
-            })
+            entry_id = entry.get('id')
             
-        df_recent = pd.DataFrame(display_entries)
-        st.dataframe(df_recent, use_container_width=True, hide_index=True)
+            col1, col2, col3, col4, col5 = st.columns([3, 2, 2, 2, 1])
+            
+            content = entry.get('document', '')
+            short_content = content[:50] + "..." if len(content) > 50 else content
+            
+            col1.text(short_content)
+            col1.caption(metadata.get('url', 'Unknown Source'))
+            
+            col2.text(metadata.get('category', 'Uncategorized'))
+            
+            tags = metadata.get('tags', '')
+            if tags:
+                # Display tags as chips
+                tags_list = tags.split(',')[:3] # Show max 3 tags
+                col3.caption(", ".join(tags_list))
+            else:
+                col3.text("-")
+                
+            timestamp = metadata.get('timestamp', '')
+            if timestamp:
+                try:
+                    # Format timestamp nicely
+                    dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+                    col4.text(dt.strftime('%Y-%m-%d %H:%M'))
+                except:
+                    col4.text(timestamp)
+            else:
+                col4.text("-")
+            
+            # Delete button
+            if col5.button("🗑️", key=f"del_{entry_id}", help="Delete this entry"):
+                if api_client.delete_knowledge_entry(entry_id):
+                    st.success("Deleted!")
+                    time.sleep(0.5)
+                    st.rerun()
+                else:
+                    st.error("Failed to delete")
+            
+            st.markdown("---")
+            
     else:
         st.info("No recent knowledge entries found")
         

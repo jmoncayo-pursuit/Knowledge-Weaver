@@ -178,3 +178,20 @@ class APIClient:
         except Exception as e:
             logger.error(f"Failed to fetch recent knowledge: {e}")
             return []
+
+    def delete_knowledge_entry(self, entry_id: str) -> bool:
+        """
+        Delete a knowledge entry
+        
+        Args:
+            entry_id: ID of the entry to delete
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            result = self._make_request("DELETE", f"/api/v1/knowledge/{entry_id}")
+            return result.get("status") == "success"
+        except Exception as e:
+            logger.error(f"Failed to delete entry {entry_id}: {e}")
+            return False

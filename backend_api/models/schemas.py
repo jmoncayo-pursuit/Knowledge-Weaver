@@ -83,6 +83,7 @@ class ProcessingResult(BaseModel):
 class QueryRequest(BaseModel):
     """Request schema for knowledge base queries"""
     query: str = Field(min_length=1, description="Natural language query")
+    verified_only: bool = Field(default=False, description="Filter for verified content only")
 
 
 class ErrorResponse(BaseModel):

@@ -79,7 +79,8 @@ class VectorDatabase:
         self,
         query_embedding: List[float],
         top_k: int = 3,
-        threshold: float = 0.1
+        threshold: float = 0.1,
+        verified_only: bool = False
     ) -> List[Dict[str, Any]]:
         """
         Search for similar knowledge entries using vector similarity
@@ -88,6 +89,7 @@ class VectorDatabase:
             query_embedding: Query vector embedding
             top_k: Number of top results to return (default: 3)
             threshold: Minimum similarity score threshold (default: 0.5)
+            verified_only: If True, return only verified content
         
         Returns:
             List of matching knowledge entries with metadata and similarity scores
@@ -96,10 +98,17 @@ class VectorDatabase:
             raise RuntimeError("Collection not initialized. Call initialize() first.")
         
         try:
-            results = self.collection.query(
-                query_embeddings=[query_embedding],
-                n_results=top_k
-            )
+            # Prepare query arguments
+            query_args = {
+                "query_embeddings": [query_embedding],
+                "n_results": top_k
+            }
+            
+            # Add filter if verified_only is True
+            if verified_only:
+                query_args["where"] = {"verification_status": "verified_human"}
+            
+            results = self.collection.query(**query_args)
             
             # Filter results by similarity threshold
             # ChromaDB returns distances, convert to similarity scores (1 - distance)
@@ -180,10 +189,11 @@ class VectorDatabase:
             return []
             
         try:
-            # Fetch more than limit to ensure we get recent ones after sorting
+            # Fetch more to ensure we get recent ones after sorting
             # ChromaDB doesn't support server-side sorting by metadata yet
+            # We fetch a larger batch to increase chance of getting recent ones
             results = self.collection.get(
-                limit=limit * 2,
+                limit=100,  # Increased from limit * 2
                 include=['documents', 'metadatas']
             )
             
@@ -207,3 +217,76 @@ class VectorDatabase:
         except Exception as e:
             logger.error(f"Failed to get recent entries: {e}")
             return []
+
+    def find_similar_verified(
+        self,
+        query_embedding: List[float],
+        n: int = 3,
+        threshold: float = 0.1
+    ) -> List[Dict[str, Any]]:
+        """
+        Find similar verified knowledge entries to serve as few-shot examples
+        
+        Args:
+            query_embedding: Query vector embedding
+            n: Number of results to return
+            threshold: Minimum similarity score
+            
+        Returns:
+            List of verified knowledge entries
+        """
+        if not self.collection:
+            return []
+            
+        try:
+            # Query specifically for verified entries
+            # Note: ChromaDB filtering happens before vector search in some versions,
+            # but we'll use the where clause to be safe
+            results = self.collection.query(
+                query_embeddings=[query_embedding],
+                n_results=n * 2,  # Fetch more to filter
+                where={"verification_status": "verified_human"}
+            )
+            
+            matches = []
+            if results['ids'] and len(results['ids'][0]) > 0:
+                for i in range(len(results['ids'][0])):
+                    distance = results['distances'][0][i]
+                    similarity_score = 1 - distance
+                    
+                    if similarity_score >= threshold:
+                        matches.append({
+                            'document': results['documents'][0][i],
+                            'metadata': results['metadatas'][0][i],
+                            'similarity_score': similarity_score
+                        })
+            
+            # Sort by similarity
+            matches.sort(key=lambda x: x['similarity_score'], reverse=True)
+            
+            return matches[:n]
+            
+        except Exception as e:
+            logger.error(f"Failed to find similar verified entries: {e}")
+            return []
+
+    def delete_entry(self, entry_id: str) -> bool:
+        """
+        Delete a knowledge entry by ID
+        
+        Args:
+            entry_id: ID of the entry to delete
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        if not self.collection:
+            return False
+            
+        try:
+            self.collection.delete(ids=[entry_id])
+            logger.info(f"Deleted entry {entry_id} from vector database")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to delete entry {entry_id}: {e}")
+            return False

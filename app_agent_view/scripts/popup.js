@@ -298,8 +298,11 @@ async function handleSearch() {
         try {
             console.log('Querying knowledge base:', query);
 
+            // Get verified only setting
+            const verifiedOnly = document.getElementById('verifiedOnly').checked;
+
             // Query the knowledge base
-            const result = await apiClient.queryKnowledgeBase(query);
+            const result = await apiClient.queryKnowledgeBase(query, verifiedOnly);
             console.log('Query result:', result);
 
             // Hide loading

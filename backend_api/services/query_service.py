@@ -35,12 +35,13 @@ class QueryService:
         self.query_log_file = os.path.join(backend_dir, 'query_log.jsonl')
         logger.info(f"QueryService initialized, query log file: {self.query_log_file}")
     
-    def query_knowledge_base(self, query: str) -> QueryResult:
+    def query_knowledge_base(self, query: str, verified_only: bool = False) -> QueryResult:
         """
         Query the knowledge base with natural language
         
         Args:
             query: Natural language query string
+            verified_only: If True, return only verified content
         
         Returns:
             QueryResult with matching knowledge entries and metadata
@@ -51,14 +52,14 @@ class QueryService:
         query_id = str(uuid.uuid4())
         start_time = time.time()
         
-        logger.info(f"Processing query {query_id}: {query[:100]}...")
+        logger.info(f"Processing query {query_id}: {query[:100]}... (verified_only={verified_only})")
         
         try:
             # Step 1: Generate query embedding
             query_embedding = self._generate_query_embedding(query)
             
             # Step 2: Search similar knowledge in Vector Database
-            matches = self._search_similar_knowledge(query_embedding)
+            matches = self._search_similar_knowledge(query_embedding, verified_only=verified_only)
             
             # Step 3: Convert matches to KnowledgeMatch objects
             knowledge_matches = self._format_matches(matches)
@@ -116,7 +117,8 @@ class QueryService:
     def _search_similar_knowledge(
         self,
         embedding: List[float],
-        threshold: float = 0.1
+        threshold: float = 0.1,
+        verified_only: bool = False
     ) -> List[Dict[str, Any]]:
         """
         Search for similar knowledge entries using vector similarity
@@ -124,6 +126,7 @@ class QueryService:
         Args:
             embedding: Query embedding vector
             threshold: Minimum similarity score threshold (default: 0.1)
+            verified_only: If True, return only verified content
         
         Returns:
             List of matching knowledge entries with metadata
@@ -132,7 +135,8 @@ class QueryService:
             matches = self.vector_db.search(
                 query_embedding=embedding,
                 top_k=3,
-                threshold=threshold
+                threshold=threshold,
+                verified_only=verified_only
             )
             
             logger.debug(f"Found {len(matches)} matches above threshold {threshold}")

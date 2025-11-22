@@ -1,12 +1,12 @@
 INFO:     Will watch for changes in these directories: ['/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api']
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [45848] using WatchFiles
-INFO:     Started server process [46081]
+INFO:     Started reloader process [51748] using WatchFiles
+INFO:     Started server process [51848]
 INFO:     Waiting for application startup.
 INFO:main:Knowledge-Weaver API starting up...
 INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
-INFO:services.vector_db:Collection 'knowledge_base' initialized with 11 entries
-INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 11, 'name': 'knowledge_base'}
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 16 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
 INFO:services.gemini_client:GeminiClient initialized successfully
 INFO:main:Gemini Client initialized
 INFO:services.anonymizer:AnonymizerService initialized
@@ -17,12 +17,26 @@ INFO:main:Query Service initialized
 INFO:main:All services initialized successfully
 INFO:     Application startup complete.
 INFO:routes.api:Fetching query metrics (limit: 1000)
-INFO:     127.0.0.1:63782 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T12%3A50%3A05.545886&end_date=2025-11-21T12%3A50%3A05.545886 HTTP/1.1" 200 OK
-INFO:routes.api:Fetching recent knowledge (limit: 5)
-INFO:     127.0.0.1:63783 - "GET /api/v1/knowledge/recent?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50731 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A19%3A13.339433&end_date=2025-11-21T19%3A19%3A13.339433 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:50732 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
 INFO:routes.api:Fetching query metrics (limit: 1000)
-INFO:     127.0.0.1:63784 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T12%3A50%3A05.562081&end_date=2025-11-21T12%3A50%3A05.562081 HTTP/1.1" 200 OK
-INFO:routes.api:Health check: {'status': 'initialized', 'count': 11, 'name': 'knowledge_base'}
-INFO:     127.0.0.1:63785 - "GET /api/v1/health HTTP/1.1" 200 OK
-INFO:routes.api:Health check: {'status': 'initialized', 'count': 11, 'name': 'knowledge_base'}
-INFO:     127.0.0.1:63787 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50733 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A19%3A13.364572&end_date=2025-11-21T19%3A19%3A13.364572 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:50734 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:50831 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A28%3A28.784024&end_date=2025-11-21T19%3A28%3A28.784024 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:50832 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:50835 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A28%3A28.830713&end_date=2025-11-21T19%3A28%3A28.830713 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:50836 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:50837 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A28%3A29.083734&end_date=2025-11-21T19%3A28%3A29.083734 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10)
+INFO:     127.0.0.1:50838 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching query metrics (limit: 1000)
+INFO:     127.0.0.1:50839 - "GET /api/v1/metrics/queries?limit=1000&start_date=2025-11-14T19%3A28%3A29.118387&end_date=2025-11-21T19%3A28%3A29.118387 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 16, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:50841 - "GET /api/v1/health HTTP/1.1" 200 OK

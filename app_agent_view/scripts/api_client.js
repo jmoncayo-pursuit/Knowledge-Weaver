@@ -39,9 +39,10 @@ class BackendAPIClient {
     /**
      * Query the knowledge base with natural language
      * @param {string} query - Natural language query
+     * @param {boolean} verifiedOnly - Filter for verified content only
      * @returns {Promise<Object>} Query results
      */
-    async queryKnowledgeBase(query) {
+    async queryKnowledgeBase(query, verifiedOnly = false) {
         if (!query || !query.trim()) {
             throw new Error('Query cannot be empty');
         }
@@ -51,14 +52,14 @@ class BackendAPIClient {
             await this.loadSettings();
         }
 
-        console.log('Querying knowledge base:', query.substring(0, 100) + '...');
+        console.log('Querying knowledge base:', query.substring(0, 100) + '...', 'Verified Only:', verifiedOnly);
 
         // Retry logic with exponential backoff
         let lastError = null;
 
         for (let attempt = 0; attempt < this.maxRetries; attempt++) {
             try {
-                const result = await this.makeRequest(query, attempt);
+                const result = await this.makeRequest(query, verifiedOnly, attempt);
                 return result;
             } catch (error) {
                 lastError = error;
@@ -81,10 +82,11 @@ class BackendAPIClient {
     /**
      * Make the actual HTTP request to the backend
      * @param {string} query - Query text
+     * @param {boolean} verifiedOnly - Filter for verified content only
      * @param {number} attemptNumber - Current attempt number
      * @returns {Promise<Object>} API response
      */
-    async makeRequest(query, attemptNumber) {
+    async makeRequest(query, verifiedOnly, attemptNumber) {
         const url = `${this.baseURL}/api/v1/knowledge/query`;
 
         console.log(`Making request (attempt ${attemptNumber + 1}):`, url);
@@ -100,7 +102,10 @@ class BackendAPIClient {
                     'Content-Type': 'application/json',
                     'X-API-Key': this.apiKey
                 },
-                body: JSON.stringify({ query }),
+                body: JSON.stringify({
+                    query: query,
+                    verified_only: verifiedOnly
+                }),
                 signal: controller.signal
             });
 

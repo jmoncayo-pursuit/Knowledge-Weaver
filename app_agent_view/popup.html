@@ -27,7 +27,14 @@
                         placeholder="Ask a question about policies, procedures, or past decisions..."
                         rows="3"></textarea>
                     <div id="quick-test-chips" class="chips-container"></div>
-                    <button id="searchBtn" class="primary-btn">Search Knowledge Base</button>
+                    <div class="search-controls">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="verifiedOnly">
+                            <span class="checkmark"></span>
+                            Verified Only
+                        </label>
+                        <button id="searchBtn" class="primary-btn">Search Knowledge Base</button>
+                    </div>
                 </div>
 
                 <div id="loadingIndicator" class="loading hidden">

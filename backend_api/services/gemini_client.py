@@ -316,6 +316,7 @@ Extract knowledge:"""
     def analyze_content(
         self,
         text: str,
+        context_examples: str = None,
         max_retries: int = 3
     ) -> Dict[str, Any]:
         """
@@ -323,6 +324,7 @@ Extract knowledge:"""
         
         Args:
             text: Text content to analyze
+            context_examples: Optional string containing similar verified examples
             max_retries: Maximum number of retry attempts
         
         Returns:
@@ -331,6 +333,7 @@ Extract knowledge:"""
         if not text:
             raise ValueError("Text cannot be empty")
             
+        # Base prompt
         prompt = f"""Analyze the following text and provide:
 1. A category (e.g., "Policy", "Procedure", "Q&A", "Announcement", "Policy / Enrollment Denied", "Compliance / Authorization")
 2. A list of relevant tags (max 5)
@@ -345,7 +348,13 @@ Output Category: "Policy / Enrollment Denied"
 Example 2 (HIPAA Compliance):
 Input: "Agent: Wife on line asking about husband's dental, he can't talk. Lead: Do not discuss unless she is Authorized Rep. Need EE permission."
 Output Category: "Compliance / Authorization"
+"""
 
+        # Add dynamic examples if provided
+        if context_examples:
+            prompt += f"\nHere are past examples of how the user classified similar text:\n{context_examples}\n"
+
+        prompt += f"""
 Text to Analyze:
 {text}
 

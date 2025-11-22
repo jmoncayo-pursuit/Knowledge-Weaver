@@ -147,7 +147,10 @@ async def query_knowledge(
     
     try:
         # Query knowledge base
-        result = services["query_service"].query_knowledge_base(request.query)
+        result = services["query_service"].query_knowledge_base(
+            query=request.query,
+            verified_only=request.verified_only
+        )
         
         return result
     
@@ -287,6 +290,41 @@ async def ingest_knowledge(
             }
         )
 
+@router.delete("/knowledge/{entry_id}")
+async def delete_knowledge_entry(
+    entry_id: str,
+    api_key: str = Depends(verify_api_key),
+    services: dict = Depends(get_services)
+):
+    """
+    Delete a knowledge entry
+    Requires API key authentication
+    """
+    logger.info(f"Deleting knowledge entry: {entry_id}")
+    
+    try:
+        success = services["vector_db"].delete_entry(entry_id)
+        
+        if success:
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={"status": "success", "message": f"Entry {entry_id} deleted"}
+            )
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to delete entry"
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Delete failed: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Delete failed: {str(e)}"
+        )
+
 @router.post("/analyze", response_model=AnalyzeResponse)
 async def analyze_content(
     request: IngestRequest,
@@ -299,7 +337,30 @@ async def analyze_content(
     try:
         logger.info(f"Analyzing content for URL: {request.url}")
         
-        analysis = services["gemini_client"].analyze_content(request.text)
+        # Step 1: Generate embedding for the input text
+        embedding = services["gemini_client"].generate_embedding(request.text)
+        
+        # Step 2: Find similar verified entries
+        similar_verified = services["vector_db"].find_similar_verified(embedding)
+        
+        # Step 3: Format context examples
+        context_examples = ""
+        if similar_verified:
+            logger.info(f"Found {len(similar_verified)} similar verified entries for context")
+            examples_list = []
+            for i, match in enumerate(similar_verified):
+                content = match['document']
+                category = match['metadata'].get('category', 'Unknown')
+                tags = match['metadata'].get('tags', '')
+                examples_list.append(f"Example {i+3}:\nInput: \"{content}\"\nOutput Category: \"{category}\"\nTags: {tags}")
+            
+            context_examples = "\n\n".join(examples_list)
+        
+        # Step 4: Analyze with context
+        analysis = services["gemini_client"].analyze_content(
+            request.text, 
+            context_examples=context_examples
+        )
         
         return AnalyzeResponse(
             category=analysis["category"],
