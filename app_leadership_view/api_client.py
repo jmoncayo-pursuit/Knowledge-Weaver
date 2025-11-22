@@ -5,6 +5,7 @@ Handles communication with the FastAPI backend
 import requests
 import streamlit as st
 from typing import Dict, List, Any, Optional
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
@@ -214,3 +215,33 @@ class APIClient:
         except Exception as e:
             print(f"Error fetching dashboard metrics: {e}")
             return None
+
+    def ingest_knowledge(self, text: str, url: str, category: str = None, tags: List[str] = None, summary: str = None) -> bool:
+        """
+        Manually ingest knowledge
+        
+        Args:
+            text: Content text
+            url: Source URL
+            category: Optional category
+            tags: Optional list of tags
+            summary: Optional summary
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            payload = {
+                "text": text,
+                "url": url,
+                "timestamp": datetime.utcnow().isoformat(),
+                "category": category,
+                "tags": tags or [],
+                "summary": summary
+            }
+            
+            result = self._make_request("POST", "/api/v1/ingest", json_data=payload)
+            return result.get("status") == "success"
+        except Exception as e:
+            print(f"Error ingesting knowledge: {e}")
+            return False

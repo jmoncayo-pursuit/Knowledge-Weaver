@@ -93,8 +93,13 @@ def render_metrics():
             st.caption("Top unanswered queries from the team")
             
             gap_data = []
+            gap_options = ["Select a gap to answer..."]
+            
             for gap in recent_gaps:
+                query = gap.get('query', '')
+                count = gap.get('count', 0)
                 timestamp = gap.get('last_asked', '')
+                
                 try:
                     dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
                     timestamp_str = dt.strftime('%Y-%m-%d %H:%M')
@@ -102,21 +107,54 @@ def render_metrics():
                     timestamp_str = timestamp
                     
                 gap_data.append({
-                    "Query": gap.get('query', ''),
-                    "Frequency": gap.get('count', 0),
+                    "Query": query,
+                    "Frequency": count,
                     "Last Asked": timestamp_str
                 })
+                gap_options.append(f"{query} ({count} attempts)")
             
-            st.dataframe(
-                pd.DataFrame(gap_data),
-                column_config={
-                    "Query": st.column_config.TextColumn("Missing Topic", width="large"),
-                    "Frequency": st.column_config.NumberColumn("Attempts", width="small"),
-                    "Last Asked": st.column_config.TextColumn("Last Attempt", width="medium")
-                },
-                hide_index=True,
-                use_container_width=True
-            )
+            col_table, col_action = st.columns([2, 1])
+            
+            with col_table:
+                st.dataframe(
+                    pd.DataFrame(gap_data),
+                    column_config={
+                        "Query": st.column_config.TextColumn("Missing Topic", width="large"),
+                        "Frequency": st.column_config.NumberColumn("Attempts", width="small"),
+                        "Last Asked": st.column_config.TextColumn("Last Attempt", width="medium")
+                    },
+                    hide_index=True,
+                    use_container_width=True
+                )
+            
+            with col_action:
+                st.markdown("#### Bridge the Gap")
+                selected_gap_str = st.selectbox("Select a gap to answer:", options=gap_options)
+                
+                if selected_gap_str != "Select a gap to answer...":
+                    # Extract query from selection string
+                    selected_query = selected_gap_str.rsplit(" (", 1)[0]
+                    
+                    with st.form(key="answer_gap_form"):
+                        st.caption(f"Answering: **{selected_query}**")
+                        answer_content = st.text_area("Answer Content", height=150, placeholder="Type the verified answer here...")
+                        answer_category = st.selectbox("Category", ["Policy", "Procedure", "Technical", "HR", "Sales", "Other"])
+                        
+                        submit_btn = st.form_submit_button("Submit Answer", type="primary")
+                        
+                        if submit_btn and answer_content:
+                            if api_client.ingest_knowledge(
+                                text=answer_content,
+                                url="dashboard-manual-entry",
+                                category=answer_category,
+                                tags=["#KnowledgeGapFilled"],
+                                summary=selected_query # Use the query as the summary/title
+                            ):
+                                st.success("Answer submitted and verified! 🚀")
+                                time.sleep(1.5)
+                                st.rerun()
+                            else:
+                                st.error("Failed to submit answer.")
             
     except Exception as e:
         st.error(f"Error rendering metrics: {e}")
