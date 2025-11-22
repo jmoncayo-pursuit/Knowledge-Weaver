@@ -288,6 +288,36 @@ class BackendAPIClient {
             return false;
         }
     }
+
+    /**
+     * Fetch trending topics for search bubbles
+     * @param {number} limit - Number of topics to fetch
+     * @returns {Promise<Array<string>>} List of trending topics
+     */
+    async fetchTrendingTopics(limit = 5) {
+        try {
+            if (!this.baseURL || !this.apiKey) {
+                await this.loadSettings();
+            }
+
+            const url = `${this.baseURL}/api/v1/knowledge/trending?limit=${limit}`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-API-Key': this.apiKey
+                }
+            });
+
+            if (!response.ok) {
+                return [];
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Failed to fetch trending topics:', error);
+            return [];
+        }
+    }
 }
 
 // Export for use in content script

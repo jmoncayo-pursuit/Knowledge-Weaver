@@ -189,21 +189,52 @@ document.addEventListener('DOMContentLoaded', () => {
 /**
  * Initialize quick test chips for easy testing
  */
-function initializeQuickTestChips() {
+/**
+ * Initialize quick test chips with trending topics
+ */
+async function initializeQuickTestChips() {
     const chipsContainer = document.getElementById('quick-test-chips');
 
-    QUERIES.forEach(query => {
-        const chip = document.createElement('button');
-        chip.className = 'chip';
-        chip.textContent = query;
-        chip.addEventListener('click', () => {
-            queryInput.value = query;
-            handleSearch();
-        });
-        chipsContainer.appendChild(chip);
-    });
+    try {
+        // Fetch trending topics from backend
+        const trendingTopics = await apiClient.fetchTrendingTopics(5);
 
-    console.log('Quick test chips initialized');
+        // Use fetched topics or fallback to defaults if empty
+        const chips = (trendingTopics && trendingTopics.length > 0)
+            ? trendingTopics
+            : QUERIES;
+
+        chipsContainer.innerHTML = ''; // Clear existing
+
+        chips.forEach(query => {
+            const chip = document.createElement('button');
+            chip.className = 'chip';
+            chip.textContent = query;
+            chip.dataset.testid = 'suggestion-bubble-' + query.replace(/\s+/g, '-').toLowerCase();
+            chip.addEventListener('click', () => {
+                queryInput.value = query;
+                handleSearch();
+            });
+            chipsContainer.appendChild(chip);
+        });
+
+        console.log('Quick test chips initialized with:', chips);
+
+    } catch (error) {
+        console.error('Failed to initialize chips:', error);
+        // Fallback to static queries
+        QUERIES.forEach(query => {
+            const chip = document.createElement('button');
+            chip.className = 'chip';
+            chip.textContent = query;
+            chip.dataset.testid = 'suggestion-bubble-' + query.replace(/\s+/g, '-').toLowerCase();
+            chip.addEventListener('click', () => {
+                queryInput.value = query;
+                handleSearch();
+            });
+            chipsContainer.appendChild(chip);
+        });
+    }
 }
 
 /**
@@ -361,18 +392,34 @@ function displayResults(results) {
         const isVerified = result.metadata && result.metadata.verification_status === 'verified_human';
         const verifiedBadge = isVerified ? '<span class="verified-badge">✅ Verified</span>' : '';
 
+        // Use summary if available, otherwise truncate content
+        const summary = result.metadata && result.metadata.summary ? result.metadata.summary : result.content.substring(0, 100) + '...';
+
         resultItem.innerHTML = `
-            <div class="result-content">${result.content}</div>
-            <div class="result-meta">
-                <div>
-                    <small>Source: ${participants} • ${date} ${verifiedBadge}</small>
-                </div>
-                <div>
-                    <span class="similarity-score">${score}%</span>
-                    <button class="copy-btn" data-content="${escapeHtml(result.content)}">Copy</button>
+            <div class="result-summary" data-testid="result-summary-${index}">
+                <strong>${escapeHtml(summary)}</strong> ${verifiedBadge}
+            </div>
+            <div class="result-details hidden" id="details-${index}">
+                <div class="result-content">${escapeHtml(result.content)}</div>
+                <div class="result-meta">
+                    <div>
+                        <small>Source: ${participants} • ${date}</small>
+                    </div>
+                    <div>
+                        <span class="similarity-score">${score}%</span>
+                        <button class="copy-btn" data-content="${escapeHtml(result.content)}">Copy</button>
+                    </div>
                 </div>
             </div>
         `;
+
+        // Toggle details on click
+        const summaryDiv = resultItem.querySelector('.result-summary');
+        const detailsDiv = resultItem.querySelector('.result-details');
+
+        summaryDiv.addEventListener('click', () => {
+            detailsDiv.classList.toggle('hidden');
+        });
 
         resultsList.appendChild(resultItem);
     });
@@ -589,11 +636,14 @@ async function handleConfirm() {
     }
 
     // Update payload with reviewed data
+    const isVerified = document.getElementById('verifyCheckbox').checked;
+
     const finalPayload = {
         ...pendingPayload,
         category: categoryInput.value.trim(),
         tags: tagsInput.value.split(',').map(t => t.trim()).filter(t => t),
-        summary: summaryInput.value.trim()
+        summary: summaryInput.value.trim(),
+        verification_status: isVerified ? 'verified_human' : 'draft'
     };
 
     console.log('Final Ingest Payload:', finalPayload);

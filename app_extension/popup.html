@@ -11,8 +11,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>Knowledge-Weaver</h1>
-            <p class="subtitle">Query the Knowledge Base</p>
+            <h1>🕸️ Knowledge-Weaver</h1>
+            <p class="subtitle">Weave Knowledge into the Web</p>
         </header>
 
         <nav class="tabs">
@@ -89,6 +89,13 @@
                             <label for="summaryInput">Summary</label>
                             <textarea id="summaryInput" data-testid="summary-input" rows="3"
                                 placeholder="Brief summary of the content"></textarea>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="verifyCheckbox" data-testid="verify-checkbox">
+                                <span class="checkmark"></span>
+                                Mark as Verified Source
+                            </label>
                         </div>
                         <button id="confirmBtn" class="primary-btn success-btn" data-testid="confirm-ingest-btn">Confirm
                             & Save</button>

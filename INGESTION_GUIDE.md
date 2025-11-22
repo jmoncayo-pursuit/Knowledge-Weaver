@@ -160,7 +160,7 @@ curl http://127.0.0.1:8000/api/v1/health
 Should show the vector database is connected and contains data.
 
 ### 3. Use the Chrome Extension
-- Install the extension from `app_agent_view`
+- Install the extension from `app_extension`
 - Open the popup and search for topics from the sample data
 - You should see relevant results
 

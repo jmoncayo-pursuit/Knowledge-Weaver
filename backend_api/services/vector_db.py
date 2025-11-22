@@ -6,6 +6,7 @@ import chromadb
 from chromadb.config import Settings
 from typing import List, Dict, Any, Optional
 import logging
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -80,7 +81,8 @@ class VectorDatabase:
         query_embedding: List[float],
         top_k: int = 3,
         threshold: float = 0.1,
-        verified_only: bool = False
+        verified_only: bool = False,
+        include_deleted: bool = False
     ) -> List[Dict[str, Any]]:
         """
         Search for similar knowledge entries using vector similarity
@@ -90,6 +92,7 @@ class VectorDatabase:
             top_k: Number of top results to return (default: 3)
             threshold: Minimum similarity score threshold (default: 0.5)
             verified_only: If True, return only verified content
+            include_deleted: If True, include soft-deleted items
         
         Returns:
             List of matching knowledge entries with metadata and similarity scores
@@ -104,9 +107,20 @@ class VectorDatabase:
                 "n_results": top_k
             }
             
-            # Add filter if verified_only is True
+            # Build where filter
+            where_filter = {}
+            
+            # Filter out deleted items by default
+            if not include_deleted:
+                where_filter["is_deleted"] = {"$ne": True}
+            
+            # Add verified filter if requested
             if verified_only:
-                query_args["where"] = {"verification_status": "verified_human"}
+                where_filter["verification_status"] = "verified_human"
+            
+            # Add filter if we have conditions
+            if where_filter:
+                query_args["where"] = where_filter
             
             results = self.collection.query(**query_args)
             
@@ -175,12 +189,13 @@ class VectorDatabase:
             "name": self.collection.name
         }
 
-    def get_recent_entries(self, limit: int = 10) -> List[Dict[str, Any]]:
+    def get_recent_entries(self, limit: int = 10, deleted_only: bool = False) -> List[Dict[str, Any]]:
         """
         Get most recent knowledge entries
         
         Args:
             limit: Maximum number of entries to return
+            deleted_only: If True, return only deleted items. If False, return only active items.
             
         Returns:
             List of knowledge entries sorted by timestamp (newest first)
@@ -189,12 +204,20 @@ class VectorDatabase:
             return []
             
         try:
+            # Build where filter for deleted status
+            where_filter = None
+            if deleted_only:
+                where_filter = {"is_deleted": True}
+            else:
+                where_filter = {"is_deleted": {"$ne": True}}
+            
             # Fetch more to ensure we get recent ones after sorting
             # ChromaDB doesn't support server-side sorting by metadata yet
             # We fetch a larger batch to increase chance of getting recent ones
             results = self.collection.get(
                 limit=100,  # Increased from limit * 2
-                include=['documents', 'metadatas']
+                include=['documents', 'metadatas'],
+                where=where_filter
             )
             
             entries = []
@@ -272,7 +295,7 @@ class VectorDatabase:
 
     def delete_entry(self, entry_id: str) -> bool:
         """
-        Delete a knowledge entry by ID
+        Soft delete a knowledge entry by ID (sets is_deleted=True)
         
         Args:
             entry_id: ID of the entry to delete
@@ -284,11 +307,67 @@ class VectorDatabase:
             return False
             
         try:
-            self.collection.delete(ids=[entry_id])
-            logger.info(f"Deleted entry {entry_id} from vector database")
+            # Get existing entry to preserve other metadata
+            existing = self.collection.get(ids=[entry_id], include=['metadatas'])
+            if not existing['ids']:
+                logger.warning(f"Entry {entry_id} not found for deletion")
+                return False
+                
+            current_metadata = existing['metadatas'][0]
+            
+            # Soft delete: Mark as deleted instead of removing
+            current_metadata['is_deleted'] = True
+            current_metadata['deleted_at'] = datetime.utcnow().isoformat()
+            
+            # Update in ChromaDB
+            self.collection.update(
+                ids=[entry_id],
+                metadatas=[current_metadata]
+            )
+            
+            logger.info(f"Soft deleted entry {entry_id} from vector database")
             return True
         except Exception as e:
             logger.error(f"Failed to delete entry {entry_id}: {e}")
+            return False
+    
+    def restore_entry(self, entry_id: str) -> bool:
+        """
+        Restore a soft-deleted knowledge entry by ID
+        
+        Args:
+            entry_id: ID of the entry to restore
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        if not self.collection:
+            return False
+            
+        try:
+            # Get existing entry
+            existing = self.collection.get(ids=[entry_id], include=['metadatas'])
+            if not existing['ids']:
+                logger.warning(f"Entry {entry_id} not found for restoration")
+                return False
+                
+            current_metadata = existing['metadatas'][0]
+            
+            # Restore: Remove deleted flag
+            current_metadata['is_deleted'] = False
+            if 'deleted_at' in current_metadata:
+                del current_metadata['deleted_at']
+            
+            # Update in ChromaDB
+            self.collection.update(
+                ids=[entry_id],
+                metadatas=[current_metadata]
+            )
+            
+            logger.info(f"Restored entry {entry_id}")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to restore entry {entry_id}: {e}")
             return False
 
     def update_entry(self, entry_id: str, updates: Dict[str, Any]) -> bool:
@@ -354,3 +433,27 @@ class VectorDatabase:
         except Exception as e:
             logger.error(f"Failed to get verified count: {e}")
             return 0
+
+    def has_entry_with_summary(self, summary: str) -> bool:
+        """
+        Check if there is any entry with the exact summary
+        Used for checking if a knowledge gap has been filled
+        
+        Args:
+            summary: Summary text to check for
+            
+        Returns:
+            True if at least one entry exists with this summary
+        """
+        if not self.collection:
+            return False
+            
+        try:
+            results = self.collection.get(
+                where={"summary": summary},
+                include=[]
+            )
+            return len(results['ids']) > 0
+        except Exception as e:
+            logger.error(f"Failed to check summary existence: {e}")
+            return False

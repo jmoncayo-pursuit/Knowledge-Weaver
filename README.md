@@ -1,246 +1,82 @@
-# Knowledge-Weaver
+# Knowledge-Weaver 🕸️
 
-**Resurrect dead knowledge from chat logs and transform it into a living, queryable knowledge base.**
+**Turning generic chat logs into a verified Source of Truth.**
 
-## The Problem
-
-Organizations lose critical knowledge every day. Important decisions, policy clarifications, and procedural guidance get buried in chat logs on platforms like Microsoft Teams. When agents need answers, they either:
-- Waste time searching through endless chat history
-- Ask leadership the same questions repeatedly
-- Make decisions without complete information
-
-This creates inefficiency, inconsistency, and knowledge gaps that impact customer service quality.
-
-## The Solution
-
-Knowledge-Weaver is a hybrid AI system that combines cloud-based and on-device AI to resurrect knowledge from unstructured chat logs. The system consists of three integrated applications:
-
-1. **Backend API** - Analyzes chat logs using Google Gemini AI, extracts knowledge, and stores it in a vector database for semantic search
-2. **Agent View** - Chrome Extension that provides AI-powered tools directly in Microsoft Teams (summarization, rephrasing, knowledge base queries)
-3. **Leadership View** - Real-time dashboard for monitoring team performance and identifying knowledge gaps
-
-## Features
-
-### For Agents
-- **Text Summarization** - Quickly summarize long chat conversations using Chrome's built-in AI
-- **Text Rephrasing** - Convert internal notes to customer-friendly language
-- **Knowledge Base Search** - Query the centralized knowledge base for policy answers and past decisions
-- **Seamless Integration** - Works directly within Microsoft Teams web interface
-
-### For Leadership
-- **Live Metrics** - Monitor query volume, response times, and knowledge gaps
-- **Unanswered Questions Tracking** - Identify questions that need attention
-- **Trending Topics Analysis** - See what agents are asking about most frequently
-- **Auto-Refresh Dashboard** - Real-time updates every 60 seconds
-
-### Technical Features
-- **HIPAA Compliance** - Automatic anonymization of sensitive data before processing
-- **Hybrid AI Architecture** - Combines on-device Chrome AI with cloud-based Gemini AI
-- **Vector Search** - Semantic similarity search for finding relevant knowledge
-- **RESTful API** - Clean, documented API for integration
+Knowledge-Weaver is a "Human-in-the-Loop" system that captures valuable information from team chats, verifies it, and makes it instantly searchable. It bridges the gap between ephemeral conversations and permanent organizational knowledge.
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Knowledge-Weaver System                  │
-├─────────────────────────────────────────────────────────────┤
-│                                                               │
-│  ┌──────────────────┐         ┌──────────────────┐          │
-│  │   Agent View     │         │ Leadership View  │          │
-│  │ (Chrome Ext)     │         │  (Streamlit)     │          │
-│  │                  │         │                  │          │
-│  │ - Summarizer API │         │ - Metrics        │          │
-│  │ - Rewriter API   │         │ - Analytics      │          │
-│  │ - Query UI       │         │ - Dark Mode UI   │          │
-│  └────────┬─────────┘         └────────┬─────────┘          │
-│           │                            │                     │
-│           │         REST API           │                     │
-│           └────────────┬───────────────┘                     │
-│                        │                                     │
-│              ┌─────────▼─────────┐                          │
-│              │   Backend API     │                          │
-│              │  (FastAPI)        │                          │
-│              │                   │                          │
-│              │ - Chat Analysis   │                          │
-│              │ - Query Service   │                          │
-│              │ - Vector DB Mgmt  │                          │
-│              └─────────┬─────────┘                          │
-│                        │                                     │
-│              ┌─────────▼─────────┐                          │
-│              │  Vector Database  │                          │
-│              │   (ChromaDB)      │                          │
-│              └───────────────────┘                          │
-│                        │                                     │
-│              ┌─────────▼─────────┐                          │
-│              │   Gemini API      │                          │
-│              │  (External)       │                          │
-│              └───────────────────┘                          │
-└─────────────────────────────────────────────────────────────┘
+The system uses a "Frankenstein" architecture, stitching together powerful components to create a seamless workflow:
+
+```mermaid
+graph TD
+    subgraph "Frontend Layer"
+        CE[Chrome Extension] -->|Capture & Search| API
+        DB[Streamlit Dashboard] -->|Manage & Verify| API
+    end
+
+    subgraph "Backend Layer"
+        API[FastAPI Backend] -->|Process Requests| S[Services]
+        S -->|Vector Search| VDB[ChromaDB]
+        S -->|AI Analysis| LLM[Gemini 2.5 Flash]
+    end
+
+    subgraph "Data Layer"
+        VDB <-->|Store Embeddings| DISK[Persist Directory]
+        LLM -->|Context & Few-Shot| VDB
+    end
+
+    style CE fill:#f9f,stroke:#333,stroke-width:2px
+    style DB fill:#bbf,stroke:#333,stroke-width:2px
+    style API fill:#dfd,stroke:#333,stroke-width:2px
+    style VDB fill:#fdd,stroke:#333,stroke-width:2px
 ```
 
-## Installation
+The system is styled with a **Custom Dark Theme** (configured in `.streamlit/config.toml`) to ensure a premium, consistent look across all components.
+
+## 🤖 AI-Native Design
+
+Knowledge-Weaver is built to be **Robot-Accessible** by design.
+- **Stable Selectors**: All critical UI elements use `data-testid` attributes or stable keys, allowing AI agents (like the one building this!) to reliably navigate, test, and interact with the application.
+- **Self-Verification**: The system includes automated verification scripts (`verify_roles.py`, `verify_recycle_bin.py`) that simulate user actions to ensure integrity.
+
+## Key Features
+
+### 1. Human-in-the-Loop Verification
+AI is powerful, but not perfect. Knowledge-Weaver puts humans in control:
+- **Capture**: AI suggests categories and tags from chat content.
+- **Review**: Users verify and edit the AI's suggestions before saving.
+- **Search**: Verified content is boosted in search results, ensuring reliability.
+
+### 2. Active Learning (Dynamic Few-Shot Prompting)
+The system gets smarter as you use it.
+- When analyzing new content, the AI looks at **similar verified examples** from the vector database.
+- This context helps the AI mimic your team's specific categorization style and tagging conventions.
+- **Result**: The more you use it, the less you have to edit.
+
+### 3. Gap-to-Gold
+Identify and fill knowledge gaps in real-time.
+- **Tracking**: The system tracks queries that return zero results.
+- **Dashboard**: Leaders can see these "Knowledge Gaps" on the dashboard.
+- **Bridge the Gap**: A dedicated UI allows experts to answer these missing questions directly, instantly turning a gap into a golden nugget of knowledge.
+
+### 4. Recycle Bin (Soft Deletes)
+Mistakes happen.
+- **Safety**: Deleting an item performs a "soft delete," hiding it from search but keeping it in the database.
+- **Recovery**: A dedicated "Recycle Bin" tab allows you to view and restore deleted items with a single click.
+
+## Getting Started
 
 ### Prerequisites
-- Python 3.10+
-- Node.js (for development)
-- Google Gemini API key
-- Chrome browser (version 127+ for AI features)
+- Python 3.13+
+- Chrome Browser
 
-### Backend API Setup
+### Installation
+1. Clone the repository
+2. Install dependencies: `pip install -r requirements.txt`
+3. Set up environment variables (API Keys)
 
-1. Navigate to the backend directory:
-```bash
-cd backend_api
-```
-
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-3. Create a `.env` file:
-```bash
-GEMINI_API_KEY=your_gemini_api_key_here
-BACKEND_API_KEY=your_secure_api_key_here
-```
-
-4. Start the server:
-```bash
-python main.py
-```
-
-The API will be available at `http://localhost:8000`
-
-### Chrome Extension Setup
-
-1. Open Chrome and navigate to `chrome://extensions/`
-2. Enable "Developer mode"
-3. Click "Load unpacked"
-4. Select the `app_agent_view` directory
-5. The extension icon will appear in your toolbar
-
-### Leadership Dashboard Setup
-
-1. Navigate to the dashboard directory:
-```bash
-cd app_leadership_view
-```
-
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-3. Create `.streamlit/secrets.toml`:
-```toml
-BACKEND_API_URL = "http://localhost:8000"
-BACKEND_API_KEY = "your_secure_api_key_here"
-```
-
-4. Start the dashboard:
-```bash
-streamlit run dashboard.py
-```
-
-The dashboard will open in your browser at `http://localhost:8501`
-
-## How to Use
-
-### Quick Start: Ingest Sample Data
-
-The easiest way to populate your database with sample data:
-
-1. Make sure the backend is running:
-```bash
-cd backend_api
-source ../venv/bin/activate
-uvicorn main:app --reload --port 8000
-```
-
-2. In a new terminal, run the ingestion script:
-```bash
-source venv/bin/activate
-python ingest_sample_data.py
-```
-
-The script will:
-- Check backend health
-- Load sample chat logs from `sample_chat_logs.json`
-- Process and ingest them into the vector database
-- Display a summary of the ingestion results
-
-### Processing Chat Logs (Manual)
-
-You can also manually process chat logs via the API:
-
-```bash
-curl -X POST http://localhost:8000/api/v1/chat-logs/process \
-  -H "X-API-Key: dev-secret-key-12345" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "chat_logs": [
-      {
-        "id": "msg1",
-        "timestamp": "2024-11-15T10:00:00Z",
-        "sender": "agent1",
-        "content": "What is our refund policy?",
-        "platform": "teams"
-      },
-      {
-        "id": "msg2",
-        "timestamp": "2024-11-15T10:05:00Z",
-        "sender": "manager",
-        "content": "Our refund policy allows 30 days for returns...",
-        "platform": "teams"
-      }
-    ]
-  }'
-```
-
-### Using the Chrome Extension
-
-1. Navigate to Microsoft Teams web interface
-2. Highlight any text in a chat
-3. Click one of the action buttons:
-   - **Summarize** - Get a quick summary
-   - **Rephrase** - Convert to customer-friendly language
-   - **Query KB** - Search the knowledge base
-
-4. Or click the extension icon to open the popup and search directly
-
-### Monitoring with the Dashboard
-
-1. Open the Leadership Dashboard
-2. View real-time metrics:
-   - Query volume trends
-   - Response time averages
-   - Knowledge gap identification
-3. Review unanswered questions that need attention
-4. Analyze trending topics to prioritize knowledge base improvements
-
-## Technology Stack
-
-- **Backend**: Python, FastAPI, ChromaDB, Google Gemini AI
-- **Agent View**: JavaScript, Chrome Extension API, Chrome AI APIs
-- **Leadership View**: Python, Streamlit, Plotly, Pandas
-- **Database**: ChromaDB (vector database)
-- **AI**: Google Gemini (cloud), Chrome AI (on-device)
-
-## Security & Compliance
-
-- **HIPAA Compliance**: Automatic anonymization of PII before sending to external APIs
-- **API Key Authentication**: Secure access control for all endpoints
-- **Data Privacy**: Sensitive information is redacted (emails, phone numbers, SSNs, IDs)
-
-## License
-
-MIT License - See LICENSE file for details
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## Support
-
-For issues, questions, or feature requests, please open an issue on GitHub.
+### Running the System
+1. **Backend**: `uvicorn backend_api.main:app --reload`
+2. **Dashboard**: `streamlit run app_leadership_view/dashboard.py`
+3. **Extension**: Load `app_extension` as an unpacked extension in Chrome.

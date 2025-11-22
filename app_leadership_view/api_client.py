@@ -164,24 +164,26 @@ class APIClient:
             logger.error(f"Failed to get health status: {e}")
             return {"status": "error", "message": str(e)}
 
-    def fetch_recent_knowledge(self, limit: int = 10) -> List[Dict[str, Any]]:
+    def fetch_recent_knowledge(self, limit: int = 10, deleted_only: bool = False) -> List[Dict[str, Any]]:
         """
         Fetch recent knowledge entries
         
         Args:
             limit: Maximum number of entries to return
+            deleted_only: If True, return only deleted items (for Recycle Bin)
             
         Returns:
             List of knowledge entries
         """
         try:
-            return self._make_request("GET", "/api/v1/knowledge/recent", params={"limit": limit})
+            params = {"limit": limit, "deleted_only": deleted_only}
+            return self._make_request("GET", "/api/v1/knowledge/recent", params=params)
         except Exception as e:
             logger.error(f"Failed to fetch recent knowledge: {e}")
             return []
 
     def delete_knowledge_entry(self, entry_id: str) -> bool:
-        """Delete a knowledge entry"""
+        """Delete a knowledge entry (soft delete)"""
         try:
             response = requests.delete(
                 f"{self.base_url}/api/v1/knowledge/{entry_id}",
@@ -191,6 +193,19 @@ class APIClient:
             return response.status_code == 200
         except Exception as e:
             print(f"Error deleting entry: {e}")
+            return False
+
+    def restore_knowledge_entry(self, entry_id: str) -> bool:
+        """Restore a soft-deleted knowledge entry"""
+        try:
+            response = requests.post(
+                f"{self.base_url}/api/v1/knowledge/{entry_id}/restore",
+                headers=self.headers,
+                timeout=10
+            )
+            return response.status_code == 200
+        except Exception as e:
+            print(f"Error restoring entry: {e}")
             return False
 
     def update_knowledge_entry(self, entry_id: str, updates: dict) -> bool:

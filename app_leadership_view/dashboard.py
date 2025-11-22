@@ -13,11 +13,26 @@ from api_client import APIClient
 
 # Page configuration
 st.set_page_config(
-    page_title="Knowledge-Weaver Leadership Dashboard",
-    page_icon="📊",
+    page_title="Knowledge-Weaver Dashboard",
+    page_icon="🕷️",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
+
+# --- Custom CSS for Dark Theme & Robot Accessibility ---
+st.markdown("""
+    <style>
+    /* Global Dark Theme Adjustments */
+    .stApp {
+        background-color: #0E1117;
+        color: #FAFAFA;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# --- Header ---
+st.title("🕷️ Knowledge-Weaver Dashboard")
+st.markdown("*Leadership View: Verify knowledge, bridge gaps, and manage the Source of Truth.*")
 
 # Load custom CSS
 def load_css():
@@ -42,8 +57,7 @@ with st_autorefresh:
     st.caption(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} • Auto-refresh: 60s")
 
 # Title
-st.markdown('<h1 class="dashboard-title">Knowledge-Weaver Leadership Dashboard</h1>', unsafe_allow_html=True)
-st.markdown('<p class="dashboard-subtitle">Monitor team performance and knowledge gaps</p>', unsafe_allow_html=True)
+# Metrics functions
 
 # Metrics functions
 # Metrics functions
@@ -145,28 +159,44 @@ def render_metrics():
                     # Extract query from selection string
                     selected_query = selected_gap_str.rsplit(" (", 1)[0]
                     
-                    with st.form(key="answer_gap_form"):
+                    def submit_gap_answer():
+                        answer_content = st.session_state.gap_answer_input
+                        answer_category = st.session_state.gap_category_selector
+                        
+                        if answer_content:
+                            try:
+                                if api_client.ingest_knowledge(
+                                    text=answer_content,
+                                    url="dashboard-manual-entry",
+                                    category=answer_category,
+                                    tags=["#KnowledgeGapFilled"],
+                                    summary=selected_query
+                                ):
+                                    st.session_state.selected_gap_index = 0
+                                    st.session_state.gap_answer_input = "" # Explicitly clear input
+                                    st.toast("Answer submitted and verified! 🚀", icon="✅")
+                                else:
+                                    st.toast("Failed to submit answer.", icon="❌")
+                            except Exception as e:
+                                st.error(f"Backend Offline or Error: {e}")
+
+                    with st.form(key="answer_gap_form", clear_on_submit=False):
                         st.caption(f"Answering: **{selected_query}**")
-                        answer_content = st.text_area("Answer Content", height=150, placeholder="Type the verified answer here...")
-                        answer_category = st.selectbox("Category", ["Policy", "Procedure", "Technical", "HR", "Sales", "Other"])
                         
-                        submit_btn = st.form_submit_button("Submit Answer", type="primary")
+                        # Initialize answer input in session state if not present
+                        if "gap_answer_input" not in st.session_state:
+                            st.session_state.gap_answer_input = ""
+                            
+                        st.text_area(
+                            "Answer Content", 
+                            height=150, 
+                            placeholder="Type the verified answer here...",
+                            key="gap_answer_input"
+                        )
+                        st.selectbox("Category", ["Policy", "Procedure", "Technical", "HR", "Sales", "Other"], key="gap_category_selector")
                         
-                        if submit_btn and answer_content:
-                            if api_client.ingest_knowledge(
-                                text=answer_content,
-                                url="dashboard-manual-entry",
-                                category=answer_category,
-                                tags=["#KnowledgeGapFilled"],
-                                summary=selected_query # Use the query as the summary/title
-                            ):
-                                # Reset the selection to default
-                                st.session_state.selected_gap_index = 0
-                                st.success("Answer submitted and verified! 🚀")
-                                time.sleep(1.5)
-                                st.rerun()
-                            else:
-                                st.error("Failed to submit answer.")
+                        # Use callback to handle submission and clearing BEFORE rerun
+                        st.form_submit_button("Submit Answer", type="primary", on_click=submit_gap_answer)
             
     except Exception as e:
         st.error(f"Error rendering metrics: {e}")
@@ -176,149 +206,228 @@ render_metrics()
 
 
 
-# Recent Knowledge Ingestions Section
+# Tabbed Interface for Active Items and Recycle Bin
 st.markdown("---")
-st.subheader("Recent Knowledge Ingestions")
 
-try:
-    recent_entries = api_client.fetch_recent_knowledge(limit=10)
+# Robot-friendly markers
+st.markdown('<span data-testid="knowledge-tabs-section"></span>', unsafe_allow_html=True)
+
+tab1, tab2 = st.tabs(["📚 Active Items", "🗑️ Recycle Bin"])
+
+with tab1:
+    st.markdown('<span data-testid="active-items-tab"></span>', unsafe_allow_html=True)
+    st.subheader("Recent Knowledge Ingestions")
     
-    if recent_entries:
-        # Prepare data for editor
-        data = []
-        for entry in recent_entries:
-            metadata = entry.get('metadata', {})
-            content = entry.get('document', '')
-            short_content = content[:50] + "..." if len(content) > 50 else content
-            
-            timestamp = metadata.get('timestamp', '')
-            if timestamp:
-                try:
-                    dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
-                    timestamp_str = dt.strftime('%Y-%m-%d %H:%M')
-                except:
-                    timestamp_str = timestamp
-            else:
-                timestamp_str = "-"
-                
-            data.append({
-                "id": entry.get('id'),
-                "Content": short_content,
-                "Category": metadata.get('category', 'Uncategorized'),
-                "Tags": metadata.get('tags', ''),
-                "Summary": metadata.get('summary', ''),
-                "Timestamp": timestamp_str,
-                "Delete": False # Checkbox for deletion
-            })
-            
-        df = pd.DataFrame(data)
+    try:
+        recent_entries = api_client.fetch_recent_knowledge(limit=10, deleted_only=False)
         
-        # Configure column settings
-        column_config = {
-            "id": None, # Hide ID
-            "Content": st.column_config.TextColumn("Content", disabled=True, width="medium"),
-            "Category": st.column_config.SelectboxColumn(
-                "Category",
-                options=["Policy", "Procedure", "Decision", "Meeting", "Technical", "HR", "Sales", "Uncategorized"],
-                required=True,
-                width="small"
-            ),
-            "Tags": st.column_config.TextColumn("Tags (comma-separated)", width="medium"),
-            "Summary": st.column_config.TextColumn("Summary", width="large"),
-            "Timestamp": st.column_config.TextColumn("Timestamp", disabled=True, width="small"),
-            "Delete": st.column_config.CheckboxColumn("Delete", width="small")
-        }
-        
-        # Display editor
-        edited_df = st.data_editor(
-            df,
-            column_config=column_config,
-            hide_index=True,
-            use_container_width=True,
-            key="knowledge_editor",
-            num_rows="fixed"
-        )
-        
-        # Check for delete requests first (before handling edits)
-        # Use the original df to get IDs since the id column is hidden in edited_df
-        rows_to_delete = []
-        for idx, row in edited_df.iterrows():
-            if row.get("Delete", False):
-                # Look up the ID from the original df using the index
-                entry_id = df.iloc[idx]["id"]
-                content = row["Content"]
+        if recent_entries:
+            # Prepare data for editor
+            data = []
+            for entry in recent_entries:
+                metadata = entry.get('metadata', {})
+                content = entry.get('document', '')
+                short_content = content[:50] + "..." if len(content) > 50 else content
                 
-                # Debug logging
-                print(f"[DELETE REQUEST] Index: {idx}, ID: {entry_id}, Content: {content}")
-                
-                rows_to_delete.append({
-                    "idx": idx,
-                    "id": entry_id,
-                    "content": content
+                timestamp = metadata.get('timestamp', '')
+                if timestamp:
+                    try:
+                        dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+                        timestamp_str = dt.strftime('%Y-%m-%d %H:%M')
+                    except:
+                        timestamp_str = timestamp
+                else:
+                    timestamp_str = "-"
+                    
+                data.append({
+                    "id": entry.get('id'),
+                    "Content": short_content,
+                    "Category": metadata.get('category', 'Uncategorized'),
+                    "Tags": metadata.get('tags', ''),
+                    "Summary": metadata.get('summary', ''),
+                    "Timestamp": timestamp_str,
+                    "Delete": False # Checkbox for deletion
                 })
-        
-        # If there are items to delete, show confirmation
-        if rows_to_delete:
-            st.warning(f"⚠️ You have marked {len(rows_to_delete)} item(s) for deletion.")
-            
-            with st.expander("🗑️ Confirm Deletion", expanded=True):
-                st.markdown("**Items to be deleted:**")
-                for item in rows_to_delete:
-                    st.markdown(f"- {item['content']}")
                 
-                col1, col2 = st.columns([1, 4])
-                with col1:
-                    if st.button("✅ Confirm Delete", type="primary", use_container_width=True):
-                        deleted_count = 0
-                        for item in rows_to_delete:
-                            print(f"[DELETE API CALL] Attempting to delete ID: {item['id']}")
-                            if api_client.delete_knowledge_entry(item["id"]):
-                                print(f"[DELETE SUCCESS] Deleted ID: {item['id']}")
-                                deleted_count += 1
-                            else:
-                                print(f"[DELETE FAILED] Failed to delete ID: {item['id']}")
-                        
-                        if deleted_count > 0:
-                            st.success(f"Deleted {deleted_count} item(s)!")
-                            time.sleep(1.5)
-                            st.rerun()
-                        else:
-                            st.error("Failed to delete items.")
-                with col2:
-                    if st.button("❌ Cancel", use_container_width=True):
-                        st.rerun()
-        
-        # Handle edits (only process if no deletes pending)
-        elif st.session_state.get("knowledge_editor"):
-            changes = st.session_state["knowledge_editor"]
+            df = pd.DataFrame(data)
             
-            # Handle edits
-            if changes.get("edited_rows"):
-                for idx, updates in changes["edited_rows"].items():
+            # Configure column settings
+            column_config = {
+                "id": None, # Hide ID
+                "Content": st.column_config.TextColumn("Content", disabled=True, width="medium"),
+                "Category": st.column_config.SelectboxColumn(
+                    "Category",
+                    options=["Policy", "Procedure", "Decision", "Meeting", "Technical", "HR", "Sales", "Uncategorized"],
+                    required=True,
+                    width="small"
+                ),
+                "Tags": st.column_config.TextColumn("Tags (comma-separated)", width="medium"),
+                "Summary": st.column_config.TextColumn("Summary", width="large"),
+                "Timestamp": st.column_config.TextColumn("Timestamp", disabled=True, width="small"),
+                "Delete": st.column_config.CheckboxColumn("Delete", width="small")
+            }
+            
+            # Display editor
+            st.markdown('<span data-testid="knowledge-editor-container"></span>', unsafe_allow_html=True)
+            edited_df = st.data_editor(
+                df,
+                column_config=column_config,
+                hide_index=True,
+                use_container_width=True,
+                key="knowledge_editor",
+                num_rows="fixed"
+            )
+            
+            # Check for delete requests first (before handling edits)
+            # Use the original df to get IDs since the id column is hidden in edited_df
+            rows_to_delete = []
+            for idx, row in edited_df.iterrows():
+                if row.get("Delete", False):
+                    # Look up the ID from the original df using the index
                     entry_id = df.iloc[idx]["id"]
+                    content = row["Content"]
                     
-                    # Prepare API updates (skip Delete field)
-                    api_updates = {}
-                    if "Category" in updates:
-                        api_updates["category"] = updates["Category"]
-                    if "Tags" in updates:
-                        # Split tags string into list
-                        tags_str = updates["Tags"]
-                        api_updates["tags"] = [t.strip() for t in tags_str.split(",") if t.strip()]
-                    if "Summary" in updates:
-                        api_updates["summary"] = updates["Summary"]
+                    # Debug logging
+                    print(f"[DELETE REQUEST] Index: {idx}, ID: {entry_id}, Content: {content}")
                     
-                    if api_updates:
-                        if api_client.update_knowledge_entry(entry_id, api_updates):
-                            st.toast(f"Updated entry and verified!", icon="✅")
-                            time.sleep(1) 
+                    rows_to_delete.append({
+                        "idx": idx,
+                        "id": entry_id,
+                        "content": content
+                    })
+            
+            # If there are items to delete, show confirmation
+            if rows_to_delete:
+                st.warning(f"⚠️ You have marked {len(rows_to_delete)} item(s) for deletion.")
+                
+                with st.expander("🗑️ Confirm Deletion", expanded=True):
+                    st.markdown('<span data-testid="delete-confirmation-dialog"></span>', unsafe_allow_html=True)
+                    st.markdown("**Items to be deleted:**")
+                    for item in rows_to_delete:
+                        st.markdown(f"- {item['content']}")
+                    
+                    col1, col2 = st.columns([1, 4])
+                    with col1:
+                        if st.button("✅ Confirm Delete", type="primary", use_container_width=True, key="confirm_delete_btn"):
+                            deleted_count = 0
+                            for item in rows_to_delete:
+                                print(f"[DELETE API CALL] Attempting to delete ID: {item['id']}")
+                                if api_client.delete_knowledge_entry(item["id"]):
+                                    print(f"[DELETE SUCCESS] Deleted ID: {item['id']}")
+                                    deleted_count += 1
+                                else:
+                                    print(f"[DELETE FAILED] Failed to delete ID: {item['id']}")
+                            
+                            if deleted_count > 0:
+                                st.success(f"Deleted {deleted_count} item(s)!")
+                                time.sleep(1.5)
+                                st.rerun()
+                            else:
+                                st.error("Failed to delete items.")
+                    with col2:
+                        if st.button("❌ Cancel", use_container_width=True, key="cancel_delete_btn"):
                             st.rerun()
             
-    else:
-        st.info("No recent knowledge entries found")
+            # Handle edits (only process if no deletes pending)
+            elif st.session_state.get("knowledge_editor"):
+                changes = st.session_state["knowledge_editor"]
+                
+                # Handle edits
+                if changes.get("edited_rows"):
+                    for idx, updates in changes["edited_rows"].items():
+                        entry_id = df.iloc[idx]["id"]
+                        
+                        # Prepare API updates (skip Delete field)
+                        api_updates = {}
+                        if "Category" in updates:
+                            api_updates["category"] = updates["Category"]
+                        if "Tags" in updates:
+                            # Split tags string into list
+                            tags_str = updates["Tags"]
+                            api_updates["tags"] = [t.strip() for t in tags_str.split(",") if t.strip()]
+                        if "Summary" in updates:
+                            api_updates["summary"] = updates["Summary"]
+                        
+                        if api_updates:
+                            if api_client.update_knowledge_entry(entry_id, api_updates):
+                                st.toast(f"Updated entry and verified!", icon="✅")
+                                time.sleep(1) 
+                                st.rerun()
+                
+        else:
+            st.info("No active knowledge entries found")
+            
+    except Exception as e:
+        st.warning(f"Unable to fetch recent knowledge: {str(e)}")
+
+with tab2:
+    st.markdown('<span data-testid="recycle-bin-tab"></span>', unsafe_allow_html=True)
+    st.subheader("Recycle Bin")
+    st.caption("Soft-deleted items can be restored here")
+    
+    try:
+        deleted_entries = api_client.fetch_recent_knowledge(limit=20, deleted_only=True)
         
-except Exception as e:
-    st.warning(f"Unable to fetch recent knowledge: {str(e)}")
+        if deleted_entries:
+            # Prepare data for table
+            recycle_data = []
+            for entry in deleted_entries:
+                metadata = entry.get('metadata', {})
+                content = entry.get('document', '')
+                short_content = content[:50] + "..." if len(content) > 50 else content
+                
+                deleted_at = metadata.get('deleted_at', '')
+                if deleted_at:
+                    try:
+                        dt = datetime.fromisoformat(deleted_at.replace('Z', '+00:00'))
+                        deleted_str = dt.strftime('%Y-%m-%d %H:%M')
+                    except:
+                        deleted_str = deleted_at
+                else:
+                    deleted_str = "-"
+                    
+                recycle_data.append({
+                    "id": entry.get('id'),
+                    "Content": short_content,
+                    "Category": metadata.get('category', 'Uncategorized'),
+                    "Tags": metadata.get('tags', ''),
+                    "Summary": metadata.get('summary', ''),
+                    "Deleted At": deleted_str
+                })
+            
+            recycle_df = pd.DataFrame(recycle_data)
+            
+            # Display table
+            st.markdown('<span data-testid="recycle-bin-table"></span>', unsafe_allow_html=True)
+            st.dataframe(
+                recycle_df[["Content", "Category", "Tags", "Summary", "Deleted At"]],
+                hide_index=True,
+                use_container_width=True
+            )
+            
+            # Restore functionality
+            st.markdown("### Restore Item")
+            st.markdown('<span data-testid="restore-section"></span>', unsafe_allow_html=True)
+            selected_idx = st.selectbox(
+                "Select item to restore:",
+                options=range(len(recycle_data)),
+                format_func=lambda i: f"{recycle_data[i]['Content']} (Deleted: {recycle_data[i]['Deleted At']})",
+                key="restore_selector"
+            )
+            
+            if st.button("🔄 Restore Selected Item", type="primary", key="restore-btn"):
+                entry_id = recycle_data[selected_idx]["id"]
+                if api_client.restore_knowledge_entry(entry_id):
+                    st.success(f"Item restored successfully!")
+                    time.sleep(1.5)
+                    st.rerun()
+                else:
+                    st.error("Failed to restore item.")
+        else:
+            st.info("Recycle bin is empty")
+            
+    except Exception as e:
+        st.warning(f"Unable to fetch deleted items: {str(e)}")
 
 # Trending Topics Section
 st.markdown("---")
@@ -381,7 +490,7 @@ with st.sidebar:
     else:
         st.error("✗ Backend unavailable")
     
-    if st.button("Refresh Dashboard"):
+    if st.button("Refresh Dashboard", key="refresh_dashboard_btn"):
         # Clear all caches to ensure fresh data
         st.cache_data.clear()
         st.cache_resource.clear()

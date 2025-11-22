@@ -173,17 +173,22 @@ async def query_knowledge(
 @router.get("/knowledge/recent")
 async def get_recent_knowledge(
     limit: int = 10,
+    deleted_only: bool = False,
     api_key: str = Depends(verify_api_key),
     services: dict = Depends(get_services)
 ):
     """
     Get recent knowledge entries
     Requires API key authentication
+    
+    Args:
+        limit: Maximum number of entries to return
+        deleted_only: If True, return only deleted items (for Recycle Bin)
     """
-    logger.info(f"Fetching recent knowledge (limit: {limit})")
+    logger.info(f"Fetching recent knowledge (limit: {limit}, deleted_only: {deleted_only})")
     
     try:
-        entries = services["vector_db"].get_recent_entries(limit=limit)
+        entries = services["vector_db"].get_recent_entries(limit=limit, deleted_only=deleted_only)
         return entries
     
     except Exception as e:
@@ -193,6 +198,60 @@ async def get_recent_knowledge(
             detail=f"Failed to fetch recent knowledge: {str(e)}"
         )
 
+
+
+@router.get("/knowledge/trending")
+async def get_trending_topics(
+    limit: int = 5,
+    api_key: str = Depends(verify_api_key),
+    services: dict = Depends(get_services)
+):
+    """
+    Get trending topics/tags from recent knowledge entries
+    Requires API key authentication
+    """
+    logger.info(f"Fetching trending topics (limit: {limit})")
+    
+    try:
+        # Fetch recent entries to analyze tags
+        entries = services["vector_db"].get_recent_entries(limit=50)
+        
+        tag_counts = {}
+        for entry in entries:
+            # Handle tags which might be a list or string
+            tags = entry.get('metadata', {}).get('tags', [])
+            
+            # If tags is a string (e.g. "['tag1', 'tag2']"), we might need to parse it
+            # But assuming it's a list or comma-separated string based on ingestion
+            if isinstance(tags, str):
+                # Split by comma if it's a simple string
+                tag_list = [t.strip() for t in tags.split(',') if t.strip()]
+            elif isinstance(tags, list):
+                tag_list = tags
+            else:
+                tag_list = []
+                
+            for tag in tag_list:
+                # Clean up tag
+                tag = tag.strip()
+                # Skip system tags or empty
+                if tag and not tag.startswith('#KnowledgeGap'):
+                    tag_counts[tag] = tag_counts.get(tag, 0) + 1
+                        
+        # Sort by count
+        sorted_tags = sorted(tag_counts.items(), key=lambda x: x[1], reverse=True)
+        trending = [tag for tag, count in sorted_tags[:limit]]
+        
+        # If not enough tags, provide some defaults
+        if not trending:
+            trending = ["Policy", "HR", "Technical", "Sales", "Procedure"]
+            
+        return trending
+        
+    except Exception as e:
+        logger.error(f"Failed to fetch trending topics: {e}", exc_info=True)
+        # Return defaults on error to keep UI working
+        return ["Policy", "HR", "Technical", "Sales", "Procedure"]
 
 @router.get("/metrics/queries")
 async def get_query_metrics(
@@ -372,6 +431,42 @@ async def delete_knowledge_entry(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Delete failed: {str(e)}"
         )
+
+@router.post("/knowledge/{entry_id}/restore")
+async def restore_knowledge_entry(
+    entry_id: str,
+    api_key: str = Depends(verify_api_key),
+    services: dict = Depends(get_services)
+):
+    """
+    Restore a soft-deleted knowledge entry
+    Requires API key authentication
+    """
+    logger.info(f"Restoring knowledge entry: {entry_id}")
+    
+    try:
+        success = services["vector_db"].restore_entry(entry_id)
+        
+        if success:
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={"status": "success", "message": f"Entry {entry_id} restored"}
+            )
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to restore entry"
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Restore failed: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Restore failed: {str(e)}"
+        )
+
 
 @router.patch("/knowledge/{entry_id}")
 async def update_knowledge_entry(

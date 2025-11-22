@@ -229,6 +229,9 @@ class QueryService:
         try:
             with open(self.query_log_file, 'a', encoding='utf-8') as f:
                 f.write(json.dumps(log_entry) + '\n')
+                # Force flush to disk to ensure immediate visibility
+                f.flush()
+                os.fsync(f.fileno())
             logger.debug(f"Logged query {query_id} to {self.query_log_file}")
         except Exception as e:
             logger.error(f"Failed to write query log: {e}", exc_info=True)
@@ -400,7 +403,29 @@ class QueryService:
             # Sort by count (desc) then by last_asked (desc)
             gap_list.sort(key=lambda x: (x['count'], x['last_asked']), reverse=True)
             
-            return gap_list[:limit]
+            # Filter out gaps that have been resolved (now return results)
+            unresolved_gaps = []
+            for gap in gap_list:
+                if len(unresolved_gaps) >= limit:
+                    break
+                    
+                # Check if this query now returns results
+                try:
+                    # Check 1: Direct summary match (Bridge the Gap)
+                    if self.vector_db.has_entry_with_summary(gap['query']):
+                        continue # Resolved, skip adding to unresolved_gaps
+                    
+                    # Check 2: Semantic Search (Fallback)
+                    embedding = self.gemini_client.generate_query_embedding(gap['query'])
+                    matches = self.vector_db.search(embedding, top_k=1, threshold=0.25) # Higher threshold for resolution check
+                    
+                    if not matches:
+                        unresolved_gaps.append(gap)
+                except Exception:
+                    # If check fails, assume it's still a gap
+                    unresolved_gaps.append(gap)
+            
+            return unresolved_gaps
             
         except Exception as e:
             logger.error(f"Failed to get knowledge gaps: {e}")

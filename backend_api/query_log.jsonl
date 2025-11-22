@@ -80,3 +80,15 @@
 {"query_id": "7086d7f7-cf91-488d-9af0-dc2d4eb49807", "query_text": "recipe for invisibility potion", "result_count": 0, "processing_time_ms": 199, "timestamp": "2025-11-22T02:07:56.622310", "has_results": false}
 {"query_id": "96b128c0-b8a1-4ece-8a24-916c26185262", "query_text": "recipe for invisibility potion", "result_count": 0, "processing_time_ms": 195, "timestamp": "2025-11-22T02:07:56.821302", "has_results": false}
 {"query_id": "33aec3df-f5b7-494d-9646-7d3c0bb67b57", "query_text": "To Be Deleted", "result_count": 3, "processing_time_ms": 190, "timestamp": "2025-11-22T03:11:57.424244", "has_results": true}
+{"query_id": "491d3ccd-e368-4115-a068-8c10081f76d0", "query_text": "Recycle Bin Test", "result_count": 3, "processing_time_ms": 203, "timestamp": "2025-11-22T18:03:32.249091", "has_results": true}
+{"query_id": "2589bbb8-1332-489d-b061-4f391225dde1", "query_text": "Recycle Bin Test", "result_count": 3, "processing_time_ms": 195, "timestamp": "2025-11-22T18:03:33.466655", "has_results": true}
+{"query_id": "ca4e9bb9-6585-42ff-bc27-2c198296321b", "query_text": "locked out troubleshoot", "result_count": 1, "processing_time_ms": 207, "timestamp": "2025-11-22T18:33:38.499947", "has_results": true}
+{"query_id": "8cbe4827-43d2-4830-815b-a528fa226358", "query_text": "lock out", "result_count": 0, "processing_time_ms": 209, "timestamp": "2025-11-22T19:01:23.282715", "has_results": false}
+{"query_id": "b4a67c05-a466-4a6c-8939-558d3b04af55", "query_text": "test", "result_count": 3, "processing_time_ms": 303, "timestamp": "2025-11-22T19:45:18.767251", "has_results": true}
+{"query_id": "ff844d1e-41a7-4683-8bd2-84cd2dc5f161", "query_text": "login", "result_count": 1, "processing_time_ms": 208, "timestamp": "2025-11-22T19:45:31.487863", "has_results": true}
+{"query_id": "276db0c8-3b0e-4186-81fb-6e1a2dbf4a9f", "query_text": "dental", "result_count": 0, "processing_time_ms": 210, "timestamp": "2025-11-22T19:46:18.862111", "has_results": false}
+{"query_id": "4603a50e-4915-4aa0-9a17-4cbc37bd6331", "query_text": "dental", "result_count": 0, "processing_time_ms": 194, "timestamp": "2025-11-22T19:46:39.817874", "has_results": false}
+{"query_id": "8d499895-51da-4976-b767-15f7860a8198", "query_text": "dental", "result_count": 0, "processing_time_ms": 203, "timestamp": "2025-11-22T19:47:07.547579", "has_results": false}
+{"query_id": "f08b05ef-21b2-4e62-a299-b5bfc06db1a4", "query_text": "QLE", "result_count": 1, "processing_time_ms": 198, "timestamp": "2025-11-22T19:50:15.562553", "has_results": true}
+{"query_id": "50dc70a8-3d0b-464b-b879-758488434e9e", "query_text": "marriage certificate", "result_count": 0, "processing_time_ms": 204, "timestamp": "2025-11-22T19:50:39.090774", "has_results": false}
+{"query_id": "1fd3693a-6862-40cb-a409-65f3073d8da7", "query_text": "QLE", "result_count": 2, "processing_time_ms": 196, "timestamp": "2025-11-22T19:51:47.267860", "has_results": true}
