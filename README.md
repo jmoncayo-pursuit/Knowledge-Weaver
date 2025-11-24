@@ -12,8 +12,7 @@ The system uses a "Frankenstein" architecture, stitching together powerful compo
 graph TD
     subgraph "Frontend Layer"
         CE[Chrome Extension] -->|Capture & Search| API
-        CE[Chrome Extension] -->|Capture & Search| API
-        DB[AI-Native HTML/JS Dashboard] -->|Manage & Verify| API
+        DB[HTML/JS Dashboard] -->|Manage & Verify| API
     end
 
     subgraph "Backend Layer"
@@ -35,44 +34,47 @@ graph TD
 
 The system is styled with a **Custom Dark Theme** (Spider Theme) to ensure a premium, consistent look across all components.
 
+## Core Concepts
+
+### 🕷️ The Spider (Verification)
+The "Spider" represents the verification layer. It ensures that only high-quality, human-reviewed information enters the permanent knowledge base.
+- **Source of Truth**: Content marked as `verified_human` is treated as gold standard.
+- **Active Learning**: The AI learns from these verified examples to improve future suggestions.
+
+### 🕸️ The Weaver (Capture)
+The "Weaver" is the capture mechanism (Chrome Extension & Auto-Ingestion).
+- **Draft Mode**: Captured content starts as `draft` or `verified_ai`.
+- **Low Friction**: Designed to be as effortless as possible to encourage high-volume capture.
+
 ## 🤖 AI-Native Design
 
 Knowledge-Weaver is built to be **Robot-Accessible** by design.
-- **Stable Selectors**: All critical UI elements use `data-testid` attributes or stable keys, allowing AI agents (like the one building this!) to reliably navigate, test, and interact with the application.
-- **Barrier Logging**: If an automated agent encounters a UI failure, the system logs it to `robot_barriers.jsonl`, enabling self-healing workflows.
-- **Self-Verification**: The system includes automated verification scripts (`verify_roles.py`, `verify_recycle_bin.py`) that simulate user actions to ensure integrity.
+- **Stable Selectors**: All critical UI elements use `data-testid` attributes, allowing AI agents to reliably navigate and test the application.
+- **Barrier Logging**: UI failures are logged to `robot_barriers.jsonl` for self-healing.
+- **Self-Verification**: Automated scripts (`verify_roles.py`, `verify_recycle_bin.py`) ensure system integrity.
 
 ## Key Features
 
 ### 1. Human-in-the-Loop Verification
-AI is powerful, but not perfect. Knowledge-Weaver puts humans in control:
-- **Capture**: AI suggests categories and tags from chat content.
-- **Review**: Users verify and edit the AI's suggestions before saving.
-- **Search**: Verified content is boosted in search results, ensuring reliability.
-
-![Extension Search](docs/images/extension_dark.png)
-![Review Modal](docs/images/review_modal.png)
-*Screenshots captured by internal AI Agent*
+AI suggests, Humans decide.
+- **Capture**: AI suggests categories/tags.
+- **Review**: Users verify/edit suggestions.
+- **Search**: Verified content is boosted.
 
 ### 2. Active Learning (Dynamic Few-Shot Prompting)
 The system gets smarter as you use it.
-- When analyzing new content, the AI looks at **similar verified examples** from the vector database.
-- This context helps the AI mimic your team's specific categorization style and tagging conventions.
-- **Result**: The more you use it, the less you have to edit.
+- **Feedback Loop**: When you edit a tag or category, the system records this as a "correction".
+- **Context Injection**: Future analysis requests include these corrections as few-shot examples.
+- **Result**: The AI mimics your team's specific style.
 
 ### 3. Gap-to-Gold
-Identify and fill knowledge gaps in real-time.
-- **Tracking**: The system tracks queries that return zero results.
-- **Dashboard**: Leaders can see these "Knowledge Gaps" on the dashboard.
-- **Bridge the Gap**: A dedicated UI allows experts to answer these missing questions directly, instantly turning a gap into a golden nugget of knowledge.
-
-![Dashboard View](docs/images/dashboard_dark.png)
-*Screenshot captured by internal AI Agent*
+Identify and fill knowledge gaps.
+- **Tracking**: Queries with zero results are tracked.
+- **Resolution**: Experts can answer these gaps directly from the dashboard.
 
 ### 4. Recycle Bin (Soft Deletes)
-Mistakes happen.
-- **Safety**: Deleting an item performs a "soft delete," hiding it from search but keeping it in the database.
-- **Recovery**: A dedicated "Recycle Bin" tab allows you to view and restore deleted items with a single click.
+- **Safety**: Deleted items are soft-deleted (hidden, not destroyed).
+- **Recovery**: Restore items via the Recycle Bin tab.
 
 ## Getting Started
 
@@ -87,5 +89,5 @@ Mistakes happen.
 
 ### Running the System
 1. **Backend**: `uvicorn backend_api.main:app --reload`
-2. **Dashboard**: Open `app_dashboard/index.html` in any browser (Served via FastAPI CORS).
+2. **Dashboard**: Open `app_dashboard/index.html` (Served via Python HTTP or FastAPI Static).
 3. **Extension**: Load `app_extension` as an unpacked extension in Chrome.
