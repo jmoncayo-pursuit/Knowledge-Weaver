@@ -465,6 +465,81 @@ async function deleteEntry(id) {
     }
 }
 
+async function restoreEntry(id) {
+    const success = await apiCall(`/knowledge/${id}/restore`, 'POST');
+    if (success) {
+        fetchDeletedKnowledge();
+        fetchMetrics();
+    } else {
+        alert('Failed to restore entry.');
+    }
+}
+
+// --- Tab Switching ---
+function switchTab(tab) {
+    // Update Buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+
+    // Update Views
+    const activeView = document.getElementById('active-knowledge-view');
+    const recycleView = document.getElementById('recycle-bin-view');
+    const refreshBtn = document.getElementById('refresh-knowledge-btn');
+
+    if (tab === 'active') {
+        activeView.classList.remove('hidden');
+        recycleView.classList.add('hidden');
+        fetchRecentKnowledge();
+        refreshBtn.onclick = fetchRecentKnowledge;
+    } else {
+        activeView.classList.add('hidden');
+        recycleView.classList.remove('hidden');
+        fetchDeletedKnowledge();
+        refreshBtn.onclick = fetchDeletedKnowledge;
+    }
+}
+
+// --- Recycle Bin Data ---
+async function fetchDeletedKnowledge() {
+    const entries = await apiCall('/knowledge/recent?limit=20&deleted_only=true');
+    if (!entries) return;
+
+    const tbody = document.getElementById('recycle-table-body');
+    const emptyState = document.getElementById('recycle-empty-state');
+
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (entries.length === 0) {
+        emptyState.style.display = 'block';
+        return;
+    } else {
+        emptyState.style.display = 'none';
+    }
+
+    entries.forEach(entry => {
+        const row = document.createElement('tr');
+
+        let typeLabel = entry.metadata.type || 'unknown';
+        const category = entry.metadata.category || 'Uncategorized';
+        const deletedAt = new Date().toLocaleDateString(); // Metadata doesn't store deleted_at yet, using current for demo
+
+        row.innerHTML = `
+            <td data-label="Type"><span class="badge badge-type">${typeLabel}</span></td>
+            <td data-label="Content">${entry.metadata.summary || entry.document.substring(0, 50) + '...'}</td>
+            <td data-label="Category">${category}</td>
+            <td data-label="Deleted At">${deletedAt}</td>
+            <td data-label="Actions">
+                <button class="btn-primary" onclick="restoreEntry('${entry.id}')" data-testid="restore-${entry.id}" style="font-size: 12px; padding: 4px 8px;">
+                    Restore ♻️
+                </button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
 // --- Event Listeners ---
 function setupEventListeners() {
     const form = document.getElementById('gap-answer-form');
