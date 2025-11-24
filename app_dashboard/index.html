@@ -164,24 +164,24 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Edit Knowledge Entry</h2>
-                <button class="close-btn" id="close-modal-btn">&times;</button>
+                <button class="close-btn" id="close-modal-btn" data-testid="close-modal-btn">&times;</button>
             </div>
             <form id="edit-form">
                 <input type="hidden" id="edit-id">
 
                 <div class="form-group">
                     <label for="edit-category">Category</label>
-                    <input type="text" id="edit-category" required>
+                    <input type="text" id="edit-category" required data-testid="edit-category-input">
                 </div>
 
                 <div class="form-group">
                     <label for="edit-tags">Tags (comma separated)</label>
-                    <input type="text" id="edit-tags">
+                    <input type="text" id="edit-tags" data-testid="edit-tags-input">
                 </div>
 
                 <div class="form-group">
                     <label for="edit-summary">Summary</label>
-                    <textarea id="edit-summary" rows="3"></textarea>
+                    <textarea id="edit-summary" rows="3" data-testid="edit-summary-input"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -194,7 +194,8 @@
                 </div>
 
                 <div class="modal-actions">
-                    <button type="button" class="btn-secondary" id="cancel-edit-btn">Cancel</button>
+                    <button type="button" class="btn-secondary" id="cancel-edit-btn"
+                        data-testid="cancel-edit-btn">Cancel</button>
                     <button type="submit" class="btn-primary" id="save-edit-btn" data-testid="save-changes-btn">Save
                         Changes</button>
                 </div>

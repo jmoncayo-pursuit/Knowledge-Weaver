@@ -353,6 +353,7 @@ Output Category: "Compliance / Authorization"
         # Add dynamic examples if provided
         if context_examples:
             prompt += f"\nHere are past examples of how the user classified similar text:\n{context_examples}\n"
+            prompt += "\nCRITICAL: You will be provided with 'Verified Examples' from the user's history. You MUST mimic the tagging style, category choice, and summary format of these examples exactly. They are your ground truth.\n"
 
         prompt += f"""
 Text to Analyze:
