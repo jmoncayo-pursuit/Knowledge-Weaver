@@ -21,10 +21,14 @@ from models.schemas import (
     AnalyzeResponse,
     DashboardMetricsResponse,
     HealthResponse,
-    BarrierLogRequest
+    DashboardMetricsResponse,
+    HealthResponse,
+    BarrierLogRequest,
+    LearningEvent
 )
 import json
 import os
+from datetime import datetime
 from auth import verify_api_key
 from services.vector_db import VectorDatabase
 from services.gemini_client import GeminiClient
@@ -343,8 +347,95 @@ async def get_dashboard_metrics(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch dashboard metrics: {str(e)}"
         )
+        
+    except Exception as e:
+        logger.error(f"Failed to fetch dashboard metrics: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch dashboard metrics: {str(e)}"
+        )
 
 
+@router.get("/metrics/learning", response_model=List[LearningEvent])
+async def get_learning_history(
+    limit: int = 5,
+    api_key: str = Depends(verify_api_key)
+):
+    """
+    Get recent learning events (AI vs Human corrections)
+    """
+    try:
+        backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        log_file = os.path.join(backend_dir, 'learning_history.jsonl')
+        
+        events = []
+        if os.path.exists(log_file):
+            with open(log_file, 'r', encoding='utf-8') as f:
+                # Read all lines
+                lines = f.readlines()
+                # Parse last 'limit' lines in reverse order
+                for line in reversed(lines):
+                    if len(events) >= limit:
+                        break
+                    try:
+                        if line.strip():
+                            events.append(json.loads(line))
+                    except json.JSONDecodeError:
+                        continue
+                        
+        return events
+        
+    except Exception as e:
+        logger.error(f"Failed to fetch learning history: {e}", exc_info=True)
+        return []
+
+
+@router.get("/metrics/learning_stats")
+async def get_learning_stats(
+    limit: int = 5,
+    api_key: str = Depends(verify_api_key)
+):
+    """
+    Get aggregated learning statistics (Top learned tags)
+    """
+    try:
+        backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        log_file = os.path.join(backend_dir, 'learning_history.jsonl')
+        
+        tag_counts = {}
+        
+        if os.path.exists(log_file):
+            with open(log_file, 'r', encoding='utf-8') as f:
+                for line in f:
+                    try:
+                        if line.strip():
+                            event = json.loads(line)
+                            # Count tags in human correction
+                            # We only care about what the human TAUGHT the AI
+                            human_tags = event.get('human_correction', {}).get('tags', [])
+                            ai_tags = event.get('ai_prediction', {}).get('tags', [])
+                            
+                            # Identify NEW tags (what was learned)
+                            learned_tags = [t for t in human_tags if t not in ai_tags]
+                            
+                            for tag in learned_tags:
+                                tag_counts[tag] = tag_counts.get(tag, 0) + 1
+                                
+                    except json.JSONDecodeError:
+                        continue
+        
+        # Sort by count
+        sorted_tags = sorted(tag_counts.items(), key=lambda x: x[1], reverse=True)
+        top_tags = [{"tag": tag, "count": count} for tag, count in sorted_tags[:limit]]
+        
+        return {
+            "top_learned_tags": top_tags,
+            "total_corrections": sum(tag_counts.values())
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to fetch learning stats: {e}", exc_info=True)
+        return {"top_learned_tags": [], "total_corrections": 0}
 
 
 @router.post("/ingest", response_model=IngestResponse)
@@ -358,6 +449,10 @@ async def ingest_knowledge(
     """
     try:
         logger.info(f"Received manual ingestion request for URL: {request.url}")
+        if request.ai_prediction:
+            logger.info(f"AI Prediction received: {request.ai_prediction}")
+        else:
+            logger.info("No AI Prediction in request")
         
         # Generate unique ID
         import uuid
@@ -385,6 +480,49 @@ async def ingest_knowledge(
             embeddings=[embedding],
             metadatas=[metadata]
         )
+        
+
+        
+        # --- Learning History Tracking ---
+        if request.ai_prediction:
+            try:
+                # Compare AI prediction with final values
+                ai_tags = set(request.ai_prediction.get("tags", []))
+                human_tags = set(request.tags or [])
+                
+                ai_category = request.ai_prediction.get("category")
+                human_category = request.category
+                
+                # Check for differences
+                tags_changed = ai_tags != human_tags
+                category_changed = ai_category != human_category
+                
+                if tags_changed or category_changed:
+                    backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+                    history_file = os.path.join(backend_dir, 'learning_history.jsonl')
+                    
+                    learning_event = {
+                        "timestamp": datetime.utcnow().isoformat(),
+                        "summary": request.summary or "No summary",
+                        "ai_prediction": {
+                            "tags": list(ai_tags),
+                            "category": ai_category
+                        },
+                        "human_correction": {
+                            "tags": list(human_tags),
+                            "category": human_category
+                        }
+                    }
+                    
+                    with open(history_file, 'a', encoding='utf-8') as f:
+                        f.write(json.dumps(learning_event) + '\n')
+                        
+                    logger.info("Logged learning event: Human corrected AI")
+                    
+            except Exception as e:
+                logger.error(f"Failed to log learning event: {e}")
+        # ---------------------------------
+        # ---------------------------------
         
         return IngestResponse(
             status="success",
@@ -496,6 +634,9 @@ async def update_knowledge_entry(
             updates["tags"] = ",".join(request.tags)
         if request.summary is not None:
             updates["summary"] = request.summary
+        if request.screenshot is not None:
+            updates["screenshot"] = request.screenshot
+            updates["has_screenshot"] = True
             
         # Force verification status update (Active Learning)
         updates["verification_status"] = "verified_human"

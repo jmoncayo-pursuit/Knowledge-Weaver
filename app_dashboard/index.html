@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Knowledge-Weaver Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕷️</text></svg>">
@@ -83,15 +84,42 @@
             </div>
         </section>
 
+        <!-- Learning Activity Section -->
+        <section class="dashboard-section" aria-label="Learning Activity">
+            <div class="section-header">
+                <h2>Learning Activity</h2>
+                <p>Recent human corrections that trained the AI.</p>
+            </div>
+            <div class="learning-dashboard-grid">
+                <div class="learning-feed-container">
+                    <h3>Recent Corrections</h3>
+                    <div class="learning-feed" id="learning-feed" data-testid="learning-feed">
+                        <!-- Learning cards injected here -->
+                        <div class="loading-spinner">Loading history...</div>
+                    </div>
+                </div>
+                <div class="learning-chart-container">
+                    <h3>Top Learned Topics</h3>
+                    <canvas id="learning-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
         <!-- Knowledge Base Section -->
         <section class="dashboard-section" aria-label="Knowledge Base">
             <div class="section-header">
-                <h2>Recent Knowledge</h2>
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('active')" data-testid="tab-active">Active
+                        Knowledge</button>
+                    <button class="tab-btn" onclick="switchTab('recycle')" data-testid="tab-recycle">Recycle Bin
+                        🗑️</button>
+                </div>
                 <button class="btn-secondary" id="refresh-knowledge-btn"
                     data-testid="refresh-knowledge-btn">Refresh</button>
             </div>
 
-            <div class="table-container">
+            <!-- Active Knowledge Table -->
+            <div id="active-knowledge-view" class="table-container">
                 <table class="knowledge-table" data-testid="knowledge-table">
                     <thead>
                         <tr>
@@ -107,8 +135,72 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Recycle Bin Table -->
+            <div id="recycle-bin-view" class="table-container hidden">
+                <div class="empty-state-container" id="recycle-empty-state" style="display: none;">
+                    <p>Recycle bin is empty.</p>
+                </div>
+                <table class="knowledge-table" data-testid="recycle-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Content/Summary</th>
+                            <th>Category</th>
+                            <th>Deleted At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recycle-table-body">
+                        <!-- Rows injected here -->
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
+
+    <!-- Edit Modal -->
+    <dialog id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Knowledge Entry</h2>
+                <button class="close-btn" id="close-modal-btn">&times;</button>
+            </div>
+            <form id="edit-form">
+                <input type="hidden" id="edit-id">
+
+                <div class="form-group">
+                    <label for="edit-category">Category</label>
+                    <input type="text" id="edit-category" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-tags">Tags (comma separated)</label>
+                    <input type="text" id="edit-tags">
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-summary">Summary</label>
+                    <textarea id="edit-summary" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-screenshot">Update Screenshot</label>
+                    <input type="file" id="edit-screenshot" accept="image/*" data-testid="edit-screenshot-input">
+                    <div id="edit-preview-container" style="margin-top: 10px; display: none;">
+                        <img id="edit-preview" src="" alt="Screenshot Preview"
+                            style="max-width: 100%; max-height: 200px; border-radius: 4px; border: 1px solid var(--border-color);">
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-edit-btn">Cancel</button>
+                    <button type="submit" class="btn-primary" id="save-edit-btn" data-testid="save-changes-btn">Save
+                        Changes</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
 
     <script src="app.js"></script>
 </body>

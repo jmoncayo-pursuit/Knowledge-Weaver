@@ -108,12 +108,21 @@ class IngestRequest(BaseModel):
     category: Optional[str] = Field(None, description="Category of the content")
     tags: Optional[List[str]] = Field(None, description="Tags for the content")
     summary: Optional[str] = Field(None, description="Summary of the content")
+    ai_prediction: Optional[Dict[str, Any]] = Field(None, description="Original AI prediction for learning tracking")
+
+class LearningEvent(BaseModel):
+    """Model for learning history events"""
+    timestamp: datetime
+    summary: str
+    ai_prediction: Dict[str, Any]
+    human_correction: Dict[str, Any]
 
 class UpdateKnowledgeRequest(BaseModel):
     """Request model for updating knowledge entry"""
     category: Optional[str] = None
     tags: Optional[List[str]] = None
     summary: Optional[str] = None
+    screenshot: Optional[str] = None  # Base64 string or URL
 
 class IngestResponse(BaseModel):
     """Response model for ingestion"""
