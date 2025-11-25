@@ -46,12 +46,24 @@ The "Weaver" is the capture mechanism (Chrome Extension & Auto-Ingestion).
 - **Draft Mode**: Captured content starts as `draft` or `verified_ai`.
 - **Low Friction**: Designed to be as effortless as possible to encourage high-volume capture.
 
-## 🤖 AI-Native Design
+## 🤖 The AI-Native Workflow
 
-Knowledge-Weaver is built to be **Robot-Accessible** by design.
-- **Stable Selectors**: All critical UI elements use `data-testid` attributes, allowing AI agents to reliably navigate and test the application.
-- **Barrier Logging**: UI failures are logged to `robot_barriers.jsonl` for self-healing.
-- **Self-Verification**: Automated scripts (`verify_roles.py`, `verify_recycle_bin.py`) ensure system integrity.
+We don't just write code; we build systems that can be understood and operated by AI agents. This philosophy drives our development process:
+
+### 1. Browser Subagent & Self-Healing
+We use AI agents to evaluate the application, not just run static scripts.
+- **Agent-Based Testing**: Agents navigate the UI like a human, interacting with real elements.
+- **Self-Healing**: If an agent hits a barrier (e.g., a changed selector), it attempts to fix the issue or logs it for review, ensuring our test suite remains resilient.
+
+### 2. Universal Design (WCAG)
+"If a robot can use it, so can a human."
+- **Data-Testid Strategy**: By enforcing `data-testid` attributes for our robot agents, we inadvertently create a robust structure for human assistive technologies (screen readers).
+- **Accessibility First**: Our commitment to robot-accessibility guarantees high WCAG standards for all users.
+
+### 3. Evaluation vs. Labeling
+We are shifting the paradigm from manual data labeling to operational reliability.
+- **Focus on Ops**: Instead of spending hours labeling data, we focus on evaluating how well the system performs in real-world scenarios.
+- **Reliability Metrics**: We measure success by the system's ability to recover from errors and maintain a high "Golden Path" completion rate.
 
 ## Key Features
 

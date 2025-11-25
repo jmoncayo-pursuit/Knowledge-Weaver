@@ -182,12 +182,29 @@ async function fetchRecentKnowledge() {
             <td data-label="Category">${category}</td>
             <td data-label="Status"><span class="badge badge-verified">🕷️ ${status}</span></td>
             <td data-label="Actions">
-                <button class="btn-primary" onclick="openEditModal('${entry.id}', '${escapeHtml(category)}', '${escapeHtml(entry.metadata.tags || '')}', '${escapeHtml(entry.metadata.summary || '')}')" data-testid="edit-${entry.id}" style="margin-right: 5px; font-size: 12px; padding: 4px 8px;">
-                    Edit
-                </button>
-                <button class="btn-danger" onclick="deleteEntry('${entry.id}')" data-testid="delete-${entry.id}" style="font-size: 12px; padding: 4px 8px;">
-                    Delete
-                </button>
+                <div class="action-container">
+                    ${entry.metadata.has_screenshot ? `
+                    <button class="btn-secondary view-image-btn" 
+                        data-id="${entry.id}"
+                        style="font-size: 12px; padding: 4px 8px;">
+                        📷 View
+                    </button>` : ''}
+                    <button class="btn-primary edit-btn" 
+                        data-id="${entry.id}" 
+                        data-category="${escapeHtml(category)}" 
+                        data-tags="${escapeHtml(entry.metadata.tags || '')}" 
+                        data-summary="${escapeHtml(entry.metadata.summary || '')}"
+                        data-testid="edit-${entry.id}" 
+                        style="font-size: 12px; padding: 4px 8px;">
+                        Edit
+                    </button>
+                    <button class="btn-danger delete-btn" 
+                        data-id="${entry.id}" 
+                        data-testid="delete-${entry.id}" 
+                        style="font-size: 12px; padding: 4px 8px;">
+                        Delete
+                    </button>
+                </div>
             </td>
         `;
         tbody.appendChild(row);
@@ -197,59 +214,36 @@ async function fetchRecentKnowledge() {
 
 // --- Learning History ---
 async function loadLearningHistory() {
-    const feed = document.getElementById('learning-feed');
-    if (!feed) return;
+    const tbody = document.getElementById('learning-table-body');
+    if (!tbody) return;
 
     const history = await apiCall('/metrics/learning?limit=5');
 
     if (!history || history.length === 0) {
-        feed.innerHTML = '<div class="empty-state">No learning activity yet. Teach the AI by correcting its suggestions!</div>';
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 2rem; color: var(--text-secondary);">No learning activity yet. Teach the AI by correcting its suggestions!</td></tr>';
         return;
     }
 
-    feed.innerHTML = history.map(event => {
+    tbody.innerHTML = history.map(event => {
         const date = new Date(event.timestamp).toLocaleString();
 
-        // Calculate diffs
-        const oldTags = event.ai_prediction.tags || [];
-        const newTags = event.human_correction.tags || [];
-        const oldCat = event.ai_prediction.category || 'None';
-        const newCat = event.human_correction.category || 'None';
+        // Helper to format content
+        const formatContent = (data) => {
+            if (!data) return '<span style="color: var(--text-secondary)">-</span>';
+            const cat = data.category ? `<div><span class="badge badge-type" style="font-size: 10px;">Cat</span> ${data.category}</div>` : '';
+            const tags = data.tags && data.tags.length ? `<div><span class="badge badge-type" style="font-size: 10px;">Tags</span> ${data.tags.join(', ')}</div>` : '';
+            return `<div style="display:flex; flex-direction:column; gap:4px;">${cat}${tags}</div>`;
+        };
 
-        let diffHtml = '';
-
-        // Category Diff
-        if (oldCat !== newCat) {
-            diffHtml += `
-                <div class="learning-diff">
-                    <span class="diff-label">Category:</span>
-                    <span class="diff-old">${oldCat}</span>
-                    <span class="diff-arrow">→</span>
-                    <span class="diff-new">${newCat}</span>
-                </div>
-            `;
-        }
-
-        // Tags Diff (Simplified for demo)
-        const addedTags = newTags.filter(t => !oldTags.includes(t));
-        if (addedTags.length > 0) {
-            diffHtml += `
-                <div class="learning-diff">
-                    <span class="diff-label">Learned Tags:</span>
-                    <span class="diff-new">+ ${addedTags.join(', ')}</span>
-                </div>
-            `;
-        }
+        const original = formatContent(event.ai_prediction);
+        const correction = formatContent(event.human_correction);
 
         return `
-            <div class="learning-card">
-                <div class="learning-header">
-                    <span>🤖 AI Training Event</span>
-                    <span>${date}</span>
-                </div>
-                ${diffHtml}
-                <div class="learning-summary">"${event.summary}"</div>
-            </div>
+            <tr>
+                <td>${original}</td>
+                <td>${correction}</td>
+                <td style="font-size: 12px; color: var(--text-secondary);">${date}</td>
+            </tr>
         `;
     }).join('');
 }
@@ -302,10 +296,12 @@ async function fetchLearningStats() {
 }
 
 // --- Edit Modal Logic ---
-const editModal = document.getElementById('edit-modal');
-const editForm = document.getElementById('edit-form');
+// Removed top-level const to ensure we get the element when needed
+// const editModal = document.getElementById('edit-modal'); 
+// const editForm = document.getElementById('edit-form');
 
 function openEditModal(id, category, tags, summary) {
+    const editModal = document.getElementById('edit-modal');
     if (!editModal) return;
 
     document.getElementById('edit-id').value = id;
@@ -322,7 +318,50 @@ function openEditModal(id, category, tags, summary) {
 }
 
 function closeEditModal() {
+    const editModal = document.getElementById('edit-modal');
     if (editModal) editModal.close();
+}
+
+async function openImageModal(id) {
+    const modal = document.getElementById('image-modal');
+    const img = document.getElementById('full-size-image');
+
+    if (!modal || !img) return;
+
+    // Fetch full entry to get screenshot (it might not be in the summary list if we optimize later, 
+    // but currently /knowledge/recent returns everything. However, let's verify if screenshot is in metadata or top level)
+    // The ingestion puts it in metadata['screenshot'] if it's a URL, or we might need to fetch it.
+    // Wait, the schema says IngestRequest has screenshot, and UpdateKnowledgeRequest has it.
+    // VectorDB usually stores it in metadata.
+
+    // Let's try to find it in the current table data first if possible, but we don't store it in DOM.
+    // So we fetch the single entry or just use the recent list cache if we had one.
+    // For now, let's just fetch the recent list again or assume we can get it.
+    // Actually, fetching the specific entry is safer.
+
+    // Since we don't have a get-single-entry endpoint exposed in app.js apiCall wrapper easily without ID,
+    // let's just fetch recent and find it, or add a get endpoint.
+    // The backend has GET /knowledge/recent, but not GET /knowledge/{id}.
+    // Wait, let's check backend routes. 
+    // Backend has DELETE, RESTORE, UPDATE. It does NOT have GET /knowledge/{id}.
+    // We should probably add that, OR just rely on the fact that we just loaded recent entries.
+
+    // Hack for now: We will fetch recent again and find it. 
+    // In a real app, we'd have a local state `knowledgeEntries`.
+    const entries = await apiCall('/knowledge/recent?limit=50');
+    const entry = entries.find(e => e.id === id);
+
+    if (entry && entry.metadata.screenshot) {
+        img.src = entry.metadata.screenshot;
+        modal.showModal();
+    } else {
+        alert('Image not found.');
+    }
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('image-modal');
+    if (modal) modal.close();
 }
 
 async function saveEdit(e) {
@@ -479,7 +518,9 @@ async function restoreEntry(id) {
 function switchTab(tab) {
     // Update Buttons
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+    // Use ID based selection if possible, otherwise fallback to onclick attribute finding (legacy support)
+    const btn = document.getElementById(tab === 'active' ? 'tab-active' : 'tab-recycle');
+    if (btn) btn.classList.add('active');
 
     // Update Views
     const activeView = document.getElementById('active-knowledge-view');
@@ -531,9 +572,14 @@ async function fetchDeletedKnowledge() {
             <td data-label="Category">${category}</td>
             <td data-label="Deleted At">${deletedAt}</td>
             <td data-label="Actions">
-                <button class="btn-primary" onclick="restoreEntry('${entry.id}')" data-testid="restore-${entry.id}" style="font-size: 12px; padding: 4px 8px;">
-                    Restore ♻️
-                </button>
+                <div class="action-container">
+                    <button class="btn-primary restore-btn" 
+                        data-id="${entry.id}" 
+                        data-testid="restore-${entry.id}" 
+                        style="font-size: 12px; padding: 4px 8px;">
+                        Restore ♻️
+                    </button>
+                </div>
             </td>
         `;
         tbody.appendChild(row);
@@ -557,10 +603,83 @@ function setupEventListeners() {
     // Modal Listeners
     const closeModalBtn = document.getElementById('close-modal-btn');
     const cancelEditBtn = document.getElementById('cancel-edit-btn');
+    const editForm = document.getElementById('edit-form');
+    const editModal = document.getElementById('edit-modal');
 
-    if (closeModalBtn) closeModalBtn.addEventListener('click', closeEditModal);
-    if (cancelEditBtn) cancelEditBtn.addEventListener('click', closeEditModal);
+    if (closeModalBtn) closeModalBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent any default action
+        closeEditModal();
+    });
+    if (cancelEditBtn) cancelEditBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeEditModal();
+    });
     if (editForm) editForm.addEventListener('submit', saveEdit);
+
+    const closeImageModalBtn = document.getElementById('close-image-modal-btn');
+    if (closeImageModalBtn) {
+        closeImageModalBtn.addEventListener('click', closeImageModal);
+    }
+
+    const imageModal = document.getElementById('image-modal');
+    if (imageModal) {
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) closeImageModal();
+        });
+    }
+
+    // Tab Listeners
+    const tabActive = document.getElementById('tab-active');
+    const tabRecycle = document.getElementById('tab-recycle');
+
+    if (tabActive) {
+        tabActive.addEventListener('click', () => switchTab('active'));
+    }
+    if (tabRecycle) {
+        tabRecycle.addEventListener('click', () => switchTab('recycle'));
+    }
+
+    // Event Delegation for Active Knowledge Table
+    const activeView = document.getElementById('active-knowledge-view');
+    if (activeView) {
+        activeView.addEventListener('click', (e) => {
+            const editBtn = e.target.closest('.edit-btn');
+            const deleteBtn = e.target.closest('.delete-btn');
+            const viewImgBtn = e.target.closest('.view-image-btn');
+
+            if (editBtn) {
+                const { id, category, tags, summary } = editBtn.dataset;
+                openEditModal(id, category, tags, summary);
+            } else if (deleteBtn) {
+                const { id } = deleteBtn.dataset;
+                deleteEntry(id);
+            } else if (viewImgBtn) {
+                const { id } = viewImgBtn.dataset;
+                openImageModal(id);
+            }
+        });
+    }
+
+    // Event Delegation for Recycle Bin Table
+    const recycleView = document.getElementById('recycle-bin-view');
+    if (recycleView) {
+        recycleView.addEventListener('click', (e) => {
+            const restoreBtn = e.target.closest('.restore-btn');
+            if (restoreBtn) {
+                const { id } = restoreBtn.dataset;
+                restoreEntry(id);
+            }
+        });
+    }
+
+    // Modal Backdrop Click
+    if (editModal) {
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) {
+                closeEditModal();
+            }
+        });
+    }
 }
 
 // Ensure global scope exposure

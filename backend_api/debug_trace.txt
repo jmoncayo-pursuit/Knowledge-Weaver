@@ -1,0 +1,5 @@
+Ingest called. AI Prediction present: True
+AI Pred: {'category': 'Equipment', 'tags': ['#Equipment', '#Broken'], 'summary': 'Printer issue'}
+Human Tags: ['#OfficeOps', '#Supplies']
+Tags Changed: True, Cat Changed: True
+Exception: name 'datetime' is not defined

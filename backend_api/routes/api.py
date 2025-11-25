@@ -34,6 +34,7 @@ from services.vector_db import VectorDatabase
 from services.gemini_client import GeminiClient
 from services.chat_processor import ChatLogProcessor
 from services.query_service import QueryService
+from services.anonymizer import AnonymizerService
 
 logger = logging.getLogger(__name__)
 
@@ -45,10 +46,16 @@ vector_db: VectorDatabase = None
 gemini_client: GeminiClient = None
 chat_processor: ChatLogProcessor = None
 query_service: QueryService = None
+anonymizer_service: AnonymizerService = None
 
 
 def get_services():
     """Dependency to ensure services are initialized"""
+    # Initialize anonymizer if not already done (it's stateless/lightweight)
+    global anonymizer_service
+    if not anonymizer_service:
+        anonymizer_service = AnonymizerService()
+
     if not all([vector_db, gemini_client, chat_processor, query_service]):
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -58,7 +65,8 @@ def get_services():
         "vector_db": vector_db,
         "gemini_client": gemini_client,
         "chat_processor": chat_processor,
-        "query_service": query_service
+        "query_service": query_service,
+        "anonymizer": anonymizer_service
     }
 
 
@@ -458,8 +466,13 @@ async def ingest_knowledge(
         import uuid
         entry_id = str(uuid.uuid4())
         
+        # Anonymize text before processing
+        anonymized_text = services["anonymizer"].anonymize_text(request.text)
+        if anonymized_text != request.text:
+            logger.info("PII detected and redacted from input text")
+
         # Generate embedding
-        embedding = services["gemini_client"].generate_embedding(request.text)
+        embedding = services["gemini_client"].generate_embedding(anonymized_text)
         
         # Prepare metadata
         metadata = {
@@ -476,7 +489,7 @@ async def ingest_knowledge(
         # Add to vector database
         services["vector_db"].add_knowledge(
             ids=[entry_id],
-            documents=[request.text],
+            documents=[anonymized_text],
             embeddings=[embedding],
             metadatas=[metadata]
         )

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Knowledge-Weaver Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2">
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕷️</text></svg>">
 </head>
@@ -92,10 +92,23 @@
             </div>
             <div class="learning-dashboard-grid">
                 <div class="learning-feed-container">
-                    <h3>Recent Corrections</h3>
-                    <div class="learning-feed" id="learning-feed" data-testid="learning-feed">
-                        <!-- Learning cards injected here -->
-                        <div class="loading-spinner">Loading history...</div>
+                    <h3>🧠 AI Learning Log</h3>
+                    <div class="table-container">
+                        <table class="knowledge-table" data-testid="learning-table">
+                            <thead>
+                                <tr>
+                                    <th>Original Draft</th>
+                                    <th>Human Correction</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="learning-table-body">
+                                <!-- Learning rows injected here -->
+                                <tr>
+                                    <td colspan="3" class="loading-spinner">Loading history...</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="learning-chart-container">
@@ -109,9 +122,9 @@
         <section class="dashboard-section" aria-label="Knowledge Base">
             <div class="section-header">
                 <div class="tabs">
-                    <button class="tab-btn active" onclick="switchTab('active')" data-testid="tab-active">Active
+                    <button class="tab-btn active" id="tab-active" data-testid="tab-active">Active
                         Knowledge</button>
-                    <button class="tab-btn" onclick="switchTab('recycle')" data-testid="tab-recycle">Recycle Bin
+                    <button class="tab-btn" id="tab-recycle" data-testid="tab-recycle">Recycle Bin
                         🗑️</button>
                 </div>
                 <button class="btn-secondary" id="refresh-knowledge-btn"
@@ -200,6 +213,19 @@
                         Changes</button>
                 </div>
             </form>
+        </div>
+    </dialog>
+
+    <!-- Image View Modal -->
+    <dialog id="image-modal" class="modal">
+        <div class="modal-content" style="max-width: 90vw; max-height: 90vh; width: auto;">
+            <div class="modal-header">
+                <h2>Captured Screenshot</h2>
+                <button class="close-btn" id="close-image-modal-btn">&times;</button>
+            </div>
+            <div class="modal-body" style="text-align: center; overflow: auto;">
+                <img id="full-size-image" src="" alt="Full size screenshot" style="max-width: 100%; height: auto;">
+            </div>
         </div>
     </dialog>
 

@@ -401,6 +401,10 @@ function displayResults(results) {
             </div>
             <div class="result-details hidden" id="details-${index}">
                 <div class="result-content">${escapeHtml(result.content)}</div>
+                ${result.metadata && result.metadata.screenshot ? `
+                <div class="result-screenshot" style="margin-top: 10px;">
+                    <img src="${result.metadata.screenshot}" alt="Source Screenshot" style="max-width: 100%; border-radius: 4px; border: 1px solid #ddd;">
+                </div>` : ''}
                 <div class="result-meta">
                     <div>
                         <small>Source: ${participants} • ${date}</small>
@@ -601,8 +605,15 @@ async function handleAnalyze() {
         tagsInput.value = (analysis.tags || []).join(', ');
         summaryInput.value = analysis.summary || '';
 
-        // Store payload for confirmation step
-        pendingPayload = payload;
+        // Store payload for confirmation step, including AI prediction
+        pendingPayload = {
+            ...payload,
+            ai_prediction: {
+                category: analysis.category,
+                tags: analysis.tags,
+                summary: analysis.summary
+            }
+        };
 
         // Show review section
         reviewSection.classList.remove('hidden');

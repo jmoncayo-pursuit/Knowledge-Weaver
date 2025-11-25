@@ -1,73 +1,96 @@
-import requests
+import urllib.request
 import json
+import sys
 import time
-import os
 
-# Configuration
-API_URL = "http://localhost:8000/api/v1"
+API_BASE_URL = "http://localhost:8000/api/v1"
 API_KEY = "dev-secret-key-12345"
-HEADERS = {
-    "X-API-Key": API_KEY,
-    "Content-Type": "application/json"
-}
+
+SCENARIO_TEXT = """
+Agent: User needs password reset for legacy system.
+Lead: Use the new Spider Protocol. Auth via mobile app first.
+Agent: Done. Reset link sent.
+"""
+
+def api_request(endpoint, method="GET", data=None):
+    url = f"{API_BASE_URL}{endpoint}"
+    headers = {
+        "Content-Type": "application/json",
+        "X-API-Key": API_KEY
+    }
+    
+    if data:
+        json_data = json.dumps(data).encode("utf-8")
+    else:
+        json_data = None
+        
+    req = urllib.request.Request(url, data=json_data, headers=headers, method=method)
+    try:
+        with urllib.request.urlopen(req) as response:
+            return json.loads(response.read().decode("utf-8"))
+    except Exception as e:
+        print(f"API Request Failed ({endpoint}): {e}")
+        return None
 
 def verify_active_learning():
-    print("Starting Active Learning Verification...")
+    print("--- Phase A: Teach (Simulating Capture & Edit) ---")
     
-    # 1. Ingest a "verified_human" entry with a specific category
-    print("\n1. Ingesting verified example...")
-    verified_text = "Agent: Member wants to add newborn. Baby born 2 days ago. Lead: Send QLE form. Must be done within 31 days."
-    verified_category = "Special Protocol: Newborn"
-    
-    ingest_payload = {
-        "text": verified_text,
-        "url": "http://test.com/verified",
-        "timestamp": "2023-10-27T10:00:00Z",
-        "category": verified_category,
-        "tags": ["newborn", "qle"],
-        "summary": "Newborn addition protocol",
-        "screenshot": None
+    # 1. Ingest (Capture)
+    print("Ingesting Scenario 2...")
+    ingest_data = {
+        "text": SCENARIO_TEXT,
+        "url": "mock_teams_scenario_2",
+        "category": "IT Support",
+        "tags": ["#password_reset"],
+        "summary": "Legacy password reset"
     }
+    result = api_request("/ingest", "POST", ingest_data)
+    if not result or "id" not in result:
+        print("❌ Ingest failed")
+        sys.exit(1)
     
-    response = requests.post(f"{API_URL}/ingest", headers=HEADERS, json=ingest_payload)
-    if response.status_code == 200:
-        print(f"   Success: Ingested verified entry with category '{verified_category}'")
-    else:
-        print(f"   Failed to ingest: {response.text}")
-        return
-
-    # Wait for ingestion to settle (though it should be immediate with Chroma)
-    time.sleep(1)
+    entry_id = result["id"]
+    print(f"Entry Created: {entry_id}")
     
-    # 2. Analyze a new, similar text
-    print("\n2. Analyzing similar text...")
-    new_text = "Agent: Employee just had a baby yesterday. Needs to add to plan. Lead: Standard QLE process applies."
-    
-    analyze_payload = {
-        "text": new_text,
-        "url": "http://test.com/new",
-        "timestamp": "2023-10-27T11:00:00Z"
+    # 2. Edit (Teach)
+    print("Teaching: Updating tags to #SpiderProtocol_Auth...")
+    edit_data = {
+        "tags": ["#SpiderProtocol_Auth"],
+        "category": "IT Support",
+        "summary": "Legacy password reset via Spider Protocol"
     }
-    
-    response = requests.post(f"{API_URL}/analyze", headers=HEADERS, json=analyze_payload)
-    
-    if response.status_code == 200:
-        result = response.json()
-        print(f"   Analysis Result:")
-        print(f"   Category: {result['category']}")
-        print(f"   Tags: {result['tags']}")
-        print(f"   Summary: {result['summary']}")
+    # Using PATCH to update
+    update_res = api_request(f"/knowledge/{entry_id}", "PATCH", edit_data)
+    if not update_res:
+        print("❌ Update failed")
+        sys.exit(1)
         
-        # 3. Verification
-        # We hope the category is influenced by the verified example
-        if result['category'] == verified_category:
-            print(f"\nSUCCESS: The AI used the verified category '{verified_category}'!")
-        else:
-            print(f"\nPARTIAL SUCCESS: Analysis worked, but category '{result['category']}' differs from verified '{verified_category}'.")
-            print("This is expected if the model decides the new text doesn't perfectly match the example, but check logs to ensure context was passed.")
-            
+    print("✅ Teaching Complete. Waiting for vector store update...")
+    time.sleep(2) 
+
+    print("\n--- Phase B: Verify (Analyze New Content) ---")
+    
+    # 3. Analyze (Verify)
+    print("Analyzing same text again...")
+    analyze_data = {
+        "text": SCENARIO_TEXT,
+        "url": "mock_teams_scenario_2_retry"
+    }
+    
+    analysis = api_request("/analyze", "POST", analyze_data)
+    
+    if not analysis:
+        print("❌ Analysis failed")
+        sys.exit(1)
+        
+    suggested_tags = analysis.get("tags", [])
+    print(f"AI Suggested Tags: {suggested_tags}")
+    
+    if "#SpiderProtocol_Auth" in suggested_tags:
+        print("✅ SUCCESS: AI learned #SpiderProtocol_Auth")
     else:
-        print(f"   Failed to analyze: {response.text}")
+        print(f"❌ FAILURE: AI did not suggest #SpiderProtocol_Auth. Got: {suggested_tags}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     verify_active_learning()

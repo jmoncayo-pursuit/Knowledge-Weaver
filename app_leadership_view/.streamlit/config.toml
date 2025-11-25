@@ -1,6 +1,0 @@
-[theme]
-base = "dark"
-primaryColor = "#4CAF50"  # Matching your 'Green' verified badge vibe
-backgroundColor = "#0E1117"
-secondaryBackgroundColor = "#262730"
-textColor = "#FAFAFA"

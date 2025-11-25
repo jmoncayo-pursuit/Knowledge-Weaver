@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Teams - Knowledge Weaver Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f2f1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #464775;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: #f0f0f0;
+            border-right: 1px solid #e1dfdd;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .sidebar-item:hover {
+            background-color: #e1dfdd;
+        }
+
+        .sidebar-item.active {
+            background-color: #ffffff;
+            border-left: 4px solid #6264a7;
+        }
+
+        .chat-area {
+            flex: 1;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e1dfdd;
+            font-weight: bold;
+            font-size: 18px;
+            color: #252423;
+        }
+
+        .messages-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .message-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 2px;
+        }
+
+        .sender-name {
+            font-weight: 600;
+            color: #252423;
+            font-size: 14px;
+        }
+
+        .timestamp {
+            font-size: 11px;
+            color: #605e5c;
+        }
+
+        .message-content {
+            font-size: 14px;
+            color: #252423;
+            line-height: 1.4;
+        }
+
+        .scenario-divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #605e5c;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .scenario-divider::before,
+        .scenario-divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #e1dfdd;
+        }
+
+        .scenario-divider::before {
+            margin-right: 10px;
+        }
+
+        .scenario-divider::after {
+            margin-left: 10px;
+        }
+
+        .input-area {
+            padding: 20px;
+            border-top: 1px solid #e1dfdd;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #8a8886;
+            border-radius: 4px;
+            height: 40px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-title">Microsoft Teams</div>
+        <div>AT</div>
+    </div>
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-item active">Support Team Chat</div>
+            <div class="sidebar-item">General</div>
+            <div class="sidebar-item">Announcements</div>
+        </div>
+        <div class="chat-area">
+            <div class="chat-header">Support Team Chat</div>
+            <div class="messages-container">
+
+                <!-- Scenario 1: Deadline Passed (Policy Denial) -->
+                <div class="scenario-divider">Yesterday 9:15 AM</div>
+
+                <div class="message-group">
+                    <div class="message-header">
+                        <span class="sender-name">Alex Taylor (Agent)</span>
+                        <span class="timestamp">9:15 AM</span>
+                    </div>
+                    <div class="message-content">
+                        I have an EE who sent their marriage certificate today, but the wedding was 45 days ago. Can we
+                        process?
+                    </div>
+                </div>
+
+                <div class="message-group">
+                    <div class="message-header">
+                        <span class="sender-name">Jordan Lee (Team Lead)</span>
+                        <span class="timestamp">9:18 AM</span>
+                    </div>
+                    <div class="message-content">
+                        No. QLE Policy is strict: documentation must be received within 31 days of the event. No
+                        exceptions. The request is denied.
+                    </div>
+                </div>
+
+                <!-- Scenario 2: Password Reset (Happy Path) -->
+                <div class="scenario-divider">Yesterday 10:30 AM</div>
+
+                <div class="message-group">
+                    <div class="message-header">
+                        <span class="sender-name">Alex Taylor (Agent)</span>
+                        <span class="timestamp">10:30 AM</span>
+                    </div>
+                    <div class="message-content">
+                        User locked out, but their email on file matches what they are saying. Can I reset?
+                    </div>
+                </div>
+
+                <div class="message-group">
+                    <div class="message-header">
+                        <span class="sender-name">Jordan Lee (Team Lead)</span>
+                        <span class="timestamp">10:32 AM</span>
+                    </div>
+                    <div class="message-content">
+                        Yes, use Workflow 4 (Simple Reset). Go to Security > Users, find the EE, and click 'Send
+                        Password Reset Email'. No ticket needed.
+                    </div>
+                </div>
+
+                <!-- Scenario 3: Permission to Speak (HIPAA) -->
+                <div class="scenario-divider">Today 11:45 AM</div>
+
+                <div class="message-group">
+                    <div class="message-header">
+                        <span class="sender-name">Alex Taylor (Agent)</span>
+                        <span class="timestamp">11:45 AM</span>
+                    </div>
+                    <div class="message-content">
+                        I have the employee's spouse on the line asking about their dental coverage. The employee is at
+                        work and can't talk.
+                    </div>
+                </div>
+
+                <div class="message-group">
+                    <div class="message-header">
+                        <span class="sender-name">Jordan Lee (Team Lead)</span>
+                        <span class="timestamp">11:48 AM</span>
+                    </div>
+                    <div class="message-content">
+                        Do NOT discuss coverage unless they are listed as an Authorized Representative on the account.
+                        Check the 'Profile' tab. If not listed, advise them we need the EE to call in to grant
+                        permission first.
+                    </div>
+                </div>
+
+                <!-- Scenario 4: The "Workflow 5" (Complex/The Ticket) -->
+                <div class="scenario-divider">Today 1:20 PM</div>
+
+                <div class="message-group">
+                    <div class="message-header">
+                        <span class="sender-name">Alex Taylor (Agent)</span>
+                        <span class="timestamp">1:20 PM</span>
+                    </div>
+                    <div class="message-content">
+                        User locked out, but their email on file matches what they are saying. Can I reset?
+                    </div>
+                </div>
+
+                <div class="message-group">
+                    <div class="message-header">
+                        <span class="sender-name">Jordan Lee (Team Lead)</span>
+                        <span class="timestamp">1:25 PM</span>
+                    </div>
+                    <div class="message-content">
+                        Wait, sorry, wrong thread. For the locked out user: if the standard reset failed, we need to
+                        pivot. Use the Empathy + Pivot script: "Thank you for trying that. It looks like there's a
+                        technical issue... I am going to create an issue ticket." Then go ahead and create Issue Ticket
+                        #12355 for them.
+                    </div>
+                </div>
+
+            </div>
+            <div class="input-area">
+                <input type="text" class="input-box" placeholder="Type a new message">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
