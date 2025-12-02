@@ -117,7 +117,7 @@ class QueryService:
     def _search_similar_knowledge(
         self,
         embedding: List[float],
-        threshold: float = 0.1,
+        threshold: float = 0.6,
         verified_only: bool = False
     ) -> List[Dict[str, Any]]:
         """
@@ -417,7 +417,7 @@ class QueryService:
                     
                     # Check 2: Semantic Search (Fallback)
                     embedding = self.gemini_client.generate_query_embedding(gap['query'])
-                    matches = self.vector_db.search(embedding, top_k=1, threshold=0.25) # Higher threshold for resolution check
+                    matches = self.vector_db.search(embedding, top_k=1, threshold=0.6) # Higher threshold for resolution check
                     
                     if not matches:
                         unresolved_gaps.append(gap)

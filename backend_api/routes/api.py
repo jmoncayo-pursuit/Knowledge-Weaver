@@ -446,6 +446,54 @@ async def get_learning_stats(
         return {"top_learned_tags": [], "total_corrections": 0}
 
 
+@router.get("/metrics/cognitive_health")
+async def get_cognitive_health(
+    api_key: str = Depends(verify_api_key)
+):
+    """
+    Get Cognitive Health metrics (Error Rate over time)
+    """
+    try:
+        backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        log_file = os.path.join(backend_dir, 'learning_history.jsonl')
+        
+        daily_stats = {}
+        
+        if os.path.exists(log_file):
+            with open(log_file, 'r', encoding='utf-8') as f:
+                for line in f:
+                    try:
+                        if line.strip():
+                            event = json.loads(line)
+                            timestamp = event.get("timestamp")
+                            if timestamp:
+                                date = timestamp.split("T")[0]
+                                if date not in daily_stats:
+                                    daily_stats[date] = {"total": 0, "errors": 0}
+                                
+                                daily_stats[date]["total"] += 1
+                                if event.get("error", False):
+                                    daily_stats[date]["errors"] += 1
+                    except json.JSONDecodeError:
+                        continue
+        
+        # Calculate rates
+        result = []
+        for date, stats in sorted(daily_stats.items()):
+            error_rate = (stats["errors"] / stats["total"] * 100) if stats["total"] > 0 else 0
+            result.append({
+                "date": date,
+                "error_rate": round(error_rate, 1),
+                "total_events": stats["total"]
+            })
+            
+        return result
+        
+    except Exception as e:
+        logger.error(f"Failed to fetch cognitive health metrics: {e}", exc_info=True)
+        return []
+
+
 @router.post("/ingest", response_model=IngestResponse)
 async def ingest_knowledge(
     request: IngestRequest,

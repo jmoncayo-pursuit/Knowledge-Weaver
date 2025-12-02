@@ -82,6 +82,7 @@ const ingestBtn = document.getElementById('ingestBtn');
 const screenshotPreview = document.getElementById('screenshotPreview');
 const previewImg = document.getElementById('previewImg');
 const removeScreenshotBtn = document.getElementById('removeScreenshot');
+const manualScreenshotInput = document.getElementById('manualScreenshotInput');
 
 // State
 let currentScreenshot = null;
@@ -103,6 +104,7 @@ if (!ingestBtn) missingElements.push('ingestBtn');
 if (!screenshotPreview) missingElements.push('screenshotPreview');
 if (!previewImg) missingElements.push('previewImg');
 if (!removeScreenshotBtn) missingElements.push('removeScreenshot');
+if (!manualScreenshotInput) missingElements.push('manualScreenshotInput');
 
 if (missingElements.length > 0) {
     showCriticalError(`Missing DOM elements:\n${missingElements.join('\n')}\n\nThe HTML structure may have changed.`);
@@ -144,6 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Screenshot logic
         screenshotBtn.addEventListener('click', handleScreenshot);
         removeScreenshotBtn.addEventListener('click', removeScreenshot);
+        manualScreenshotInput.addEventListener('change', handleManualScreenshot);
 
         // Ingest logic
         ingestBtn.addEventListener('click', handleAnalyze);
@@ -375,6 +378,9 @@ API Client Status: ${apiClient ? 'Initialized' : 'Not initialized'}
 /**
  * Display query results
  */
+/**
+ * Display query results
+ */
 function displayResults(results) {
     hideAllSections();
 
@@ -390,40 +396,53 @@ function displayResults(results) {
 
         // Check for verified status
         const isVerified = result.metadata && result.metadata.verification_status === 'verified_human';
-        const verifiedBadge = isVerified ? '<span class="verified-badge">✅ Verified</span>' : '';
+        // 🕷️ Verified Badge
+        const verifiedBadge = isVerified ? '<span class="verified-badge" title="Verified Human Source">🕷️ Verified</span>' : '';
 
         // Use summary if available, otherwise truncate content
         const summary = result.metadata && result.metadata.summary ? result.metadata.summary : result.content.substring(0, 100) + '...';
 
+        // Prepare screenshot HTML
+        const screenshotHtml = result.metadata && result.metadata.screenshot ? `
+            <div class="result-screenshot">
+                <h5>Proof of Source</h5>
+                <img src="${result.metadata.screenshot}" alt="Source Screenshot">
+            </div>` : '';
+
         resultItem.innerHTML = `
-            <div class="result-summary" data-testid="result-summary-${index}">
-                <strong>${escapeHtml(summary)}</strong> ${verifiedBadge}
+            <!-- Header: The Answer -->
+            <div class="result-header">
+                <h3>${escapeHtml(summary)}</h3>
+                ${verifiedBadge}
             </div>
-            <div class="result-details hidden" id="details-${index}">
-                <div class="result-content">${escapeHtml(result.content)}</div>
-                ${result.metadata && result.metadata.screenshot ? `
-                <div class="result-screenshot" style="margin-top: 10px;">
-                    <img src="${result.metadata.screenshot}" alt="Source Screenshot" style="max-width: 100%; border-radius: 4px; border: 1px solid #ddd;">
-                </div>` : ''}
-                <div class="result-meta">
-                    <div>
-                        <small>Source: ${participants} • ${date}</small>
+
+            <!-- Toggle: Source & Proof -->
+            <details class="result-proof">
+                <summary data-testid="result-summary-${index}">View Source & Proof</summary>
+                
+                <div class="proof-body">
+                    <!-- Redacted Text -->
+                    <div class="redacted-text">
+                        <h4>Redacted Source Text</h4>
+                        <p>${escapeHtml(result.content)}</p>
                     </div>
-                    <div>
-                        <span class="similarity-score">${score}%</span>
-                        <button class="copy-btn" data-content="${escapeHtml(result.content)}">Copy</button>
+                    
+                    <!-- Screenshot -->
+                    ${screenshotHtml}
+                    
+                    <!-- Metadata -->
+                    <div class="result-meta">
+                        <div>
+                            <small>Source: ${participants} • ${date}</small>
+                        </div>
+                        <div>
+                            <span class="similarity-score">${score}% Match</span>
+                            <button class="copy-btn" data-content="${escapeHtml(result.content)}">Copy</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </details>
         `;
-
-        // Toggle details on click
-        const summaryDiv = resultItem.querySelector('.result-summary');
-        const detailsDiv = resultItem.querySelector('.result-details');
-
-        summaryDiv.addEventListener('click', () => {
-            detailsDiv.classList.toggle('hidden');
-        });
 
         resultsList.appendChild(resultItem);
     });
@@ -548,6 +567,40 @@ function removeScreenshot() {
     previewImg.src = '';
     screenshotPreview.classList.add('hidden');
     screenshotBtn.textContent = 'Attach Screenshot';
+    // Reset file input so the same file can be selected again if needed
+    if (manualScreenshotInput) {
+        manualScreenshotInput.value = '';
+    }
+}
+
+/**
+ * Handle manual screenshot upload
+ */
+function handleManualScreenshot(event) {
+    const file = event.target.files[0];
+    if (!file) {
+        return;
+    }
+
+    console.log('Manual screenshot selected:', file.name);
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const dataUrl = e.target.result;
+
+        currentScreenshot = dataUrl;
+        previewImg.src = dataUrl;
+        screenshotPreview.classList.remove('hidden');
+        screenshotBtn.textContent = 'Retake Screenshot';
+        console.log('Manual screenshot loaded successfully');
+    };
+
+    reader.onerror = function (error) {
+        console.error('Error reading file:', error);
+        showError('Failed to read file');
+    };
+
+    reader.readAsDataURL(file);
 }
 
 /**

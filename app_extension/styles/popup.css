@@ -334,3 +334,109 @@ footer {
     text-align: center;
     padding: 30px;
 }
+
+/* Perfect Search Card Styles */
+.result-header {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.result-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin: 0;
+    flex: 1;
+}
+
+.result-proof {
+    border-top: 1px solid var(--border-color);
+    margin-top: 12px;
+    padding-top: 12px;
+}
+
+.result-proof summary {
+    color: var(--accent-color);
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 500;
+    list-style: none;
+    /* Hide default triangle in some browsers */
+    user-select: none;
+}
+
+.result-proof summary::-webkit-details-marker {
+    display: none;
+}
+
+.result-proof summary::after {
+    content: " ▼";
+    font-size: 10px;
+}
+
+.result-proof[open] summary::after {
+    content: " ▲";
+}
+
+.proof-body {
+    margin-top: 12px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.redacted-text {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.redacted-text h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.redacted-text p {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    white-space: pre-wrap;
+}
+
+.result-screenshot h5 {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.result-screenshot img {
+    max-width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s;
+}
+
+.result-screenshot img:hover {
+    transform: scale(1.02);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

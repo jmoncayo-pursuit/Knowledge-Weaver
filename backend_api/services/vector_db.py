@@ -130,7 +130,7 @@ class VectorDatabase:
             if results['ids'] and len(results['ids'][0]) > 0:
                 for i in range(len(results['ids'][0])):
                     distance = results['distances'][0][i]
-                    similarity_score = 1 - distance  # Convert distance to similarity
+                    similarity_score = 1 - (distance / 2)  # Convert Squared L2 distance to Cosine Similarity
                     
                     # Log distances for debugging
                     logger.debug(f"Result {i}: distance={distance}, similarity={similarity_score}")
@@ -275,7 +275,7 @@ class VectorDatabase:
             if results['ids'] and len(results['ids'][0]) > 0:
                 for i in range(len(results['ids'][0])):
                     distance = results['distances'][0][i]
-                    similarity_score = 1 - distance
+                    similarity_score = 1 - (distance / 2)
                     
                     if similarity_score >= threshold:
                         matches.append({

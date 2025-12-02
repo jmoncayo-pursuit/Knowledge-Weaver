@@ -48,22 +48,19 @@ The "Weaver" is the capture mechanism (Chrome Extension & Auto-Ingestion).
 
 ## 🤖 The AI-Native Workflow
 
-We don't just write code; we build systems that can be understood and operated by AI agents. This philosophy drives our development process:
+Knowledge-Weaver was built using a "Robot-First" philosophy. We treat AI Agents not just as coding assistants, but as First-Class Users of the application.
 
-### 1. Browser Subagent & Self-Healing
-We use AI agents to evaluate the application, not just run static scripts.
-- **Agent-Based Testing**: Agents navigate the UI like a human, interacting with real elements.
-- **Self-Healing**: If an agent hits a barrier (e.g., a changed selector), it attempts to fix the issue or logs it for review, ensuring our test suite remains resilient.
+### 1. Evaluation > Labeling
+Following the [suspicious link removed], we shifted our focus from manual data entry to Agent Evaluation. We use autonomous agents to run "Golden Path" regression tests on every commit, ensuring the system is operationally reliable.
 
-### 2. Universal Design (WCAG)
-"If a robot can use it, so can a human."
-- **Data-Testid Strategy**: By enforcing `data-testid` attributes for our robot agents, we inadvertently create a robust structure for human assistive technologies (screen readers).
-- **Accessibility First**: Our commitment to robot-accessibility guarantees high WCAG standards for all users.
+### 2. Self-Healing Capabilities
+By equipping our Dashboard with stable data-testid selectors, we enable AI agents (like the Antigravity Browser Subagent) to:
+- **Navigate the UI** with 100% reliability.
+- **Identify Barriers**: If an element is blocked, the agent logs the barrier.
+- **Self-Heal**: The agent has the authority to fix broken selectors in the code to unblock itself.
 
-### 3. Evaluation vs. Labeling
-We are shifting the paradigm from manual data labeling to operational reliability.
-- **Focus on Ops**: Instead of spending hours labeling data, we focus on evaluating how well the system performs in real-world scenarios.
-- **Reliability Metrics**: We measure success by the system's ability to recover from errors and maintain a high "Golden Path" completion rate.
+### 3. Universal Design (Robot-First = Human-Ready)
+We discovered that building for robots enforces strict semantic HTML and clear navigation paths. This "AI-Native" approach naturally results in a highly accessible application for human users relying on assistive technologies (Screen Readers), achieving a higher standard of Universal Design.
 
 ## Key Features
 

@@ -148,9 +148,14 @@ function selectGap(query, element) {
 
     // Enable form
     const input = document.getElementById('answer-content');
+    const fileInput = document.getElementById('gap-screenshot-input');
     const btn = document.querySelector('[data-testid="submit-answer-btn"]');
 
     input.disabled = false;
+    if (fileInput) {
+        fileInput.disabled = false;
+        fileInput.value = ''; // Clear previous selection
+    }
     btn.disabled = false;
     input.focus();
 }
@@ -186,7 +191,7 @@ async function fetchRecentKnowledge() {
             <td data-label="Status"><span class="badge badge-verified">🕷️ ${status}</span></td>
             <td data-label="Actions">
                 <div class="action-container">
-                    ${entry.metadata.has_screenshot ? `
+                    ${(entry.metadata.screenshot && entry.metadata.screenshot.length > 100) ? `
                     <button class="btn-secondary view-image-btn" 
                         data-id="${entry.id}"
                         style="font-size: 12px; padding: 4px 8px;">
@@ -400,6 +405,22 @@ async function openEditModal(id) {
     document.getElementById('edit-preview-container').style.display = 'none';
     document.getElementById('edit-preview').src = '';
 
+    // Handle Current Image
+    const currentImg = document.getElementById('edit-current-image');
+    if (currentImg) {
+        if (entry.metadata.screenshot) {
+            let src = entry.metadata.screenshot;
+            if (!src.startsWith('data:image')) {
+                src = 'data:image/png;base64,' + src;
+            }
+            currentImg.src = src;
+            currentImg.style.display = 'block';
+        } else {
+            currentImg.style.display = 'none';
+            currentImg.src = '';
+        }
+    }
+
     editModal.showModal();
 }
 
@@ -539,12 +560,24 @@ async function submitGapAnswer(e) {
     btn.textContent = 'Submitting...';
     btn.disabled = true;
 
+    // Handle Screenshot
+    let screenshot = null;
+    const fileInput = document.getElementById('gap-screenshot-input');
+    if (fileInput && fileInput.files.length > 0) {
+        try {
+            screenshot = await readFileAsBase64(fileInput.files[0]);
+        } catch (err) {
+            console.error('Failed to read screenshot:', err);
+        }
+    }
+
     const success = await apiCall('/ingest', 'POST', {
         text: content,
         url: 'dashboard_manual_entry',
         category: 'Gap Resolution',
         tags: ['#GapResolution'],
-        summary: selectedGap // Use the gap query as the summary for resolution tracking
+        summary: selectedGap, // Use the gap query as the summary for resolution tracking
+        screenshot: screenshot
     });
 
     if (success) {
@@ -553,6 +586,11 @@ async function submitGapAnswer(e) {
         selectedGap = null;
         document.getElementById('selected-gap-display').textContent = 'Select a gap to answer...';
         document.getElementById('answer-content').disabled = true;
+        const fileInput = document.getElementById('gap-screenshot-input');
+        if (fileInput) {
+            fileInput.value = '';
+            fileInput.disabled = true;
+        }
 
         // Refresh data
         await Promise.all([fetchMetrics(), fetchKnowledgeGaps(), fetchRecentKnowledge()]);
