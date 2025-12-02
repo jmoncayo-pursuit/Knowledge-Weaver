@@ -71,7 +71,10 @@ async function initDashboard() {
         fetchKnowledgeGaps(),
         fetchRecentKnowledge(),
         loadLearningHistory(),
-        fetchLearningStats()
+        fetchRecentKnowledge(),
+        loadLearningHistory(),
+        fetchLearningStats(),
+        fetchCognitiveHealth()
     ]);
 
     setupEventListeners();
@@ -295,19 +298,102 @@ async function fetchLearningStats() {
     });
 }
 
+// --- Cognitive Health (Chart.js) ---
+async function fetchCognitiveHealth() {
+    const data = await apiCall('/metrics/cognitive_health');
+    if (!data) return;
+
+    const ctx = document.getElementById('cognitive-health-chart');
+    if (!ctx) return;
+
+    // Destroy existing chart if any
+    if (window.cognitiveHealthChart) {
+        window.cognitiveHealthChart.destroy();
+    }
+
+    const labels = data.map(item => item.date);
+    const errorRates = data.map(item => item.error_rate);
+
+    window.cognitiveHealthChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'AI Error Rate (%)',
+                data: errorRates,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4 // Smooth curves
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: 'Error Rate (%)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            return `Error Rate: ${context.parsed.y}%`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
 // --- Edit Modal Logic ---
 // Removed top-level const to ensure we get the element when needed
 // const editModal = document.getElementById('edit-modal'); 
 // const editForm = document.getElementById('edit-form');
 
-function openEditModal(id, category, tags, summary) {
+async function openEditModal(id) {
     const editModal = document.getElementById('edit-modal');
     if (!editModal) return;
 
+    // Fetch fresh data to ensure we have the full content and correct types
+    const entries = await apiCall('/knowledge/recent?limit=50');
+    const entry = entries.find(e => e.id === id);
+
+    if (!entry) {
+        alert('Entry not found');
+        return;
+    }
+
     document.getElementById('edit-id').value = id;
-    document.getElementById('edit-category').value = category;
+    document.getElementById('edit-category').value = entry.metadata.category || '';
+
+    // Handle Tags (Array or String)
+    let tags = entry.metadata.tags || '';
+    if (Array.isArray(tags)) {
+        tags = tags.join(', ');
+    }
     document.getElementById('edit-tags').value = tags;
-    document.getElementById('edit-summary').value = summary;
+
+    // Handle Summary/Content
+    // Prioritize summary if it exists, otherwise use the document content
+    const content = entry.metadata.summary || entry.document || '';
+    document.getElementById('edit-summary').value = content;
 
     // Reset screenshot input
     document.getElementById('edit-screenshot').value = '';
@@ -328,31 +414,18 @@ async function openImageModal(id) {
 
     if (!modal || !img) return;
 
-    // Fetch full entry to get screenshot (it might not be in the summary list if we optimize later, 
-    // but currently /knowledge/recent returns everything. However, let's verify if screenshot is in metadata or top level)
-    // The ingestion puts it in metadata['screenshot'] if it's a URL, or we might need to fetch it.
-    // Wait, the schema says IngestRequest has screenshot, and UpdateKnowledgeRequest has it.
-    // VectorDB usually stores it in metadata.
-
-    // Let's try to find it in the current table data first if possible, but we don't store it in DOM.
-    // So we fetch the single entry or just use the recent list cache if we had one.
-    // For now, let's just fetch the recent list again or assume we can get it.
-    // Actually, fetching the specific entry is safer.
-
-    // Since we don't have a get-single-entry endpoint exposed in app.js apiCall wrapper easily without ID,
-    // let's just fetch recent and find it, or add a get endpoint.
-    // The backend has GET /knowledge/recent, but not GET /knowledge/{id}.
-    // Wait, let's check backend routes. 
-    // Backend has DELETE, RESTORE, UPDATE. It does NOT have GET /knowledge/{id}.
-    // We should probably add that, OR just rely on the fact that we just loaded recent entries.
-
-    // Hack for now: We will fetch recent again and find it. 
-    // In a real app, we'd have a local state `knowledgeEntries`.
     const entries = await apiCall('/knowledge/recent?limit=50');
     const entry = entries.find(e => e.id === id);
 
     if (entry && entry.metadata.screenshot) {
-        img.src = entry.metadata.screenshot;
+        let src = entry.metadata.screenshot;
+        // Fix: Ensure data URI prefix
+        if (!src.startsWith('data:image')) {
+            src = 'data:image/png;base64,' + src;
+        }
+        img.src = src;
+        img.style.display = 'block';
+        img.style.maxWidth = '100%';
         modal.showModal();
     } else {
         alert('Image not found.');
@@ -648,8 +721,8 @@ function setupEventListeners() {
             const viewImgBtn = e.target.closest('.view-image-btn');
 
             if (editBtn) {
-                const { id, category, tags, summary } = editBtn.dataset;
-                openEditModal(id, category, tags, summary);
+                const { id } = editBtn.dataset;
+                openEditModal(id);
             } else if (deleteBtn) {
                 const { id } = deleteBtn.dataset;
                 deleteEntry(id);
