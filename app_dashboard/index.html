@@ -207,7 +207,14 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="edit-content-input">Content</label>
+                    <textarea id="edit-content-input" class="input-field" rows="6"
+                        placeholder="Full verified answer..."></textarea>
+                </div>
+
+                <div class="form-group">
                     <label>Current Screenshot</label>
+                    <img id="edit-image-preview" src="" style="display:none; max-width: 100%; margin-bottom: 10px;">
                     <img id="edit-current-image"
                         style="max-width: 100%; display: none; margin-bottom: 10px; border-radius: 4px; border: 1px solid var(--border-color);">
 
@@ -242,7 +249,7 @@
         </div>
     </dialog>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=4"></script>
 </body>
 
 </html>

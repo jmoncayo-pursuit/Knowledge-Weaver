@@ -396,28 +396,31 @@ async function openEditModal(id) {
     document.getElementById('edit-tags').value = tags;
 
     // Handle Summary/Content
-    // Prioritize summary if it exists, otherwise use the document content
-    const content = entry.metadata.summary || entry.document || '';
-    document.getElementById('edit-summary').value = content;
+    document.getElementById('edit-summary').value = entry.metadata.summary || '';
+    document.getElementById('edit-content-input').value = entry.document || entry.content || '';
 
     // Reset screenshot input
     document.getElementById('edit-screenshot').value = '';
     document.getElementById('edit-preview-container').style.display = 'none';
     document.getElementById('edit-preview').src = '';
 
-    // Handle Current Image
-    const currentImg = document.getElementById('edit-current-image');
-    if (currentImg) {
+    // Handle Current Image (using new ID as requested)
+    const imagePreview = document.getElementById('edit-image-preview');
+    // Also handle old ID just in case, but hide it to avoid duplicates if both exist
+    const oldImage = document.getElementById('edit-current-image');
+    if (oldImage) oldImage.style.display = 'none';
+
+    if (imagePreview) {
         if (entry.metadata.screenshot) {
             let src = entry.metadata.screenshot;
             if (!src.startsWith('data:image')) {
                 src = 'data:image/png;base64,' + src;
             }
-            currentImg.src = src;
-            currentImg.style.display = 'block';
+            imagePreview.src = src;
+            imagePreview.style.display = 'block';
         } else {
-            currentImg.style.display = 'none';
-            currentImg.src = '';
+            imagePreview.style.display = 'none';
+            imagePreview.src = '';
         }
     }
 
@@ -465,6 +468,7 @@ async function saveEdit(e) {
     const category = document.getElementById('edit-category').value;
     const tags = document.getElementById('edit-tags').value.split(',').map(t => t.trim()).filter(t => t);
     const summary = document.getElementById('edit-summary').value;
+    const content = document.getElementById('edit-content-input').value;
 
     // Handle Screenshot
     let screenshot = null;
@@ -479,18 +483,37 @@ async function saveEdit(e) {
     btn.disabled = true;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/knowledge/${id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-API-Key': API_KEY
-            },
+        const payload = {
+            category,
+            tags,
+            summary,
+            content, // Added content field
+            screenshot
+        };
+
+        // Remove screenshot if null to avoid clearing it unintentionally? 
+        // The backend probably handles partial updates or we send what we have.
+        // The original code sent 'screenshot' even if null (which was initialized to null).
+        // If the user didn't select a new file, screenshot is null.
+        // If we send null, does it clear the image?
+        // The original code:
+        /*
             body: JSON.stringify({
                 category,
                 tags,
                 summary,
                 screenshot
             })
+        */
+        // I will keep it consistent.
+
+        const response = await fetch(`${API_BASE_URL}/knowledge/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-API-Key': API_KEY
+            },
+            body: JSON.stringify(payload)
         });
 
         if (response.ok) {

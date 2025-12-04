@@ -85,6 +85,14 @@ Identify and fill knowledge gaps.
 - **Safety**: Deleted items are soft-deleted (hidden, not destroyed).
 - **Recovery**: Restore items via the Recycle Bin tab.
 
+### 5. Rich Content Editing
+- **Full Control**: Edit summaries and content with a rich text interface.
+- **Seamless Updates**: Changes are immediately reflected in the knowledge base.
+
+### 6. Visual Source Verification
+- **Context Preservation**: Captures screenshots of the source material (e.g., chat threads).
+- **Trust**: Verify the origin of information with a visual reference.
+
 ## Getting Started
 
 ### Prerequisites
