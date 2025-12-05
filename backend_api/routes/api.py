@@ -12,20 +12,17 @@ from models.schemas import (
     QueryRequest,
     QueryResult,
     IngestRequest,
-    IngestRequest,
     IngestResponse,
     UpdateKnowledgeRequest,
-    UpdateKnowledgeRequest,
     AnalyzeResponse,
-    DashboardMetricsResponse,
-    AnalyzeResponse,
-    DashboardMetricsResponse,
-    HealthResponse,
     DashboardMetricsResponse,
     HealthResponse,
     BarrierLogRequest,
-    LearningEvent
+    LearningEvent,
+    RedactRequest,
+    RedactResponse
 )
+
 import json
 import os
 from datetime import datetime
@@ -35,6 +32,8 @@ from services.gemini_client import GeminiClient
 from services.chat_processor import ChatLogProcessor
 from services.query_service import QueryService
 from services.anonymizer import AnonymizerService
+from services.vision_service import VisionService
+from fastapi import UploadFile, File
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +46,7 @@ gemini_client: GeminiClient = None
 chat_processor: ChatLogProcessor = None
 query_service: QueryService = None
 anonymizer_service: AnonymizerService = None
+vision_service: VisionService = None
 
 
 def get_services():
@@ -56,7 +56,7 @@ def get_services():
     if not anonymizer_service:
         anonymizer_service = AnonymizerService()
 
-    if not all([vector_db, gemini_client, chat_processor, query_service]):
+    if not all([vector_db, gemini_client, chat_processor, query_service, vision_service]):
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Services not initialized"
@@ -66,7 +66,8 @@ def get_services():
         "gemini_client": gemini_client,
         "chat_processor": chat_processor,
         "query_service": query_service,
-        "anonymizer": anonymizer_service
+        "anonymizer": anonymizer_service,
+        "vision_service": vision_service
     }
 
 
@@ -528,6 +529,7 @@ async def ingest_knowledge(
             "timestamp": request.timestamp.isoformat(),
             "type": "manual_ingestion",
             "has_screenshot": bool(request.screenshot),
+            "screenshot": request.screenshot or "",
             "category": request.category or "Uncategorized",
             "tags": ",".join(request.tags) if request.tags else "",
             "summary": request.summary or "",
@@ -562,8 +564,9 @@ async def ingest_knowledge(
                     backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                     history_file = os.path.join(backend_dir, 'learning_history.jsonl')
                     
+                    import datetime
                     learning_event = {
-                        "timestamp": datetime.utcnow().isoformat(),
+                        "timestamp": datetime.datetime.utcnow().isoformat(),
                         "summary": request.summary or "No summary",
                         "ai_prediction": {
                             "tags": list(ai_tags),
@@ -676,6 +679,7 @@ async def restore_knowledge_entry(
 async def update_knowledge_entry(
     entry_id: str,
     request: UpdateKnowledgeRequest,
+    reanalyze: bool = False,
     api_key: str = Depends(verify_api_key),
     services: dict = Depends(get_services)
 ):
@@ -699,16 +703,58 @@ async def update_knowledge_entry(
             updates["screenshot"] = request.screenshot
             updates["has_screenshot"] = True
             
+        content_update = None
+        embedding_update = None
+        
+        if request.content is not None:
+            # Anonymize and generate embedding for new content
+            content_update = services["anonymizer"].anonymize_text(request.content)
+            embedding_update = services["gemini_client"].generate_embedding(content_update)
+            
+        # --- Re-Analyze Logic ---
+        if reanalyze:
+            logger.info(f"Re-analyzing entry {entry_id} due to edit")
+            # Determine text to analyze: new content if provided, else fetch existing (not easily available here without query, assuming content update usually accompanies reanalyze)
+            # If content is updated, use that. If not, we might need to fetch the entry first. 
+            # For efficiency, we'll assume reanalyze is mostly useful when content changes.
+            # If content is NOT changing but user wants re-analysis, we need to fetch the current document.
+            
+            text_to_analyze = content_update
+            
+            if not text_to_analyze:
+                # Fetch existing entry to get content
+                current_entry = services["vector_db"].get_entry(entry_id)
+                if current_entry:
+                    text_to_analyze = current_entry.get('document')
+            
+            if text_to_analyze:
+                # Perform analysis
+                analysis = services["gemini_client"].analyze_content(text_to_analyze)
+                
+                # Update metadata with new analysis
+                updates["category"] = analysis["category"]
+                updates["tags"] = ",".join(analysis["tags"])
+                updates["summary"] = analysis["summary"]
+                logger.info(f"Re-analysis complete: {analysis}")
+            else:
+                logger.warning("Re-analyze requested but no content available")
+        # ------------------------
+            
         # Force verification status update (Active Learning)
         updates["verification_status"] = "verified_human"
         
-        if not updates:
+        if not updates and content_update is None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="No updates provided"
             )
             
-        success = services["vector_db"].update_entry(entry_id, updates)
+        success = services["vector_db"].update_entry(
+            entry_id, 
+            updates, 
+            content=content_update,
+            embedding=embedding_update
+        )
         
         if success:
             return JSONResponse(
@@ -729,6 +775,55 @@ async def update_knowledge_entry(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Update failed: {str(e)}"
         )
+
+@router.post("/redact", response_model=RedactResponse)
+async def redact_image(
+    request: RedactRequest,
+    api_key: str = Depends(verify_api_key),
+    services: dict = Depends(get_services)
+):
+    """
+    Redact PII from a Base64 encoded image
+    """
+    logger.info("Redacting image from Base64 input")
+    
+    try:
+        # Decode base64 image
+        import base64
+        
+        # Remove header if present (e.g., "data:image/png;base64,")
+        image_str = request.image
+        if "," in image_str:
+            image_str = image_str.split(",")[1]
+            
+        try:
+            image_data = base64.b64decode(image_str)
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid base64 string: {str(e)}"
+            )
+        
+        # Redact PII directly (Pure AI)
+        result = services["vision_service"].redact_image(image_data)
+        
+        return RedactResponse(
+            status="success",
+            redacted_image=result["redacted_image"],
+            original_image=result["original_image"],
+            redacted_items=[] # Pure AI doesn't return bounding boxes
+        )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Redaction failed: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Redaction failed: {str(e)}"
+        )
+
+
 
 @router.post("/analyze", response_model=AnalyzeResponse)
 async def analyze_content(

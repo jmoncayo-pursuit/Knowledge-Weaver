@@ -112,3 +112,6 @@
 {"query_id": "bf6c31ec-6348-4a66-bb76-652f1404734f", "query_text": "Paternity Leave", "result_count": 0, "processing_time_ms": 288, "timestamp": "2025-12-02T20:35:57.387659", "has_results": false}
 {"query_id": "0ffdfcef-0026-456e-b028-82d2e766c5a8", "query_text": "Paternity Leave", "result_count": 0, "processing_time_ms": 192, "timestamp": "2025-12-02T20:36:22.292557", "has_results": false}
 {"query_id": "7d18e8c0-11f9-48d5-b758-cf179db93da6", "query_text": "Paternity Leave", "result_count": 0, "processing_time_ms": 179, "timestamp": "2025-12-02T20:39:40.317341", "has_results": false}
+{"query_id": "df4c6672-7e6b-4307-8a15-be3ffbe5efd8", "query_text": "spouse certificate.", "result_count": 3, "processing_time_ms": 401, "timestamp": "2025-12-05T01:21:46.825252", "has_results": true}
+{"query_id": "68797a08-0d7e-47a8-9e0e-874fd050ac63", "query_text": "proof of domestic partnership", "result_count": 1, "processing_time_ms": 237, "timestamp": "2025-12-05T01:22:33.829841", "has_results": true}
+{"query_id": "f5f8bb15-66f5-4e1f-8880-6c7cb00648c1", "query_text": "proof from government my husband loves me", "result_count": 0, "processing_time_ms": 254, "timestamp": "2025-12-05T01:23:22.750525", "has_results": false}

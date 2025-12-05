@@ -14,6 +14,7 @@ from services.vector_db import VectorDatabase
 from services.gemini_client import GeminiClient
 from services.chat_processor import ChatLogProcessor
 from services.query_service import QueryService
+from services.vision_service import VisionService
 from routes import api
 
 # Configure logging
@@ -33,7 +34,7 @@ app = FastAPI(
 # Configure CORS - Explicit configuration for cross-origin requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins - configure for production with specific domains
+    allow_origins=["http://localhost:8080", "http://127.0.0.1:8080", "http://localhost:8081", "http://127.0.0.1:8081"],
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
     allow_headers=["*"],  # Allow all headers including X-API-Key
@@ -132,6 +133,10 @@ async def startup_event():
             gemini_client=api.gemini_client
         )
         logger.info("Query Service initialized")
+        
+        # Initialize Vision Service
+        api.vision_service = VisionService()
+        logger.info("Vision Service initialized")
         
         logger.info("All services initialized successfully")
         

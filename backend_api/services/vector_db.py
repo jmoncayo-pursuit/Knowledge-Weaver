@@ -370,13 +370,15 @@ class VectorDatabase:
             logger.error(f"Failed to restore entry {entry_id}: {e}")
             return False
 
-    def update_entry(self, entry_id: str, updates: Dict[str, Any]) -> bool:
+    def update_entry(self, entry_id: str, updates: Dict[str, Any], content: Optional[str] = None, embedding: Optional[List[float]] = None) -> bool:
         """
-        Update a knowledge entry's metadata
+        Update a knowledge entry's metadata and/or content
         
         Args:
             entry_id: ID of the entry to update
             updates: Dictionary of metadata fields to update
+            content: New content text (optional)
+            embedding: New vector embedding (optional, required if content is updated)
             
         Returns:
             True if successful, False otherwise
@@ -396,13 +398,21 @@ class VectorDatabase:
             # Update metadata
             current_metadata.update(updates)
             
-            # Update in ChromaDB
-            self.collection.update(
-                ids=[entry_id],
-                metadatas=[current_metadata]
-            )
+            # Prepare update args
+            update_args = {
+                "ids": [entry_id],
+                "metadatas": [current_metadata]
+            }
             
-            logger.info(f"Updated entry {entry_id} with {updates}")
+            if content is not None:
+                update_args["documents"] = [content]
+                if embedding is not None:
+                    update_args["embeddings"] = [embedding]
+            
+            # Update in ChromaDB
+            self.collection.update(**update_args)
+            
+            logger.info(f"Updated entry {entry_id} with updates={updates} content_update={content is not None}")
             return True
             
         except Exception as e:
@@ -457,3 +467,34 @@ class VectorDatabase:
         except Exception as e:
             logger.error(f"Failed to check summary existence: {e}")
             return False
+
+    def get_entry(self, entry_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Get a single entry by ID
+        
+        Args:
+            entry_id: ID of the entry to retrieve
+            
+        Returns:
+            Dictionary with entry data or None if not found
+        """
+        if not self.collection:
+            return None
+            
+        try:
+            result = self.collection.get(
+                ids=[entry_id], 
+                include=['documents', 'metadatas', 'embeddings']
+            )
+            
+            if result['ids']:
+                return {
+                    'id': result['ids'][0],
+                    'document': result['documents'][0],
+                    'metadata': result['metadatas'][0],
+                    'embedding': result['embeddings'][0] if result['embeddings'] else None
+                }
+            return None
+        except Exception as e:
+            logger.error(f"Failed to get entry {entry_id}: {e}")
+            return None

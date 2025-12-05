@@ -31,7 +31,7 @@ class GeminiClient:
         
         # Initialize models
         # Using latest stable model names for google-generativeai v0.8+
-        self.generation_model = genai.GenerativeModel('gemini-2.5-flash')
+        self.generation_model = genai.GenerativeModel('gemini-1.5-flash-latest')
         self.embedding_model = 'models/text-embedding-004'
         
         logger.info("GeminiClient initialized successfully")
@@ -195,9 +195,15 @@ Focus on:
 3. Important procedural information
 4. Key decisions made
 
+CRITICAL ANONYMIZATION RULE:
+- Replace ALL real names with functional roles based on the conversation flow.
+- If a user asks a question, refer to them as 'Questioner'.
+- If a user provides policy/answers, refer to them as 'Authority' or 'Answerer'.
+- Do NOT output real names in the content or participants list.
+
 For each piece of knowledge found, provide:
 - Type: "qa", "policy", or "decision"
-- Content: The actual knowledge text
+- Content: The actual knowledge text (using ROLES, not names)
 - Confidence: A score from 0.0 to 1.0 indicating how confident you are this is valuable knowledge
 
 Format your response as a JSON array of objects with fields: type, content, confidence

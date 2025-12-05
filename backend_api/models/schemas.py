@@ -122,6 +122,7 @@ class UpdateKnowledgeRequest(BaseModel):
     category: Optional[str] = None
     tags: Optional[List[str]] = None
     summary: Optional[str] = None
+    content: Optional[str] = None
     screenshot: Optional[str] = None  # Base64 string or URL
 
 class IngestResponse(BaseModel):
@@ -159,3 +160,16 @@ class BarrierLogRequest(BaseModel):
     error: str
     agent: str = "Antigravity"
     timestamp: Optional[datetime] = Field(default_factory=datetime.utcnow)
+
+
+class RedactRequest(BaseModel):
+    """Request model for image redaction"""
+    image: str = Field(..., description="Base64 encoded image string")
+
+
+class RedactResponse(BaseModel):
+    """Response model for image redaction"""
+    status: str
+    redacted_image: str = Field(description="Base64 encoded redacted image")
+    original_image: Optional[str] = Field(None, description="Base64 encoded original image")
+    redacted_items: List[Dict[str, Any]] = Field(default_factory=list, description="List of redacted items with coordinates")

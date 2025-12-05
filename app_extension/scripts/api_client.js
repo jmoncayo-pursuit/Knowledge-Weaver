@@ -318,6 +318,46 @@ class BackendAPIClient {
             return [];
         }
     }
+    /**
+     * Redact PII from an image
+     * @param {string} base64Image - Base64 encoded image string
+     * @returns {Promise<Object>} Redaction result
+     */
+    async redactImage(base64Image) {
+        // Load settings if not already loaded
+        if (!this.baseURL || !this.apiKey) {
+            await this.loadSettings();
+        }
+
+        const url = `${this.baseURL}/api/v1/redact`;
+        console.log('Redacting image...');
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-API-Key': this.apiKey
+                },
+                body: JSON.stringify({ image: base64Image })
+            });
+
+            if (!response.ok) {
+                await this.handleHTTPError(response);
+            }
+
+            const data = await response.json();
+            console.log('Redaction successful:', data);
+            return data;
+
+        } catch (error) {
+            console.error('Redaction failed:', error);
+            if (error.message.includes('Failed to fetch')) {
+                throw new Error('Network error: Unable to reach backend API.');
+            }
+            throw error;
+        }
+    }
 }
 
 // Export for use in content script

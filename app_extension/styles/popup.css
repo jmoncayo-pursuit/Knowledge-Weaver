@@ -22,6 +22,7 @@
 
 body {
     width: 400px;
+    margin: 0 auto;
     min-height: 500px;
     font-family: var(--font-family);
     background-color: var(--bg-color) !important;
@@ -32,6 +33,8 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 header {

@@ -566,3 +566,24 @@ dialog::backdrop {
 .hidden {
     display: none !important;
 }
+
+#image-modal img {
+    max-width: 90vw;
+    max-height: 80vh;
+    object-fit: contain;
+}
+
+/* Victory Highlight */
+@keyframes pulse {
+    0% {
+        background-color: rgba(0, 200, 83, 0.4);
+    }
+
+    100% {
+        background-color: transparent;
+    }
+}
+
+.highlight-pulse {
+    animation: pulse 2s ease-out;
+}

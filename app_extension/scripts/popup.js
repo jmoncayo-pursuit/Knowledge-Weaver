@@ -83,9 +83,11 @@ const screenshotPreview = document.getElementById('screenshotPreview');
 const previewImg = document.getElementById('previewImg');
 const removeScreenshotBtn = document.getElementById('removeScreenshot');
 const manualScreenshotInput = document.getElementById('manualScreenshotInput');
+const autoRedactBtn = document.getElementById('autoRedactBtn');
 
 // State
 let currentScreenshot = null;
+let originalScreenshot = null;
 
 // Critical element check - must happen immediately
 const missingElements = [];
@@ -105,6 +107,7 @@ if (!screenshotPreview) missingElements.push('screenshotPreview');
 if (!previewImg) missingElements.push('previewImg');
 if (!removeScreenshotBtn) missingElements.push('removeScreenshot');
 if (!manualScreenshotInput) missingElements.push('manualScreenshotInput');
+if (!autoRedactBtn) missingElements.push('autoRedactBtn');
 
 if (missingElements.length > 0) {
     showCriticalError(`Missing DOM elements:\n${missingElements.join('\n')}\n\nThe HTML structure may have changed.`);
@@ -147,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         screenshotBtn.addEventListener('click', handleScreenshot);
         removeScreenshotBtn.addEventListener('click', removeScreenshot);
         manualScreenshotInput.addEventListener('change', handleManualScreenshot);
+        autoRedactBtn.addEventListener('click', handleAutoRedact);
 
         // Ingest logic
         ingestBtn.addEventListener('click', handleAnalyze);
@@ -552,6 +556,7 @@ function handleScreenshot() {
         }
 
         currentScreenshot = dataUrl;
+        originalScreenshot = dataUrl;
         previewImg.src = dataUrl;
         screenshotPreview.classList.remove('hidden');
         screenshotBtn.textContent = 'Retake Screenshot';
@@ -564,6 +569,7 @@ function handleScreenshot() {
  */
 function removeScreenshot() {
     currentScreenshot = null;
+    originalScreenshot = null;
     previewImg.src = '';
     screenshotPreview.classList.add('hidden');
     screenshotBtn.textContent = 'Attach Screenshot';
@@ -589,6 +595,7 @@ function handleManualScreenshot(event) {
         const dataUrl = e.target.result;
 
         currentScreenshot = dataUrl;
+        originalScreenshot = dataUrl;
         previewImg.src = dataUrl;
         screenshotPreview.classList.remove('hidden');
         screenshotBtn.textContent = 'Retake Screenshot';
@@ -601,6 +608,59 @@ function handleManualScreenshot(event) {
     };
 
     reader.readAsDataURL(file);
+}
+
+/**
+ * Handle auto-redaction
+ */
+async function handleAutoRedact() {
+    if (!currentScreenshot) {
+        showError('No screenshot to redact');
+        return;
+    }
+
+    // Check if we are in "Revert" mode
+    if (autoRedactBtn.textContent === 'Revert') {
+        currentScreenshot = originalScreenshot;
+        previewImg.src = currentScreenshot;
+        autoRedactBtn.textContent = '✨ Auto-Redact';
+        return;
+    }
+
+    const originalText = autoRedactBtn.textContent;
+    autoRedactBtn.textContent = 'Redacting...';
+    autoRedactBtn.disabled = true;
+
+    try {
+        const result = await apiClient.redactImage(currentScreenshot);
+
+        if (result.status === 'success') {
+            // Update preview with redacted image
+            currentScreenshot = result.redacted_image;
+            previewImg.src = currentScreenshot;
+
+            // Change button to Revert
+            autoRedactBtn.textContent = 'Revert';
+            autoRedactBtn.disabled = false;
+
+        } else if (result.status === 'no_pii_detected') {
+            autoRedactBtn.textContent = 'No PII Found';
+            setTimeout(() => {
+                autoRedactBtn.textContent = originalText;
+                autoRedactBtn.disabled = false;
+            }, 2000);
+        }
+
+    } catch (error) {
+        console.error('Redaction error:', error);
+        autoRedactBtn.textContent = 'Error';
+        showError(`Redaction failed: ${error.message}`);
+
+        setTimeout(() => {
+            autoRedactBtn.textContent = originalText;
+            autoRedactBtn.disabled = false;
+        }, 2000);
+    }
 }
 
 /**
