@@ -26,7 +26,7 @@ class VisionService:
         
         genai.configure(api_key=self.api_key)
         
-        # Use Gemini 2.0 Flash Exp
+        # Use Gemini 2.0 Flash Exp (Confirmed Working)
         self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
         
         logger.info("VisionService initialized successfully with gemini-2.0-flash-exp")
@@ -58,15 +58,7 @@ Re-label: Replace the speaker names/labels. Use 'Questioner' for the person aski
 Maintain: Keep the original layout and the non-sensitive dialogue text clear and readable."""
             
             logger.info("Sending image to Gemini for redaction...")
-            try:
-                response = self.model.generate_content([prompt, image])
-            except Exception as e:
-                if "429" in str(e):
-                    logger.warning("Quota exceeded for gemini-2.0-flash-exp. Falling back to gemini-1.5-flash...")
-                    fallback_model = genai.GenerativeModel('gemini-1.5-flash')
-                    response = fallback_model.generate_content([prompt, image])
-                else:
-                    raise e
+            response = self.model.generate_content([prompt, image])
             
             # The response should contain the generated image
             # We need to extract the image part from the response
