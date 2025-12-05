@@ -804,9 +804,15 @@ async def redact_image(
         raise
     except Exception as e:
         logger.error(f"Redaction failed: {e}", exc_info=True)
+        error_msg = str(e)
+        if "429" in error_msg or "Quota exceeded" in error_msg:
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail=f"Gemini API Quota Exceeded. Please try again later."
+            )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Redaction failed: {str(e)}"
+            detail=f"Redaction failed: {error_msg}"
         )
 
 
