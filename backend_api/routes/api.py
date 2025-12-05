@@ -778,32 +778,18 @@ async def update_knowledge_entry(
 
 @router.post("/redact", response_model=RedactResponse)
 async def redact_image(
-    request: RedactRequest,
+    file: UploadFile = File(...),
     api_key: str = Depends(verify_api_key),
     services: dict = Depends(get_services)
 ):
     """
-    Redact PII from a Base64 encoded image
+    Redact PII from an uploaded image file
     """
-    logger.info("Redacting image from Base64 input")
+    logger.info(f"Redacting image from file upload: {file.filename}")
     
     try:
-        # Decode base64 image
-        import base64
-        
-        # Remove header if present (e.g., "data:image/png;base64,")
-        image_str = request.image
-        if "," in image_str:
-            image_str = image_str.split(",")[1]
-            
-        try:
-            image_data = base64.b64decode(image_str)
-        except Exception as e:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid base64 string: {str(e)}"
-            )
-        
+        # Read image data directly from the uploaded file
+        image_data = await file.read()
         # Redact PII directly (Pure AI)
         result = services["vision_service"].redact_image(image_data)
         

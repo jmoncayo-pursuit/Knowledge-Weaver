@@ -58,7 +58,15 @@ Re-label: Replace the speaker names/labels. Use 'Questioner' for the person aski
 Maintain: Keep the original layout and the non-sensitive dialogue text clear and readable."""
             
             logger.info("Sending image to Gemini for redaction...")
-            response = self.model.generate_content([prompt, image])
+            try:
+                response = self.model.generate_content([prompt, image])
+            except Exception as e:
+                if "429" in str(e):
+                    logger.warning("Quota exceeded for gemini-2.0-flash-exp. Falling back to gemini-1.5-flash...")
+                    fallback_model = genai.GenerativeModel('gemini-1.5-flash')
+                    response = fallback_model.generate_content([prompt, image])
+                else:
+                    raise e
             
             # The response should contain the generated image
             # We need to extract the image part from the response
