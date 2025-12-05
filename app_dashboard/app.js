@@ -1174,7 +1174,10 @@ async function handleImageUpload(file, callback) {
             body: formData
         });
 
-        if (!response.ok) throw new Error('Redaction failed');
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ detail: response.statusText }));
+            throw new Error(errorData.detail || 'Redaction failed');
+        }
 
         const data = await response.json();
 
@@ -1185,9 +1188,24 @@ async function handleImageUpload(file, callback) {
 
     } catch (error) {
         console.error('Redaction flow error:', error);
-        alert('Auto-redaction failed. Please try again.');
+        alert(`Auto-redaction failed: ${error.message}`);
     } finally {
         statusEl.textContent = originalStatus;
+
+        // Reset buttons if they were stuck in "Redacting..." state
+        // We need to find which button triggered this. 
+        // Since we don't pass the button element, we'll reset both potential buttons.
+        const gapRedactBtn = document.getElementById('gap-auto-redact-btn');
+        if (gapRedactBtn && gapRedactBtn.textContent === 'Redacting...') {
+            gapRedactBtn.textContent = '✨ Auto-Redact (HIPAA)';
+            gapRedactBtn.disabled = false;
+        }
+
+        const editRedactBtn = document.getElementById('edit-auto-redact-btn');
+        if (editRedactBtn && editRedactBtn.textContent === 'Redacting...') {
+            editRedactBtn.textContent = '✨ Auto-Redact (HIPAA)';
+            editRedactBtn.disabled = false;
+        }
     }
 }
 
