@@ -34,7 +34,7 @@ app = FastAPI(
 # Configure CORS - Explicit configuration for cross-origin requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8080", "http://127.0.0.1:8080", "http://localhost:8081", "http://127.0.0.1:8081"],
+    allow_origins=["*"],  # Allow all origins for development (including Chrome Extensions)
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
     allow_headers=["*"],  # Allow all headers including X-API-Key

@@ -80,7 +80,7 @@ class VectorDatabase:
         self,
         query_embedding: List[float],
         top_k: int = 3,
-        threshold: float = 0.1,
+        threshold: float = 0.55,
         verified_only: bool = False,
         include_deleted: bool = False
     ) -> List[Dict[str, Any]]:
@@ -293,12 +293,13 @@ class VectorDatabase:
             logger.error(f"Failed to find similar verified entries: {e}")
             return []
 
-    def delete_entry(self, entry_id: str) -> bool:
+    def delete_entry(self, entry_id: str, permanent: bool = False) -> bool:
         """
-        Soft delete a knowledge entry by ID (sets is_deleted=True)
+        Delete a knowledge entry by ID
         
         Args:
             entry_id: ID of the entry to delete
+            permanent: If True, hard delete (remove from DB). If False, soft delete (mark as deleted)
             
         Returns:
             True if successful, False otherwise
@@ -312,21 +313,26 @@ class VectorDatabase:
             if not existing['ids']:
                 logger.warning(f"Entry {entry_id} not found for deletion")
                 return False
+            
+            if permanent:
+                # Hard delete: Remove completely from ChromaDB
+                self.collection.delete(ids=[entry_id])
+                logger.info(f"Permanently deleted entry {entry_id} from vector database")
+                return True
+            else:
+                # Soft delete: Mark as deleted instead of removing
+                current_metadata = existing['metadatas'][0]
+                current_metadata['is_deleted'] = True
+                current_metadata['deleted_at'] = datetime.utcnow().isoformat()
                 
-            current_metadata = existing['metadatas'][0]
-            
-            # Soft delete: Mark as deleted instead of removing
-            current_metadata['is_deleted'] = True
-            current_metadata['deleted_at'] = datetime.utcnow().isoformat()
-            
-            # Update in ChromaDB
-            self.collection.update(
-                ids=[entry_id],
-                metadatas=[current_metadata]
-            )
-            
-            logger.info(f"Soft deleted entry {entry_id} from vector database")
-            return True
+                # Update in ChromaDB
+                self.collection.update(
+                    ids=[entry_id],
+                    metadatas=[current_metadata]
+                )
+                
+                logger.info(f"Soft deleted entry {entry_id} from vector database")
+                return True
         except Exception as e:
             logger.error(f"Failed to delete entry {entry_id}: {e}")
             return False

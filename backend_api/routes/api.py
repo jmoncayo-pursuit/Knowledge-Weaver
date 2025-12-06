@@ -607,17 +607,21 @@ async def ingest_knowledge(
 @router.delete("/knowledge/{entry_id}")
 async def delete_knowledge_entry(
     entry_id: str,
+    permanent: bool = False,
     api_key: str = Depends(verify_api_key),
     services: dict = Depends(get_services)
 ):
     """
     Delete a knowledge entry
+    Args:
+        entry_id: ID of entry
+        permanent: If true, hard delete. Else soft delete.
     Requires API key authentication
     """
-    logger.info(f"Deleting knowledge entry: {entry_id}")
+    logger.info(f"Deleting knowledge entry: {entry_id} (permanent={permanent})")
     
     try:
-        success = services["vector_db"].delete_entry(entry_id)
+        success = services["vector_db"].delete_entry(entry_id, permanent=permanent)
         
         if success:
             return JSONResponse(
@@ -829,8 +833,17 @@ async def analyze_content(
     try:
         logger.info(f"Analyzing content for URL: {request.url}")
         
+        # Handle empty text (e.g. image-only upload)
+        text_to_analyze = request.text
+        if not text_to_analyze or not text_to_analyze.strip():
+            if request.screenshot:
+                 logger.info("Empty text provided, using placeholder for visual content")
+                 text_to_analyze = "Visual content from screenshot"
+            else:
+                 text_to_analyze = "No content provided"
+
         # Step 1: Generate embedding for the input text
-        embedding = services["gemini_client"].generate_embedding(request.text)
+        embedding = services["gemini_client"].generate_embedding(text_to_analyze)
         
         # Step 2: Find similar verified entries
         similar_verified = services["vector_db"].find_similar_verified(embedding)
@@ -850,7 +863,7 @@ async def analyze_content(
         
         # Step 4: Analyze with context
         analysis = services["gemini_client"].analyze_content(
-            request.text, 
+            text_to_analyze, 
             context_examples=context_examples
         )
         
@@ -862,6 +875,15 @@ async def analyze_content(
         
     except Exception as e:
         logger.error(f"Analysis failed: {e}", exc_info=True)
+        error_msg = str(e)
+        if "429" in error_msg or "Quota exceeded" in error_msg:
+            return JSONResponse(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                content={
+                    "status": "error",
+                    "message": "Gemini API Quota Exceeded. Please try again later."
+                }
+            )
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content={

@@ -117,7 +117,7 @@ class QueryService:
     def _search_similar_knowledge(
         self,
         embedding: List[float],
-        threshold: float = 0.6,
+        threshold: float = 0.55,
         verified_only: bool = False
     ) -> List[Dict[str, Any]]:
         """
@@ -125,7 +125,7 @@ class QueryService:
         
         Args:
             embedding: Query embedding vector
-            threshold: Minimum similarity score threshold (default: 0.1)
+            threshold: Minimum similarity score threshold (default: 0.35)
             verified_only: If True, return only verified content
         
         Returns:
@@ -134,7 +134,7 @@ class QueryService:
         try:
             matches = self.vector_db.search(
                 query_embedding=embedding,
-                top_k=3,
+                top_k=10,
                 threshold=threshold,
                 verified_only=verified_only
             )

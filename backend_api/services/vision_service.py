@@ -26,10 +26,10 @@ class VisionService:
         
         genai.configure(api_key=self.api_key)
         
-        # Use Gemini 2.0 Flash Exp (Confirmed Working)
-        self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        # Use Nano Banana Pro (Gemini 3 Pro Image Preview) as requested
+        self.model = genai.GenerativeModel('nano-banana-pro-preview')
         
-        logger.info("VisionService initialized successfully with gemini-2.0-flash-exp")
+        logger.info("VisionService initialized successfully with nano-banana-pro-preview")
 
     def redact_image(self, image_data: bytes) -> Dict[str, Any]:
         """
@@ -93,53 +93,32 @@ Maintain: Keep the original layout and the non-sensitive dialogue text clear and
             
             # Wait, standard Gemini API (as of late 2024/2025) might not return edited images directly via `generate_content` 
             # unless it's specifically the image generation endpoint or a multimodal output model.
-            # But the user says "Gemini 2.0 Flash Thinking model to generate the HIPAA-compliant image directly".
-            # So I will assume it works.
             
-            # I'll look for the image in the response.
-            # If the SDK returns a PIL Image object in some way, or we need to access the bytes.
+            # Attempt to extract image data from the response
+            redacted_image_data = None
+            for part in response.parts:
+                if hasattr(part, 'inline_data') and hasattr(part.inline_data, 'mime_type') and part.inline_data.mime_type.startswith('image/'):
+                    redacted_image_data = part.inline_data.data
+                    break
             
-            # Let's look at how we might access the image. 
-            # If `response.parts` has a part with `mime_type` starting with `image/`.
+            if redacted_image_data:
+                # Convert back to base64 for frontend
+                img_str = base64.b64encode(redacted_image_data).decode('utf-8')
+                
+                redacted_img_val = f"data:image/png;base64,{img_str}"
+                original_img_val = f"data:image/png;base64,{base64.b64encode(image_data).decode('utf-8')}"
+                
+                logger.info(f"Redaction successful. Returning types: {type(redacted_img_val)}, {type(original_img_val)}")
+                return {
+                    "redacted_image": redacted_img_val,
+                    "original_image": original_img_val,
+                    "redacted_items": [] # No specific items
+                }
             
-            generated_image_data = None
-            
-            if hasattr(response, 'parts'):
-                for part in response.parts:
-                    if hasattr(part, 'inline_data') and part.inline_data:
-                        generated_image_data = part.inline_data.data
-                        break
-                    # Sometimes it might be in a different structure depending on the SDK version.
-            
-            # If we can't find it in parts, maybe the response itself has it?
-            # The user's instruction is simple: "model.generate_content([image, prompt])".
-            
-            # If I can't guarantee the SDK structure, I'll add some logging and fallback.
-            # But for "Pure AI", I should rely on it.
-            
-            if not generated_image_data:
-                # Fallback/Error if no image returned
-                # Maybe the model returns a URI?
-                logger.warning("No image data found in Gemini response. Checking text...")
-                logger.warning(f"Response text: {response.text}")
-                # If it returns text, we can't do much.
-                raise ValueError("Gemini did not return an image.")
+            # If we get here, no image was found
+            logger.warning(f"No image data found in Gemini response. Text: {response.text}")
+            raise ValueError("Gemini returned text instead of an image. Please try again.")
 
-            # Convert to Base64
-            img_str = base64.b64encode(generated_image_data).decode("utf-8")
-            
-            redacted_img_val = f"data:image/png;base64,{img_str}"
-            original_img_val = f"data:image/png;base64,{base64.b64encode(image_data).decode('utf-8')}"
-            
-            logger.info(f"Redacted Image Type: {type(redacted_img_val)}")
-            logger.info(f"Original Image Type: {type(original_img_val)}")
-            
-            return {
-                "redacted_image": redacted_img_val,
-                "original_image": original_img_val,
-                "redacted_items": [] # No specific items
-            }
-            
         except Exception as e:
             logger.error(f"Error redacting image: {e}")
             raise e
