@@ -84,6 +84,24 @@ const previewImg = document.getElementById('previewImg');
 const removeScreenshotBtn = document.getElementById('removeScreenshot');
 const manualScreenshotInput = document.getElementById('manualScreenshotInput');
 const autoRedactBtn = document.getElementById('autoRedactBtn');
+const expandScreenshotBtn = document.getElementById('expandScreenshot');
+
+// Settings modal elements
+const settingsModal = document.getElementById('settingsModal');
+const closeSettings = document.getElementById('closeSettings');
+const apiEndpointInput = document.getElementById('apiEndpoint');
+const apiKeyInput = document.getElementById('apiKey');
+const saveSettingsBtn = document.getElementById('saveSettings');
+const settingsMessage = document.getElementById('settingsMessage');
+
+// Quick test queries based on sample data
+const QUERIES = [
+    'missed life event deadline',
+    'domestic partner verification',
+    'gym reimbursement',
+    'adult orthodontia',
+    'FSA vs HSA conflict'
+];
 
 // State
 let currentScreenshot = null;
@@ -114,23 +132,6 @@ if (missingElements.length > 0) {
     throw new Error('Critical DOM elements missing');
 }
 
-// Settings modal elements
-const settingsModal = document.getElementById('settingsModal');
-const closeSettings = document.getElementById('closeSettings');
-const apiEndpointInput = document.getElementById('apiEndpoint');
-const apiKeyInput = document.getElementById('apiKey');
-const saveSettingsBtn = document.getElementById('saveSettings');
-const settingsMessage = document.getElementById('settingsMessage');
-
-// Quick test queries based on sample data
-const QUERIES = [
-    'missed life event deadline',
-    'domestic partner verification',
-    'gym reimbursement',
-    'adult orthodontia',
-    'FSA vs HSA conflict'
-];
-
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Popup initialized');
@@ -151,6 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
         removeScreenshotBtn.addEventListener('click', removeScreenshot);
         manualScreenshotInput.addEventListener('change', handleManualScreenshot);
         autoRedactBtn.addEventListener('click', handleAutoRedact);
+
+        if (expandScreenshotBtn) {
+            expandScreenshotBtn.addEventListener('click', handleExpandScreenshot);
+        }
 
         // Ingest logic
         ingestBtn.addEventListener('click', handleAnalyze);
@@ -613,17 +618,31 @@ function handleManualScreenshot(event) {
 /**
  * Handle auto-redaction
  */
+let cachedRedactedImage = null;
+
 async function handleAutoRedact() {
     if (!currentScreenshot) {
         showError('No screenshot to redact');
         return;
     }
 
-    // Check if we are in "Revert" mode
+    // Toggle Revert Logic (Instant)
     if (autoRedactBtn.textContent === 'Revert') {
         currentScreenshot = originalScreenshot;
         previewImg.src = currentScreenshot;
         autoRedactBtn.textContent = '✨ Auto-Redact';
+        autoRedactBtn.title = 'Redact PII';
+        // We keep cachedRedactedImage for future use
+        return;
+    }
+
+    // Check Cache logic (Instant)
+    if (cachedRedactedImage && autoRedactBtn.textContent.includes('Auto-Redact')) {
+        console.log('Using cached redacted image');
+        currentScreenshot = cachedRedactedImage;
+        previewImg.src = currentScreenshot;
+        autoRedactBtn.textContent = 'Revert';
+        autoRedactBtn.title = 'Revert to Original';
         return;
     }
 
@@ -636,11 +655,13 @@ async function handleAutoRedact() {
 
         if (result.status === 'success') {
             // Update preview with redacted image
+            cachedRedactedImage = result.redacted_image;
             currentScreenshot = result.redacted_image;
             previewImg.src = currentScreenshot;
 
             // Change button to Revert
             autoRedactBtn.textContent = 'Revert';
+            autoRedactBtn.title = 'Revert to Original';
             autoRedactBtn.disabled = false;
 
         } else if (result.status === 'no_pii_detected') {
@@ -660,6 +681,35 @@ async function handleAutoRedact() {
             autoRedactBtn.textContent = originalText;
             autoRedactBtn.disabled = false;
         }, 2000);
+    }
+}
+
+/**
+ * Handle Expand Screenshot
+ */
+function handleExpandScreenshot() {
+    if (!currentScreenshot) return;
+
+    const modal = document.getElementById('imageModal');
+    const expandedImg = document.getElementById('expandedImage');
+    const closeBtn = document.getElementById('closeImageModal');
+
+    if (modal && expandedImg) {
+        expandedImg.src = currentScreenshot;
+        modal.classList.remove('hidden');
+
+        // Close handler
+        const closeModal = () => {
+            modal.classList.add('hidden');
+            closeBtn.removeEventListener('click', closeModal);
+        };
+
+        closeBtn.addEventListener('click', closeModal);
+
+        // Close on background click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
     }
 }
 

@@ -221,8 +221,13 @@ class BackendAPIClient {
      * @returns {Promise<Object>} API response
      */
     async ingestKnowledge(payload) {
-        if (!payload || !payload.text) {
-            throw new Error('Payload must contain text');
+        if (!payload || (!payload.text && !payload.screenshot)) {
+            throw new Error('Payload must contain text or a screenshot');
+        }
+
+        // Ensure text field exists even if empty, or provide default
+        if (!payload.text) {
+            payload.text = "Screenshot Ingestion";
         }
 
         // Load settings if not already loaded
@@ -333,13 +338,20 @@ class BackendAPIClient {
         console.log('Redacting image...');
 
         try {
+            // Convert base64 to blob
+            const fetchResponse = await fetch(base64Image);
+            const blob = await fetchResponse.blob();
+
+            const formData = new FormData();
+            formData.append('file', blob, 'screenshot.png');
+
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'X-API-Key': this.apiKey
+                    // Content-Type header is set automatically with FormData
                 },
-                body: JSON.stringify({ image: base64Image })
+                body: formData
             });
 
             if (!response.ok) {

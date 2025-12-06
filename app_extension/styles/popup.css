@@ -119,6 +119,11 @@ input[type="text"] {
     transition: border-color 0.2s;
 }
 
+::placeholder {
+    color: rgba(250, 250, 250, 0.5);
+    /* Semi-transparent white for readability */
+}
+
 textarea:focus,
 input[type="text"]:focus {
     outline: none;
@@ -400,7 +405,8 @@ footer {
 .redacted-text h4 {
     font-size: 11px;
     text-transform: uppercase;
-    color: var(--text-secondary);
+    color: var(--text-primary);
+    /* Changed for better contrast */
     margin-bottom: 8px;
     letter-spacing: 0.5px;
 }
@@ -442,4 +448,26 @@ footer {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Screenshot Preview & Expand */
+.screenshot-preview img {
+    max-width: 100%;
+    max-height: 300px;
+    /* Fit within popup */
+    object-fit: contain;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 10px;
+}
+
+.small-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+.preview-controls {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
 }
