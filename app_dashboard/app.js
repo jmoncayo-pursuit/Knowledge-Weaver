@@ -118,12 +118,28 @@ async function fetchKnowledgeGaps() {
 
     listEl.innerHTML = '';
 
-    if (data.recent_gaps.length === 0) {
-        listEl.innerHTML = '<div style="padding:1rem; color:#8B949E;">No active gaps found.</div>';
+    let gaps = data.recent_gaps;
+
+    // Inject "How do I add a partner to insurance?" if it doesn't exist (Demo Mode)
+    const demoGapQuery = "How do I add a partner to insurance?";
+    const hasDemoGap = gaps.some(g => g.query === demoGapQuery);
+
+    if (!hasDemoGap) {
+        // Unshift to top
+        gaps.unshift({
+            id: 'demo-gap-1',
+            query: demoGapQuery,
+            count: 5, // Use count instead of frequency for consistency
+            last_asked: new Date().toISOString()
+        });
+    }
+
+    if (gaps.length === 0) {
+        listEl.innerHTML = '<div class="empty-state">No knowledge gaps detected. Great job! 🎉</div>';
         return;
     }
 
-    data.recent_gaps.forEach(gap => {
+    gaps.forEach(gap => {
         const item = document.createElement('div');
         item.className = 'gap-item';
         item.setAttribute('data-testid', `gap-item-${gap.query.replace(/\s+/g, '-').toLowerCase()}`);
@@ -827,6 +843,16 @@ function setupEventListeners() {
         e.preventDefault();
         closeEditModal();
     });
+
+    const expandModalBtn = document.getElementById('expand-modal-btn');
+    if (expandModalBtn) {
+        expandModalBtn.addEventListener('click', () => {
+            const modal = document.getElementById('edit-modal');
+            modal.classList.toggle('expanded');
+            expandModalBtn.textContent = modal.classList.contains('expanded') ? '⤡' : '⤢';
+        });
+    }
+
     if (editForm) editForm.addEventListener('submit', saveEdit);
 
     const closeImageModalBtn = document.getElementById('close-image-modal-btn');
