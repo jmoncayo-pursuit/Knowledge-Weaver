@@ -9,3 +9,19 @@ venv/
 
 # macOS
 .DS_Store
+
+# Logs
+logs/
+*.log
+
+# Mock Sites (Personal Use)
+app_dashboard/mock_sites/
+
+# Temporary / Scratch Files
+*.bak
+*.bak2
+debug_*.py
+simple_test.py
+temp_*
+*.tmp
+Test/
