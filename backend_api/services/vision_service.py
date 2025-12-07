@@ -27,9 +27,10 @@ class VisionService:
         genai.configure(api_key=self.api_key)
         
         # Use Nano Banana Pro (Gemini 3 Pro Image Preview) as requested
-        self.model = genai.GenerativeModel('nano-banana-pro-preview')
+        self.model_name = os.getenv('GEMINI_VISION_MODEL', 'nano-banana-pro-preview')
+        self.model = genai.GenerativeModel(self.model_name)
         
-        logger.info("VisionService initialized successfully with nano-banana-pro-preview")
+        logger.info(f"VisionService initialized successfully with {self.model_name}")
 
     def redact_image(self, image_data: bytes) -> Dict[str, Any]:
         """
@@ -53,8 +54,19 @@ class VisionService:
             prompt = """Please edit this image to be HIPAA compliant.
 Task:
 
-Redact: Black out or blur all Personally Identifiable Information (PII), including specific names, dates of birth, exact addresses, and medical record numbers.
-Re-label: Replace the speaker names/labels. Use 'Questioner' for the person asking and 'Respondent' for the person answering.
+Redact: Black out or blur ALL Personally Identifiable Information (PII), including but not limited to:
+- Full names (e.g., "Sam Riverzie", "Alex Chen")
+- Email addresses (e.g., "s.riverzie@example.com", "name@domain.com")
+- Phone numbers
+- Dates of birth
+- Social Security Numbers
+- Exact street addresses (e.g., "123 Maple Street, Apt 4B, Springfield, IL 62704")
+- Employee IDs (e.g., "E-445566")
+- License or certificate numbers (e.g., "#987654321")
+- Medical record numbers
+- Any other identifying numbers
+
+Re-label: Replace speaker names/labels. Use 'Questioner' for the person asking and 'Respondent' for the person answering.
 Maintain: Keep the original layout and the non-sensitive dialogue text clear and readable."""
             
             logger.info("Sending image to Gemini for redaction...")

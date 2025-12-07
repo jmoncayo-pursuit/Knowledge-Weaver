@@ -15,6 +15,7 @@ from services.gemini_client import GeminiClient
 from services.chat_processor import ChatLogProcessor
 from services.query_service import QueryService
 from services.vision_service import VisionService
+from services.learning import LearningService
 from routes import api
 
 # Configure logging
@@ -137,6 +138,10 @@ async def startup_event():
         # Initialize Vision Service
         api.vision_service = VisionService()
         logger.info("Vision Service initialized")
+
+        # Initialize Learning Service
+        api.learning_service = LearningService()
+        logger.info("Learning Service initialized")
         
         logger.info("All services initialized successfully")
         

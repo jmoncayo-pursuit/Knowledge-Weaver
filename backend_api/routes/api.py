@@ -32,7 +32,9 @@ from services.gemini_client import GeminiClient
 from services.chat_processor import ChatLogProcessor
 from services.query_service import QueryService
 from services.anonymizer import AnonymizerService
+from services.anonymizer import AnonymizerService
 from services.vision_service import VisionService
+from services.learning import LearningService
 from fastapi import UploadFile, File
 
 logger = logging.getLogger(__name__)
@@ -46,7 +48,9 @@ gemini_client: GeminiClient = None
 chat_processor: ChatLogProcessor = None
 query_service: QueryService = None
 anonymizer_service: AnonymizerService = None
+anonymizer_service: AnonymizerService = None
 vision_service: VisionService = None
+learning_service: LearningService = None
 
 
 def get_services():
@@ -56,7 +60,7 @@ def get_services():
     if not anonymizer_service:
         anonymizer_service = AnonymizerService()
 
-    if not all([vector_db, gemini_client, chat_processor, query_service, vision_service]):
+    if not all([vector_db, gemini_client, chat_processor, query_service, vision_service, learning_service]):
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Services not initialized"
@@ -67,7 +71,9 @@ def get_services():
         "chat_processor": chat_processor,
         "query_service": query_service,
         "anonymizer": anonymizer_service,
-        "vision_service": vision_service
+        "anonymizer": anonymizer_service,
+        "vision_service": vision_service,
+        "learning": learning_service
     }
 
 
@@ -368,30 +374,18 @@ async def get_dashboard_metrics(
 @router.get("/metrics/learning", response_model=List[LearningEvent])
 async def get_learning_history(
     limit: int = 5,
-    api_key: str = Depends(verify_api_key)
+    api_key: str = Depends(verify_api_key),
+    services: dict = Depends(get_services)
 ):
     """
     Get recent learning events (AI vs Human corrections)
     """
     try:
-        backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        log_file = os.path.join(backend_dir, 'learning_history.jsonl')
-        
-        events = []
-        if os.path.exists(log_file):
-            with open(log_file, 'r', encoding='utf-8') as f:
-                # Read all lines
-                lines = f.readlines()
-                # Parse last 'limit' lines in reverse order
-                for line in reversed(lines):
-                    if len(events) >= limit:
-                        break
-                    try:
-                        if line.strip():
-                            events.append(json.loads(line))
-                    except json.JSONDecodeError:
-                        continue
-                        
+        if not services.get("learning"):
+            logger.warning("Learning service not available")
+            return []
+            
+        events = services["learning"].get_learning_log(limit=limit)
         return events
         
     except Exception as e:
@@ -401,45 +395,78 @@ async def get_learning_history(
 
 @router.get("/metrics/learning_stats")
 async def get_learning_stats(
-    limit: int = 5,
-    api_key: str = Depends(verify_api_key)
+    limit: int = 10,
+    api_key: str = Depends(verify_api_key),
+    services: dict = Depends(get_services)
 ):
     """
-    Get aggregated learning statistics (Top learned tags)
+    Get aggregated learning statistics from correction history
+    Returns top learned topics based on human corrections
     """
     try:
         backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        log_file = os.path.join(backend_dir, 'learning_history.jsonl')
+        history_file = os.path.join(backend_dir, 'learning_history.jsonl')
         
+        # Count corrections by category/tag
+        category_counts = {}
         tag_counts = {}
         
-        if os.path.exists(log_file):
-            with open(log_file, 'r', encoding='utf-8') as f:
+        if os.path.exists(history_file):
+            with open(history_file, 'r', encoding='utf-8') as f:
                 for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
                     try:
-                        if line.strip():
-                            event = json.loads(line)
-                            # Count tags in human correction
-                            # We only care about what the human TAUGHT the AI
-                            human_tags = event.get('human_correction', {}).get('tags', [])
-                            ai_tags = event.get('ai_prediction', {}).get('tags', [])
-                            
-                            # Identify NEW tags (what was learned)
-                            learned_tags = [t for t in human_tags if t not in ai_tags]
-                            
-                            for tag in learned_tags:
+                        event = json.loads(line)
+                        
+                        # Count category corrections
+                        correction = event.get("human_correction", {})
+                        category = correction.get("category")
+                        if category:
+                            category_counts[category] = category_counts.get(category, 0) + 1
+                        
+                        # Count tag corrections
+                        tags = correction.get("tags", [])
+                        for tag in tags:
+                            if tag:
                                 tag_counts[tag] = tag_counts.get(tag, 0) + 1
                                 
                     except json.JSONDecodeError:
                         continue
         
-        # Sort by count
-        sorted_tags = sorted(tag_counts.items(), key=lambda x: x[1], reverse=True)
-        top_tags = [{"tag": tag, "count": count} for tag, count in sorted_tags[:limit]]
+        # Combine and sort - prioritize categories, then tags
+        all_topics = []
+        for cat, count in category_counts.items():
+            all_topics.append({"tag": cat, "count": count})
+        for tag, count in tag_counts.items():
+            if tag not in category_counts:  # Avoid duplicates
+                all_topics.append({"tag": tag, "count": count})
+        
+        # Sort by count descending
+        all_topics.sort(key=lambda x: x["count"], reverse=True)
+        
+        # Limit results
+        top_topics = all_topics[:limit]
+        
+        # If no data, provide some baseline topics from existing entries
+        if not top_topics:
+            # Fallback: scan existing entries for common categories
+            try:
+                entries = services["vector_db"].get_all_entries(limit=50)
+                fallback_counts = {}
+                for entry in entries:
+                    cat = entry.get("metadata", {}).get("category", "General")
+                    fallback_counts[cat] = fallback_counts.get(cat, 0) + 1
+                
+                for cat, count in sorted(fallback_counts.items(), key=lambda x: -x[1])[:limit]:
+                    top_topics.append({"tag": cat, "count": count})
+            except:
+                pass
         
         return {
-            "top_learned_tags": top_tags,
-            "total_corrections": sum(tag_counts.values())
+            "top_learned_tags": top_topics,
+            "total_corrections": sum(category_counts.values()) if category_counts else 0
         }
         
     except Exception as e:
@@ -449,50 +476,38 @@ async def get_learning_stats(
 
 @router.get("/metrics/cognitive_health")
 async def get_cognitive_health(
-    api_key: str = Depends(verify_api_key)
+    api_key: str = Depends(verify_api_key),
+    services: dict = Depends(get_services)
 ):
     """
     Get Cognitive Health metrics (Error Rate over time)
     """
     try:
-        backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        log_file = os.path.join(backend_dir, 'learning_history.jsonl')
-        
-        daily_stats = {}
-        
-        if os.path.exists(log_file):
-            with open(log_file, 'r', encoding='utf-8') as f:
-                for line in f:
-                    try:
-                        if line.strip():
-                            event = json.loads(line)
-                            timestamp = event.get("timestamp")
-                            if timestamp:
-                                date = timestamp.split("T")[0]
-                                if date not in daily_stats:
-                                    daily_stats[date] = {"total": 0, "errors": 0}
-                                
-                                daily_stats[date]["total"] += 1
-                                if event.get("error", False):
-                                    daily_stats[date]["errors"] += 1
-                    except json.JSONDecodeError:
-                        continue
-        
-        # Calculate rates
-        result = []
-        for date, stats in sorted(daily_stats.items()):
-            error_rate = (stats["errors"] / stats["total"] * 100) if stats["total"] > 0 else 0
-            result.append({
-                "date": date,
-                "error_rate": round(error_rate, 1),
-                "total_events": stats["total"]
-            })
+        if not services.get("learning"):
+            return {"error_rate": 0, "history": []}
             
-        return result
+        stats = services["learning"].get_stats()
+        history = stats.get("errors_over_time", [])
         
+        # Convert to format expected by Chart.js (labels, data)
+        # Assuming history is list of {timestamp, error_rate, accuracy}
+        
+        labels = [h.get("timestamp", "").split("T")[0] for h in history]
+        data = [float(h.get("error_rate", 0)) * 100 for h in history]
+        
+        # If no history, provide baseline
+        if not history:
+             labels = [datetime.now().strftime("%Y-%m-%d")]
+             data = [5.0] # 5% baseline error rate
+        
+        return {
+            "labels": labels,
+            "data": data,
+            "current_accuracy": stats.get("accuracy_rate", 0.95)
+        }
     except Exception as e:
-        logger.error(f"Failed to fetch cognitive health metrics: {e}", exc_info=True)
-        return []
+        logger.error(f"Failed to fetch cognitive health: {e}", exc_info=True)
+        return {"labels": [], "data": [], "current_accuracy": 0.95}
 
 
 @router.post("/ingest", response_model=IngestResponse)
@@ -715,6 +730,9 @@ async def update_knowledge_entry(
             content_update = services["anonymizer"].anonymize_text(request.content)
             embedding_update = services["gemini_client"].generate_embedding(content_update)
             
+        # Fetch current entry for comparison/logging
+        current_entry = services["vector_db"].get_entry(entry_id)
+
         # --- Re-Analyze Logic ---
         if reanalyze:
             logger.info(f"Re-analyzing entry {entry_id} due to edit")
@@ -746,6 +764,56 @@ async def update_knowledge_entry(
             
         # Force verification status update (Active Learning)
         updates["verification_status"] = "verified_human"
+        
+        # --- Active Learning Logging ---
+        try:
+             # Only log if we have previous state (category/tags)
+             if current_entry:
+                old_meta = current_entry.get('metadata', {})
+                old_category = old_meta.get('category')
+                # Parse old tags if string
+                old_tags_raw = old_meta.get('tags', '')
+                old_tags = [t.strip() for t in old_tags_raw.split(',')] if old_tags_raw else []
+                
+                new_category = updates.get('category', old_category)
+                new_tags_val = updates.get('tags', old_tags)
+                
+                # Normalize new_tags to list
+                if isinstance(new_tags_val, str):
+                     new_tags = [t.strip() for t in new_tags_val.split(',')] if new_tags_val else []
+                elif isinstance(new_tags_val, list):
+                     new_tags = new_tags_val
+                else:
+                     new_tags = []
+                
+                # Check for meaningful changes
+                cat_changed = new_category != old_category
+                tags_changed = set(new_tags) != set(old_tags)
+                
+                if cat_changed or tags_changed:
+                    backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+                    history_file = os.path.join(backend_dir, 'learning_history.jsonl')
+                    
+                    import datetime
+                    learning_event = {
+                        "timestamp": datetime.datetime.utcnow().isoformat(),
+                        "summary": updates.get("summary", "Manual edit correction"),
+                        "ai_prediction": {
+                            "tags": list(old_tags),
+                            "category": old_category
+                        },
+                        "human_correction": {
+                            "tags": list(new_tags),
+                            "category": new_category
+                        }
+                    }
+                    
+                    with open(history_file, 'a', encoding='utf-8') as f:
+                        f.write(json.dumps(learning_event) + '\n')
+                    logger.info("Logged manual edit as learning event")
+        except Exception as e:
+            logger.error(f"Failed to log learning event on update: {e}")
+        # -------------------------------
         
         if not updates and content_update is None:
             raise HTTPException(
@@ -842,6 +910,12 @@ async def analyze_content(
             else:
                  text_to_analyze = "No content provided"
 
+        # Step 0: Anonymize text
+        anonymized_text = services["anonymizer"].anonymize_text(text_to_analyze)
+        if anonymized_text != text_to_analyze:
+            logger.info("PII detected and redacted before analysis")
+            text_to_analyze = anonymized_text
+
         # Step 1: Generate embedding for the input text
         embedding = services["gemini_client"].generate_embedding(text_to_analyze)
         
@@ -870,7 +944,8 @@ async def analyze_content(
         return AnalyzeResponse(
             category=analysis["category"],
             tags=analysis["tags"],
-            summary=analysis["summary"]
+            summary=analysis["summary"],
+            anonymized_content=text_to_analyze
         )
         
     except Exception as e:

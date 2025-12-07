@@ -136,6 +136,7 @@ class AnalyzeResponse(BaseModel):
     category: str
     tags: List[str]
     summary: str
+    anonymized_content: Optional[str] = None
 
 class KnowledgeGap(BaseModel):
     """Model for knowledge gap (unanswered query)"""

@@ -49,10 +49,27 @@ async function apiCall(endpoint, method = 'GET', body = null) {
 
         return await response.json();
     } catch (error) {
-        console.error(`API Call Failed (${endpoint}):`, error);
-        document.querySelector('[data-testid="connection-status"]').textContent = 'Connection Error';
-        document.querySelector('[data-testid="connection-status"]').style.color = '#F85149';
-        return null;
+        console.error(`API Call failed for ${endpoint}:`, error);
+
+        // Visual Error Reporting
+        let errorContainer = document.getElementById('global-error-banner');
+        if (!errorContainer) {
+            errorContainer = document.createElement('div');
+            errorContainer.id = 'global-error-banner';
+            errorContainer.style.position = 'fixed';
+            errorContainer.style.top = '0';
+            errorContainer.style.left = '0';
+            errorContainer.style.width = '100%';
+            errorContainer.style.backgroundColor = '#ff4444';
+            errorContainer.style.color = 'white';
+            errorContainer.style.padding = '10px';
+            errorContainer.style.textAlign = 'center';
+            errorContainer.style.zIndex = '9999';
+            document.body.prepend(errorContainer);
+        }
+        errorContainer.textContent = `Error loading data (${endpoint}): ${error.message}`;
+
+        return null; // Return null on failure
     }
 }
 
@@ -69,8 +86,6 @@ async function initDashboard() {
     await Promise.all([
         fetchMetrics(),
         fetchKnowledgeGaps(),
-        fetchRecentKnowledge(),
-        loadLearningHistory(),
         fetchRecentKnowledge(),
         loadLearningHistory(),
         fetchLearningStats(),
@@ -204,10 +219,14 @@ async function fetchRecentKnowledge() {
         const status = entry.metadata.verification_status === 'verified_human' ? 'Verified' : 'Draft';
 
         row.innerHTML = `
-            <td data-label="Type"><span class="badge badge-type">${typeLabel}</span></td>
+            <td data-label="Type & Status">
+                <div style="display:flex; flex-direction:column; gap:4px; align-items:center;">
+                    <span class="badge badge-type">${typeLabel}</span>
+                    ${typeLabel === 'Verified Capture' && status === 'Verified' ? '' : `<span class="badge badge-verified">🕷️ ${status}</span>`}
+                </div>
+            </td>
             <td data-label="Content">${entry.metadata.summary || entry.document.substring(0, 50) + '...'}</td>
             <td data-label="Category">${category}</td>
-            <td data-label="Status"><span class="badge badge-verified">🕷️ ${status}</span></td>
             <td data-label="Actions">
                 <div class="action-container">
                     ${((entry.image || entry.metadata.screenshot) && (entry.image || entry.metadata.screenshot).length > 100) ? `
@@ -252,74 +271,313 @@ async function loadLearningHistory() {
     }
 
     tbody.innerHTML = history.map(event => {
-        const date = new Date(event.timestamp).toLocaleString();
+        let ts = event.timestamp;
+        if (!ts.endsWith('Z') && !ts.includes('+')) ts += 'Z';
+        const date = new Date(ts).toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            timeZoneName: 'short'
+        });
 
-        // Helper to format content
-        const formatContent = (data) => {
-            if (!data) return '<span style="color: var(--text-secondary)">-</span>';
-            const cat = data.category ? `<div><span class="badge badge-type" style="font-size: 10px;">Cat</span> ${data.category}</div>` : '';
-            const tags = data.tags && data.tags.length ? `<div><span class="badge badge-type" style="font-size: 10px;">Tags</span> ${data.tags.join(', ')}</div>` : '';
-            return `<div style="display:flex; flex-direction:column; gap:4px;">${cat}${tags}</div>`;
-        };
+        // Helper to format specific changes
+        let changes = [];
 
-        const original = formatContent(event.ai_prediction);
-        const correction = formatContent(event.human_correction);
+        // Check Category Change
+        if (event.ai_prediction.category !== event.human_correction.category) {
+            changes.push(`
+                <div class="learning-diff">
+                    <span style="color:var(--text-secondary); font-size:12px;">Category:</span>
+                    <span class="diff-old">${event.ai_prediction.category || 'None'}</span>
+                    <span class="diff-arrow">➝</span>
+                    <span class="diff-new">${event.human_correction.category}</span>
+                </div>
+            `);
+        }
+
+        // Check Tags Change
+        const oldTags = event.ai_prediction.tags || [];
+        const newTags = event.human_correction.tags || [];
+        // Simple equality check for strings/arrays
+        const oldTagsStr = Array.isArray(oldTags) ? oldTags.sort().join(', ') : oldTags;
+        const newTagsStr = Array.isArray(newTags) ? newTags.sort().join(', ') : newTags;
+
+        if (oldTagsStr !== newTagsStr) {
+            changes.push(`
+                <div class="learning-diff">
+                    <span style="color:var(--text-secondary); font-size:12px;">Tags:</span>
+                    <span class="diff-old">${oldTagsStr || '(none)'}</span>
+                    <span class="diff-arrow">➝</span>
+                    <span class="diff-new">${newTagsStr}</span>
+                </div>
+            `);
+        }
+
+        // Fallback if no specific change detected but it was logged
+        if (changes.length === 0) {
+            changes.push(`<div style="font-style:italic; color:var(--text-secondary)">${event.summary}</div>`);
+        }
 
         return `
             <tr>
-                <td>${original}</td>
-                <td>${correction}</td>
-                <td style="font-size: 12px; color: var(--text-secondary);">${date}</td>
-            </tr>
-        `;
+                <td>
+                    <div style="display:flex; flex-direction:column; gap:4px;">
+                        ${changes.join('')}
+                    </div>
+                </td>
+                <td style="font-size: 12px; color: var(--text-secondary); white-space:nowrap;">${date}</td>
+            </tr>`;
     }).join('');
 }
 
 // --- Learning Stats (Chart.js) ---
+// --- Learned Topics: Knowledge Graph ---
+let learningStatsData = null; // Cache data for resize
+
 async function fetchLearningStats() {
     const data = await apiCall('/metrics/learning_stats');
-    if (!data || !data.top_learned_tags) return;
+    if (!data) return;
 
-    const ctx = document.getElementById('learning-chart');
-    if (!ctx) return;
-
-    // Destroy existing chart if any
-    if (window.learningChart) {
-        window.learningChart.destroy();
+    let items = [];
+    if (Array.isArray(data)) {
+        items = data.map(tag => ({ tag, count: 1 }));
+    } else if (data.top_learned_tags) {
+        items = data.top_learned_tags;
+    } else {
+        return;
     }
 
-    const labels = data.top_learned_tags.map(item => item.tag);
-    const counts = data.top_learned_tags.map(item => item.count);
+    learningStatsData = items; // Cache for resize
+    renderLearningStats(items);
 
-    window.learningChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Corrections by Tag',
-                data: counts,
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
+    // Setup observer after first render
+    setupLearningStatsResizeObserver();
+}
+
+function renderLearningStats(items) {
+    const container = document.getElementById('learning-word-cloud');
+    if (!container || !items) return;
+
+    container.innerHTML = ''; // Clear previous
+    container.style.position = 'relative';
+    container.style.overflow = 'visible';
+    container.style.display = 'block';
+
+    if (items.length === 0) {
+        container.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100%;color:var(--text-secondary);font-style:italic;">No topics learned yet.</div>';
+        return;
+    }
+
+    // 1. Setup Canvas for Edges (Background)
+    const canvas = document.createElement('canvas');
+    const containerWidth = container.clientWidth || 400;
+    const containerHeight = container.clientHeight || 280;
+    canvas.width = containerWidth;
+    canvas.height = containerHeight;
+    canvas.style.position = 'absolute';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.zIndex = '0';
+    container.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    // 2. Generate Nodes with smart positioning
+    const nodes = [];
+    const colors = ['#8b5cf6', '#10b981', '#3b82f6', '#f59e0b', '#ec4899', '#6366f1'];
+
+    // Normalize sizes - scale with container for large screens
+    const maxCount = Math.max(...items.map(i => i.count));
+    const minCount = Math.min(...items.map(i => i.count));
+    const range = maxCount - minCount || 1;
+
+    // Scale bubble size based on container (larger on big screens)
+    const scaleFactor = Math.min(containerWidth, containerHeight) / 280;
+    const minBubbleSize = Math.max(30, 28 * scaleFactor);
+    const maxBubbleSize = Math.max(55, 50 * scaleFactor);
+
+    // Calculate grid layout
+    const numItems = items.length;
+    const cols = Math.ceil(Math.sqrt(numItems * (containerWidth / containerHeight)));
+    const rows = Math.ceil(numItems / cols);
+    const cellWidth = containerWidth / cols;
+    const cellHeight = containerHeight / rows;
+    const padding = 20;
+
+    items.forEach((item, index) => {
+        const normalized = (item.count - minCount) / range;
+        const size = minBubbleSize + (normalized * (maxBubbleSize - minBubbleSize));
+
+        // Grid-based positioning with slight randomness
+        const col = index % cols;
+        const row = Math.floor(index / cols);
+        const centerX = (col + 0.5) * cellWidth;
+        const centerY = (row + 0.5) * cellHeight;
+
+        // Add slight jitter for natural feel
+        const jitterX = (Math.random() - 0.5) * (cellWidth * 0.25);
+        const jitterY = (Math.random() - 0.5) * (cellHeight * 0.25);
+
+        const x = Math.max(size / 2 + padding, Math.min(containerWidth - size / 2 - padding, centerX + jitterX));
+        const y = Math.max(size / 2 + padding, Math.min(containerHeight - size / 2 - padding, centerY + jitterY));
+
+        const node = {
+            x, y, size,
+            label: item.tag,
+            count: item.count,
+            color: colors[index % colors.length],
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5
+        };
+        nodes.push(node);
+    });
+
+    // 3. Render Nodes (DOM elements for interactivity)
+    nodes.forEach(node => {
+        const el = document.createElement('div');
+        el.className = 'graph-node';
+        el.title = node.label + ': ' + node.count + ' corrections';
+
+        // Create background count (large, faded, behind the label)
+        const countBg = document.createElement('span');
+        countBg.className = 'graph-node-count-bg';
+        countBg.textContent = node.count;
+        el.appendChild(countBg);
+
+        // Create foreground label
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'graph-node-label';
+        labelSpan.textContent = node.label;
+        el.appendChild(labelSpan);
+
+        el.style.width = node.size + 'px';
+        el.style.height = node.size + 'px';
+        el.style.backgroundColor = node.color + '20';
+        el.style.border = '2px solid ' + node.color;
+        el.style.color = 'var(--text-primary)';
+        el.style.position = 'absolute';
+        el.style.left = (node.x - node.size / 2) + 'px';
+        el.style.top = (node.y - node.size / 2) + 'px';
+        el.style.borderRadius = '50%';
+        el.style.display = 'flex';
+        el.style.justifyContent = 'center';
+        el.style.alignItems = 'center';
+        el.style.textAlign = 'center';
+        el.style.zIndex = '1';
+        el.style.cursor = 'pointer';
+        el.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
+        el.style.boxShadow = '0 0 15px ' + node.color + '40';
+        el.style.overflow = 'visible';
+
+        // Style the background count (subtle, large, behind label)
+        const countFontSize = Math.max(node.size * 0.45, 18);
+        countBg.style.cssText =
+            'position:absolute;' +
+            'font-size:' + countFontSize + 'px;' +
+            'font-weight:800;' +
+            'color:' + node.color + ';' +
+            'opacity:0.2;' +
+            'z-index:0;' +
+            'pointer-events:none;' +
+            'transition:opacity 0.3s ease, transform 0.3s ease;' +
+            'transform:translateY(5px);';
+
+        // Style the label (foreground)
+        const labelFontSize = Math.max(9 + (node.size / 10), 10);
+        labelSpan.style.cssText =
+            'position:relative;' +
+            'z-index:1;' +
+            'font-size:' + labelFontSize + 'px;' +
+            'font-weight:600;' +
+            'text-shadow:0 2px 4px rgba(0,0,0,0.8);' +
+            'transition:transform 0.3s ease;';
+
+        // Hover effect - reveal the count more clearly
+        el.onmouseenter = () => {
+            el.style.transform = 'scale(1.25)';
+            el.style.zIndex = '10';
+            el.style.boxShadow = '0 0 30px ' + node.color + '90';
+            countBg.style.opacity = '0.7';
+            countBg.style.transform = 'translateY(12px) scale(1.1)';
+            labelSpan.style.transform = 'translateY(-10px)';
+        };
+        el.onmouseleave = () => {
+            el.style.transform = 'scale(1)';
+            el.style.zIndex = '1';
+            el.style.boxShadow = '0 0 15px ' + node.color + '40';
+            countBg.style.opacity = '0.2';
+            countBg.style.transform = 'translateY(5px) scale(1)';
+            labelSpan.style.transform = 'translateY(0)';
+        };
+
+        container.appendChild(el);
+    });
+
+    // 4. Draw Connections (Network)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.lineWidth = 1;
+
+    // Connect nearby nodes
+    const connectionDistance = Math.min(containerWidth, containerHeight) * 0.5;
+    for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < connectionDistance) {
+                ctx.beginPath();
+                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.lineTo(nodes[j].x, nodes[j].y);
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+// ResizeObserver for Learned Topics - more reliable than window resize
+let learningStatsResizeObserver = null;
+let lastKnownWidth = 0;
+let lastKnownHeight = 0;
+
+function setupLearningStatsResizeObserver() {
+    const container = document.getElementById('learning-word-cloud');
+    if (!container) return;
+
+    // Clean up existing observer
+    if (learningStatsResizeObserver) {
+        learningStatsResizeObserver.disconnect();
+    }
+
+    // Initialize last known dimensions
+    lastKnownWidth = container.clientWidth;
+    lastKnownHeight = container.clientHeight;
+
+    learningStatsResizeObserver = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+            const { width, height } = entry.contentRect;
+
+            // Only re-render if size actually changed (> 5px threshold)
+            if (Math.abs(width - lastKnownWidth) > 5 || Math.abs(height - lastKnownHeight) > 5) {
+                lastKnownWidth = width;
+                lastKnownHeight = height;
+
+                if (learningStatsData && width > 50 && height > 50) {
+                    // Debounce to prevent excessive re-renders
+                    clearTimeout(window.learningStatsResizeTimeout);
+                    window.learningStatsResizeTimeout = setTimeout(() => {
+                        console.log('ResizeObserver: Re-rendering at', width, height);
+                        renderLearningStats(learningStatsData);
+                    }, 50);
                 }
             }
         }
     });
+
+    learningStatsResizeObserver.observe(container);
+    console.log('ResizeObserver attached to learning-word-cloud');
 }
 
 // --- Cognitive Health (Chart.js) ---
@@ -335,8 +593,17 @@ async function fetchCognitiveHealth() {
         window.cognitiveHealthChart.destroy();
     }
 
-    const labels = data.map(item => item.date);
-    const errorRates = data.map(item => item.error_rate);
+    const labels = data.labels;
+    const errorRates = data.data;
+
+    // Create gradient
+    // Create gradient - Hardcode height to avoid 0 flickering
+    const gradientHeight = 320;
+    const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, gradientHeight);
+    gradient.addColorStop(0, 'rgba(139, 92, 246, 0.5)'); // Violet start
+    gradient.addColorStop(1, 'rgba(139, 92, 246, 0.0)'); // Transparent end
+
+    console.log('Rendering Cognitive Chart with:', labels, errorRates);
 
     window.cognitiveHealthChart = new Chart(ctx, {
         type: 'line',
@@ -345,40 +612,59 @@ async function fetchCognitiveHealth() {
             datasets: [{
                 label: 'AI Error Rate (%)',
                 data: errorRates,
-                borderColor: 'rgba(255, 99, 132, 1)',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderWidth: 2,
+                borderColor: '#8b5cf6', // Violet-500
+                backgroundColor: gradient,
+                borderWidth: 3,
+                tension: 0.4, // Smooth curve
                 fill: true,
-                tension: 0.4 // Smooth curves
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#8b5cf6',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6
             }]
         },
         options: {
             responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100,
-                    title: {
-                        display: true,
-                        text: 'Error Rate (%)'
-                    }
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
                 },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Date'
+                tooltip: {
+                    backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                    padding: 12,
+                    cornerRadius: 8,
+                    displayColors: false,
+                    callbacks: {
+                        label: function (context) {
+                            return 'Error Rate: ' + Number(context.parsed.y).toFixed(1) + '%';
+                        }
                     }
                 }
             },
-            plugins: {
-                legend: {
-                    display: true
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    suggestedMax: 10,
+                    grid: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#6b7280',
+                        font: { family: "'Inter', sans-serif", size: 10 },
+                        callback: function (value) { return value + '%'; }
+                    }
                 },
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            return `Error Rate: ${context.parsed.y}%`;
-                        }
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#6b7280',
+                        font: { family: "'Inter', sans-serif", size: 11 }
                     }
                 }
             }
@@ -397,9 +683,14 @@ async function openEditModal(id) {
 
     // Fetch fresh data to ensure we have the full content and correct types
     const entries = await apiCall('/knowledge/recent?limit=50');
+    console.log('Opening modal for ID:', id);
+    console.log('Entries fetched:', entries ? entries.length : 0);
+
     const entry = entries.find(e => e.id === id);
+    console.log('Entry found:', entry);
 
     if (!entry) {
+        console.error('Entry not found for ID:', id);
         alert('Entry not found');
         return;
     }
@@ -444,7 +735,7 @@ async function openEditModal(id) {
             if (redactBtn) {
                 redactBtn.style.display = 'inline-block';
                 redactBtn.disabled = false;
-                redactBtn.textContent = '✨ Auto-Redact (HIPAA)';
+                redactBtn.textContent = '✨ Auto-Redact';
             }
         } else {
             currentImage.style.display = 'none';
@@ -549,14 +840,12 @@ async function saveEdit(e) {
         // we'll assume if the user is saving, they might want re-analysis if they touched the content field.
         // A safer bet is to ask the user, but for now we'll do it automatically if content is present.
 
-        let url = `${API_BASE_URL}/knowledge/${id}`;
+        let url = API_BASE_URL + '/knowledge/' + id;
         let statusText = 'Saving...';
 
-        // Simple heuristic: if content length > 0, we request re-analysis to keep tags in sync
-        // Or we could check if it's different from what we loaded.
-        // Let's just always re-analyze on edit for now as per requirements "Trigger a fresh AI analysis upon edit"
-        url += '?reanalyze=true';
-        statusText = 'Re-analyzing & Saving...';
+        // Don't auto-reanalyze on edit; specific user intent (tags/category) overrides AI.
+        // url += '?reanalyze=true'; 
+        statusText = 'Saving...';
 
         btn.textContent = statusText;
 
@@ -571,8 +860,20 @@ async function saveEdit(e) {
 
         if (response.ok) {
             closeEditModal();
-            fetchRecentKnowledge(); // Refresh table
-            loadLearningHistory(); // Refresh history if relevant
+            showNotification('Changes saved successfully', 'success');
+
+            // Small delay to ensure backend file writes complete
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Refresh all data visualizations after edit
+            await Promise.all([
+                fetchRecentKnowledge(),
+                loadLearningHistory(),
+                fetchLearningStats(),    // Update Learned Topics bubbles
+                fetchCognitiveHealth(),  // Update Cognitive Health chart
+                fetchMetrics()           // Update dashboard metrics
+            ]);
+            console.log('Edit saved - all visualizations refreshed');
         } else {
             alert('Failed to save changes');
         }
@@ -639,6 +940,208 @@ if (fileInput) {
     });
 }
 
+// --- Redaction Listeners ---
+function setupRedactionListeners() {
+    const editFileInput = document.getElementById('edit-screenshot');
+    const editImagePreview = document.getElementById('edit-preview');
+    const editRedactBtn = document.getElementById('edit-auto-redact-btn');
+    const editKeepBtn = document.getElementById('edit-keep-protected-btn');
+    const editRevertBtn = document.getElementById('edit-revert-redaction-btn');
+    const editReanalyzeBtn = document.getElementById('edit-reanalyze-btn');
+
+    console.log('Setup Redaction Listeners:', {
+        editRedactBtn: !!editRedactBtn,
+        editReanalyzeBtn: !!editReanalyzeBtn
+    });
+
+    if (editRedactBtn) {
+        editRedactBtn.addEventListener('click', async () => {
+            const btn = editRedactBtn;
+            const originalText = btn.textContent;
+            btn.textContent = 'Redacting...';
+            btn.disabled = true;
+
+            try {
+                let imageToRedact = null;
+                // Prioritize newly uploaded image
+                if (editFileInput.files.length > 0) {
+                    imageToRedact = await readFileAsBase64(editFileInput.files[0]);
+                } else {
+                    // Fallback to current image if no new file
+                    const currentImage = document.getElementById('edit-current-image');
+                    if (currentImage && currentImage.src && currentImage.src.startsWith('data:')) {
+                        imageToRedact = currentImage.src;
+                    }
+                }
+
+                if (!imageToRedact) {
+                    alert('No image to redact.');
+                    return;
+                }
+
+                // Store original for revert
+                editFileInput.dataset.originalPreview = editImagePreview.src || imageToRedact;
+
+                const response = await fetch(API_BASE_URL + '/redact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({ image: imageToRedact.split(',')[1] }) // Send base64 part only
+                });
+
+                if (!response.ok) throw new Error('Redaction failed');
+
+                const result = await response.json();
+                const redactedImage = 'data:image/png;base64,' + result.redacted_image;
+
+                editImagePreview.src = redactedImage;
+                editImagePreview.style.display = 'block';
+                editImagePreview.style.opacity = '1';
+
+                // Store redacted content on the file input for saveEdit
+                editFileInput.dataset.redactedContent = redactedImage;
+
+                btn.textContent = 'Redacted!';
+                btn.style.display = 'none'; // Hide redact button after redaction
+                if (editKeepBtn) {
+                    editKeepBtn.style.display = 'inline-block';
+                    editKeepBtn.disabled = false;
+                }
+                if (editRevertBtn) {
+                    editRevertBtn.style.display = 'inline-block';
+                    editRevertBtn.disabled = false;
+                }
+
+            } catch (error) {
+                console.error('Redaction error:', error);
+                alert('Failed to redact image.');
+                btn.textContent = 'Error';
+            } finally {
+                setTimeout(() => {
+                    if (btn.style.display !== 'none') { // Only reset if not hidden
+                        btn.textContent = originalText;
+                        btn.disabled = false;
+                    }
+                }, 2000);
+            }
+        });
+    }
+
+    if (editKeepBtn) {
+        editKeepBtn.addEventListener('click', () => {
+            // User explicitly keeps the redacted image.
+            // No action needed other than UI update.
+            editKeepBtn.textContent = '🛡️ Kept!';
+            editKeepBtn.disabled = true;
+            if (editRevertBtn) editRevertBtn.style.display = 'none';
+            if (editRedactBtn) editRedactBtn.style.display = 'none';
+            setTimeout(() => {
+                editKeepBtn.style.display = 'none';
+                editKeepBtn.textContent = '🛡️ Keep Protected';
+                editKeepBtn.disabled = false;
+            }, 2000);
+        });
+    }
+
+    if (editRevertBtn) {
+        editRevertBtn.addEventListener('click', () => {
+            const original = editFileInput.dataset.originalPreview;
+            if (original) {
+                editImagePreview.src = original;
+                editImagePreview.style.display = 'block';
+                delete editFileInput.dataset.redactedContent;
+                editRedactBtn.style.display = 'inline-block';
+                editKeepBtn.style.display = 'none';
+                editRevertBtn.style.display = 'none';
+                editKeepBtn.disabled = false;
+                editKeepBtn.textContent = '🛡️ Keep Protected';
+            }
+        });
+    }
+
+    // --- Re-analyze Logic ---
+    if (editReanalyzeBtn) {
+        editReanalyzeBtn.addEventListener('click', async () => {
+            const btn = editReanalyzeBtn;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✨ Analyzing...';
+            btn.disabled = true;
+
+            try {
+                const contentInput = document.getElementById('edit-content-input');
+                const text = contentInput.value;
+                const fileInput = document.getElementById('edit-screenshot');
+
+                // Handle screenshot for context if available
+                let screenshot = null;
+                if (fileInput.dataset.redactedContent) {
+                    screenshot = fileInput.dataset.redactedContent.split(',')[1];
+                } else if (fileInput.files.length > 0) {
+                    screenshot = await readFileAsBase64(fileInput.files[0]);
+                    screenshot = screenshot.split(',')[1];
+                } else {
+                    // Try current image if no new file
+                    const currentImg = document.getElementById('edit-current-image');
+                    if (currentImg && currentImg.src && currentImg.src.startsWith('data:')) {
+                        screenshot = currentImg.src.split(',')[1];
+                    }
+                }
+
+                // Call Backend
+                const response = await fetch(API_BASE_URL + '/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        url: 'reanalysis_request_edit_modal',
+                        screenshot: screenshot
+                    })
+                });
+
+                if (!response.ok) throw new Error('Analysis failed');
+
+                const result = await response.json();
+
+                // Populate Fields
+                document.getElementById('edit-category').value = result.category || 'Uncategorized';
+
+                const tagInput = document.getElementById('edit-tags');
+                const newTags = Array.isArray(result.tags) ? result.tags.join(', ') : result.tags;
+                tagInput.value = newTags;
+
+                document.getElementById('edit-summary').value = result.summary || '';
+
+                // Update Content if redacted version returned
+                if (result.anonymized_content && result.anonymized_content !== text) {
+                    contentInput.value = result.anonymized_content;
+                    // Flash input to show update
+                    contentInput.style.transition = 'background-color 0.5s';
+                    contentInput.style.backgroundColor = 'rgba(0, 200, 83, 0.1)';
+                    setTimeout(() => contentInput.style.backgroundColor = '', 1000);
+                }
+
+                // Success Feedback
+                btn.innerHTML = '✨ Updated!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 2000);
+
+            } catch (error) {
+                console.error('Re-analysis error:', error);
+                btn.innerHTML = '❌ Error';
+                btn.disabled = false;
+                setTimeout(() => btn.innerHTML = originalText, 2000);
+            }
+        });
+    }
+}
+
 // --- Actions ---
 async function submitGapAnswer(e) {
     e.preventDefault();
@@ -671,14 +1174,30 @@ async function submitGapAnswer(e) {
         }
     }
 
+    console.log('Submitting gap answer:', {
+        text: content,
+        url: 'dashboard_manual_entry',
+        category: 'Gap Resolution',
+        tags: ['#GapResolution'],
+        summary: selectedGap,
+        hasScreenshot: !!screenshot
+    });
+
     const success = await apiCall('/ingest', 'POST', {
         text: content,
         url: 'dashboard_manual_entry',
         category: 'Gap Resolution',
         tags: ['#GapResolution'],
-        summary: selectedGap, // Use the gap query as the summary for resolution tracking
-        screenshot: screenshot
+        summary: selectedGap,
+        screenshot: screenshot,
+        // Mock AI prediction to trigger learning log
+        ai_prediction: {
+            category: 'Unanswered Gap',
+            tags: []
+        }
     });
+
+    console.log('Gap submission result:', success);
 
     if (success) {
         // Clear form
@@ -690,10 +1209,26 @@ async function submitGapAnswer(e) {
         if (fileInput) {
             fileInput.value = '';
             fileInput.disabled = true;
+            delete fileInput.dataset.redactedContent; // Clear redacted data
         }
 
-        // Refresh data
-        await Promise.all([fetchMetrics(), fetchKnowledgeGaps(), fetchRecentKnowledge()]);
+        // Hide redaction buttons and reset auto-redact
+        const keepBtn = document.getElementById('gap-keep-btn');
+        const revertBtn = document.getElementById('gap-revert-btn');
+        const autoRedactBtn = document.getElementById('gap-auto-redact-btn');
+        if (keepBtn) keepBtn.style.display = 'none';
+        if (revertBtn) revertBtn.style.display = 'none';
+        if (autoRedactBtn) autoRedactBtn.disabled = true;
+
+        // Refresh data - NOW includes learning history and stats
+        await Promise.all([
+            fetchMetrics(),
+            fetchKnowledgeGaps(),
+            fetchRecentKnowledge(),
+            loadLearningHistory(),
+            fetchLearningStats(),
+            fetchCognitiveHealth()
+        ]);
 
         // Victory Highlight Logic
         setTimeout(() => {
@@ -711,18 +1246,20 @@ async function submitGapAnswer(e) {
         }, 100); // Small delay to ensure render completes
 
     } else {
-        alert('Failed to submit answer.');
+        alert('Failed to submit answer. Check browser console for details.');
+        console.error('Gap submission failed. API returned:', success);
+        // Re-enable button on failure so user can try again
+        btn.disabled = false;
     }
 
     btn.textContent = originalText;
-    // Keep disabled until new selection
 }
 
 async function deleteEntry(id) {
     // Barrier Removed: window.confirm blocks robots. 
     // In a real app, we would use a non-blocking toast with "Undo".
 
-    const success = await apiCall(`/knowledge/${id}`, 'DELETE');
+    const success = await apiCall('/knowledge/' + id, 'DELETE');
     if (success) {
         fetchRecentKnowledge();
         fetchMetrics();
@@ -732,7 +1269,7 @@ async function deleteEntry(id) {
 }
 
 async function restoreEntry(id) {
-    const success = await apiCall(`/knowledge/${id}/restore`, 'POST');
+    const success = await apiCall('/knowledge/' + id + '/restore', 'POST');
     if (success) {
         fetchDeletedKnowledge();
         fetchMetrics();
@@ -791,24 +1328,23 @@ async function fetchDeletedKnowledge() {
 
         let typeLabel = entry.metadata.type || 'unknown';
         const category = entry.metadata.category || 'Uncategorized';
-        const deletedAt = new Date().toLocaleDateString(); // Metadata doesn't store deleted_at yet, using current for demo
+        const deletedAt = new Date().toLocaleDateString();
 
-        row.innerHTML = `
-            <td data-label="Type"><span class="badge badge-type">${typeLabel}</span></td>
-            <td data-label="Content">${entry.metadata.summary || entry.document.substring(0, 50) + '...'}</td>
-            <td data-label="Category">${category}</td>
-            <td data-label="Deleted At">${deletedAt}</td>
-            <td data-label="Actions">
-                <div class="action-container">
-                    <button class="btn-primary restore-btn" 
-                        data-id="${entry.id}" 
-                        data-testid="restore-${entry.id}" 
-                        style="font-size: 12px; padding: 4px 8px;">
-                        Restore ♻️
-                    </button>
-                </div>
-            </td>
-        `;
+        row.innerHTML =
+            '<td data-label="Type"><span class="badge badge-type">' + typeLabel + '</span></td>' +
+            '<td data-label="Content">' + (entry.metadata.summary || entry.document.substring(0, 50) + '...') + '</td>' +
+            '<td data-label="Category">' + category + '</td>' +
+            '<td data-label="Deleted At">' + deletedAt + '</td>' +
+            '<td data-label="Actions">' +
+            '<div class="action-container">' +
+            '<button class="btn-primary restore-btn" ' +
+            'data-id="' + entry.id + '" ' +
+            'data-testid="restore-' + entry.id + '" ' +
+            'style="font-size: 12px; padding: 4px 8px;">' +
+            'Restore ♻️' +
+            '</button>' +
+            '</div>' +
+            '</td>';
         tbody.appendChild(row);
     });
 }
@@ -831,7 +1367,8 @@ function setupEventListeners() {
     const closeModalBtn = document.getElementById('close-modal-btn');
     const cancelEditBtn = document.getElementById('cancel-edit-btn');
 
-    setupRedactionListeners();
+    setupRedactionListeners(); // Edit Modal
+    setupRedactionToolListeners(); // Tool Modal
     const editForm = document.getElementById('edit-form');
     const editModal = document.getElementById('edit-modal');
 
@@ -920,7 +1457,6 @@ function setupEventListeners() {
         });
     }
 
-    setupRedactionListeners();
     setupAutoRedactButtons();
 }
 
@@ -1136,7 +1672,7 @@ let originalRedactionImageSrc = null;
 let protectedRedactionImageSrc = null;
 let isProtectedMode = true;
 
-function setupRedactionListeners() {
+function setupRedactionToolListeners() {
     const modal = document.getElementById('redaction-modal');
     const closeBtn = document.getElementById('close-redaction-modal-btn');
     const cancelBtn = document.getElementById('cancel-redaction-btn');
@@ -1192,7 +1728,7 @@ async function handleImageUpload(file, callback) {
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetch(`${API_BASE_URL}/redact`, {
+        const response = await fetch(API_BASE_URL + '/redact', {
             method: 'POST',
             headers: {
                 'X-API-Key': API_KEY
@@ -1214,7 +1750,7 @@ async function handleImageUpload(file, callback) {
 
     } catch (error) {
         console.error('Redaction flow error:', error);
-        alert(`Auto-redaction failed: ${error.message}`);
+        alert('Auto-redaction failed: ' + error.message);
     } finally {
         statusEl.textContent = originalStatus;
 
@@ -1383,7 +1919,7 @@ async function redactImage(file) {
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetch(`${API_BASE_URL}/redact`, {
+        const response = await fetch(API_BASE_URL + '/redact', {
             method: 'POST',
             headers: {
                 'X-API-Key': API_KEY
@@ -1406,3 +1942,81 @@ window.deleteEntry = deleteEntry;
 window.openEditModal = openEditModal;
 window.restoreEntry = restoreEntry;
 window.switchTab = switchTab;
+
+// --- Interaction Setup (Fix for Broken Buttons) ---
+function setupDashboardInteractions() {
+    const tableBody = document.getElementById('knowledge-table-body');
+
+    // Event Delegation for Table Actions
+    if (tableBody) {
+        tableBody.addEventListener('click', (e) => {
+            const target = e.target;
+
+            // Edit Button
+            const editBtn = target.closest('.edit-btn');
+            if (editBtn) {
+                const id = editBtn.dataset.id;
+                console.log('Edit clicked for:', id);
+                if (window.openEditModal) window.openEditModal(id);
+                return;
+            }
+
+            // View Image Button
+            const viewBtn = target.closest('.view-image-btn');
+            if (viewBtn) {
+                const id = viewBtn.dataset.id;
+                console.log('View Image clicked for:', id);
+                if (typeof openImageModal === 'function') openImageModal(id);
+                return;
+            }
+
+            // Delete Button
+            const deleteBtn = target.closest('.delete-btn');
+            if (deleteBtn) {
+                const id = deleteBtn.dataset.id;
+                // If in recycle bin mode, this might be a "Hard Delete" or we might want to disable it
+                // For now, assume standard delete
+                if (window.deleteEntry) window.deleteEntry(id);
+                return;
+            }
+
+            // Restore Button (Recycle Bin)
+            const restoreBtn = target.closest('.restore-btn');
+            if (restoreBtn) {
+                const id = restoreBtn.dataset.id;
+                if (window.restoreEntry) window.restoreEntry(id);
+                return;
+            }
+        });
+    }
+
+    // Recycle Bin Tab Listener
+    const recycleBinBtn = document.getElementById('recycle-bin-btn'); // Identify by ID if possible, or data-tab
+    // Or just rely on the general tab switcher if it exists. 
+    // Let's verify if switchTab handles it.
+
+    // Setup Tab Switchers explicitly if not already working
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.onclick = (e) => {
+            const tabName = e.target.dataset.tab;
+            if (window.switchTab) window.switchTab(tabName);
+
+            // Refresh logic based on tab
+            if (tabName === 'active-knowledge') fetchRecentKnowledge(false);
+            if (tabName === 'recycle-bin') fetchRecentKnowledge(true); // Assuming API supports deleted_only
+        };
+    });
+}
+
+// Initialize on Load
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Initializing Dashboard Interactions...');
+    setupDashboardInteractions();
+    setupRedactionToolListeners(); // Ensure redaction tools are ready
+
+    // Initial Load
+    fetchRecentKnowledge();
+    fetchLearningStats();
+    fetchCognitiveHealth();
+    loadLearningHistory();
+});

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Knowledge-Weaver Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=6">
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕷️</text></svg>">
 </head>
@@ -76,8 +76,9 @@
 
                         <div class="form-group">
                             <label for="gap-screenshot-input">Attach Screenshot (Optional)</label>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <input type="file" id="gap-screenshot-input" accept="image/*" disabled style="flex: 1;">
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                <input type="file" id="gap-screenshot-input" accept="image/*" disabled
+                                    style="flex: 1; min-width: 200px;">
                                 <button type="button" class="btn-secondary" id="gap-auto-redact-btn" disabled
                                     style="padding: 8px 12px; font-size: 0.9rem; white-space: nowrap;">
                                     ✨ Auto-Redact (HIPAA)
@@ -116,8 +117,7 @@
                         <table class="knowledge-table" data-testid="learning-table">
                             <thead>
                                 <tr>
-                                    <th>Original Draft</th>
-                                    <th>Human Correction</th>
+                                    <th>Learning Activity</th>
                                     <th>Time</th>
                                 </tr>
                             </thead>
@@ -130,13 +130,17 @@
                         </table>
                     </div>
                 </div>
-                <div class="learning-chart-container">
-                    <h3>Top Learned Topics</h3>
-                    <canvas id="learning-chart"></canvas>
+                <div class="learning-chart-container" id="learning-stats-view">
+                    <h3>🤖 Learned Topics</h3>
+                    <div class="chart-wrapper" style="overflow-y: auto;">
+                        <div id="learning-word-cloud" class="word-cloud-container"></div>
+                    </div>
                 </div>
                 <div class="learning-chart-container">
-                    <h3>🧠 Cognitive Health</h3>
-                    <canvas id="cognitive-health-chart"></canvas>
+                    <h3>🩺 Cognitive Health</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="cognitive-health-chart"></canvas>
+                    </div>
                 </div>
             </div>
         </section>
@@ -159,10 +163,9 @@
                 <table class="knowledge-table" data-testid="knowledge-table">
                     <thead>
                         <tr>
-                            <th>Type</th>
+                            <th>Type & Status</th>
                             <th>Content/Summary</th>
                             <th>Category</th>
-                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -209,6 +212,13 @@
             <form id="edit-form">
                 <input type="hidden" id="edit-id">
 
+                <div style="text-align: right; margin-bottom: 15px;">
+                    <button type="button" class="btn-secondary" id="edit-reanalyze-btn"
+                        title="Update suggestions & Check PII">
+                        ✨ Re-analyze with AI
+                    </button>
+                </div>
+
                 <div class="form-group">
                     <label for="edit-category">Category</label>
                     <input type="text" id="edit-category" required data-testid="edit-category-input">
@@ -237,9 +247,9 @@
                         style="max-width: 100%; display: none; margin-bottom: 10px; border-radius: 4px; border: 1px solid var(--border-color);">
 
                     <label for="edit-screenshot">Update Screenshot</label>
-                    <div style="display: flex; gap: 10px; align-items: center;">
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                         <input type="file" id="edit-screenshot" accept="image/*" data-testid="edit-screenshot-input"
-                            style="flex: 1;">
+                            style="flex: 1; min-width: 200px;">
                         <button type="button" class="btn-secondary" id="edit-auto-redact-btn"
                             style="padding: 8px 12px; font-size: 0.9rem; white-space: nowrap; display: none;">
                             ✨ Auto-Redact (HIPAA)
@@ -335,7 +345,7 @@
     </dialog>
 
 
-    <script src="app.js?v=4"></script>
+    <script src="app.js?v=7"></script>
 </body>
 
 </html>
