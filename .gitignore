@@ -25,3 +25,7 @@ simple_test.py
 temp_*
 *.tmp
 Test/
+
+# Database (Generated)
+backend_api/chroma_db/
+chroma_db/
