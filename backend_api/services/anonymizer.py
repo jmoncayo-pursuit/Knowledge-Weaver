@@ -21,8 +21,11 @@ class AnonymizerService:
             'email': re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'),
             'phone': re.compile(r'\b(?:\+?1[-.]?)?\(?([0-9]{3})\)?[-.]?([0-9]{3})[-.]?([0-9]{4})\b'),
             'ssn': re.compile(r'\b\d{3}-\d{2}-\d{4}\b'),
-            'participant_id': re.compile(r'\b(?:participant|patient|member)[-_]?id[-_:]?\s*([A-Z0-9]{6,})\b', re.IGNORECASE),
-            'employee_id': re.compile(r'\b(?:employee|emp|staff)[-_]?id[-_:]?\s*([A-Z0-9]{6,})\b', re.IGNORECASE),
+            'participant_id': re.compile(r'(?:participant|patient|member).*?ID[:\s]+(\w{5,})', re.IGNORECASE),
+            'employee_id': re.compile(r'(?:employee|emp|staff).*?ID[:\s]+(\w{5,})', re.IGNORECASE),
+            'generic_id': re.compile(r'\bID[:\s]+([A-Z0-9]{5,})\b', re.IGNORECASE),
+            'agent_handle': re.compile(r'\b(Agent|Representative|Support)_([A-Za-z0-9]+)\b', re.IGNORECASE),
+            'lead_handle': re.compile(r'\b(Lead|Supervisor|Manager)_([A-Za-z0-9]+)\b', re.IGNORECASE),
         }
         
         logger.info("AnonymizerService initialized")
@@ -74,9 +77,30 @@ class AnonymizerService:
         # Replace employee IDs
         employee_matches = self.patterns['employee_id'].findall(anonymized)
         if employee_matches:
-            anonymized = self.patterns['employee_id'].sub(r'\1 [EMPLOYEE_ID_REDACTED]', anonymized)
+            anonymized = self.patterns['employee_id'].sub(r' [EMPLOYEE_ID_REDACTED]', anonymized)
             replacements_made += len(employee_matches)
             logger.debug(f"Anonymized {len(employee_matches)} employee IDs")
+
+        # Replace Generic IDs (fallback)
+        generic_matches = self.patterns['generic_id'].findall(anonymized)
+        if generic_matches:
+            anonymized = self.patterns['generic_id'].sub('[ID_REDACTED]', anonymized)
+            replacements_made += len(generic_matches)
+            logger.debug(f"Anonymized {len(generic_matches)} generic IDs")
+
+        # Replace Agent Handles
+        agent_matches = self.patterns['agent_handle'].findall(anonymized)
+        if agent_matches:
+            anonymized = self.patterns['agent_handle'].sub('Questioner', anonymized)
+            replacements_made += len(agent_matches)
+            logger.debug(f"Anonymized {len(agent_matches)} agent handles")
+
+        # Replace Lead Handles
+        lead_matches = self.patterns['lead_handle'].findall(anonymized)
+        if lead_matches:
+            anonymized = self.patterns['lead_handle'].sub('Respondent', anonymized)
+            replacements_made += len(lead_matches)
+            logger.debug(f"Anonymized {len(lead_matches)} lead handles")
         
         if replacements_made > 0:
             logger.info(f"Anonymized {replacements_made} sensitive data items")

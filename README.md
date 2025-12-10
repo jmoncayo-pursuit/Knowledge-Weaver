@@ -4,6 +4,9 @@
 
 Knowledge-Weaver is a "Human-in-the-Loop" system that captures valuable information from team chats, verifies it, and makes it instantly searchable. It bridges the gap between ephemeral conversations and permanent organizational knowledge.
 
+## 🎥 See it in Action
+[**Watch the Full Demo Video**](https://drive.google.com/file/d/1-Jwb6BvdVxe_PragWlcctugkeRxQNkRC/view?usp=sharing)
+
 ## Architecture
 
 The system uses a "Frankenstein" architecture, stitching together powerful components to create a seamless workflow:
@@ -92,6 +95,11 @@ Identify and fill knowledge gaps.
 ### 6. Visual Source Verification
 - **Context Preservation**: Captures screenshots of the source material (e.g., chat threads).
 - **Trust**: Verify the origin of information with a visual reference.
+
+### 7. Robot-Verified Reliability
+- **Accessibility**: Validated by automated agents for DOM accessibility.
+- **Timezone Aware**: Learning logs respect user's local timezone (UTC conversion).
+- **Auto-Redaction**: Built-in HIPAA-compliant PII scrubbing.
 
 ## Getting Started
 

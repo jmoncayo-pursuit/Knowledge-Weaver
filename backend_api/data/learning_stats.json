@@ -1,0 +1,68 @@
+{
+  "total_corrections": 12,
+  "learnings_applied": 8,
+  "accuracy_rate": 0.98,
+  "top_learned_tags": [
+    {
+      "tag": "Policy",
+      "count": 15
+    },
+    {
+      "tag": "Compliance",
+      "count": 12
+    },
+    {
+      "tag": "Enrollment",
+      "count": 8
+    },
+    {
+      "tag": "HIPAA",
+      "count": 6
+    },
+    {
+      "tag": "Technical",
+      "count": 4
+    },
+    {
+      "tag": "Dental",
+      "count": 3
+    }
+  ],
+  "errors_over_time": [
+    {
+      "timestamp": "2025-12-03T21:39:06.683656",
+      "error_rate": 0.05,
+      "accuracy_rate": 0.95
+    },
+    {
+      "timestamp": "2025-12-04T21:39:06.683663",
+      "error_rate": 0.07,
+      "accuracy_rate": 0.93
+    },
+    {
+      "timestamp": "2025-12-05T21:39:06.683666",
+      "error_rate": 0.06,
+      "accuracy_rate": 0.94
+    },
+    {
+      "timestamp": "2025-12-06T21:39:06.683669",
+      "error_rate": 0.05,
+      "accuracy_rate": 0.95
+    },
+    {
+      "timestamp": "2025-12-07T21:39:06.683671",
+      "error_rate": 0.07,
+      "accuracy_rate": 0.93
+    },
+    {
+      "timestamp": "2025-12-08T21:39:06.683673",
+      "error_rate": 0.06,
+      "accuracy_rate": 0.94
+    },
+    {
+      "timestamp": "2025-12-09T21:39:06.683675",
+      "error_rate": 0.02,
+      "accuracy_rate": 0.98
+    }
+  ]
+}

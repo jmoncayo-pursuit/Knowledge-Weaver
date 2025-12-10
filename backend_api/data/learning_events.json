@@ -1,0 +1,71 @@
+[
+  {
+    "id": "evt_1",
+    "entry_id": "demo_scenario1_seed",
+    "timestamp": "2025-12-09T21:34:06.683640",
+    "summary": "Correction for Demo Scenario 1",
+    "source": "user_correction",
+    "changes": [
+      {
+        "field": "category",
+        "old": "Uncategorized",
+        "new": "Policy / Enrollment Denied",
+        "type": "correction"
+      },
+      {
+        "field": "tags",
+        "added": [
+          "#StrictPolicy_QLE",
+          "denied"
+        ],
+        "type": "refinement"
+      }
+    ],
+    "impact_score": 1.0,
+    "ai_prediction": {
+      "tags": [
+        "marriage",
+        "insurance"
+      ],
+      "category": "Uncategorized"
+    },
+    "human_correction": {
+      "tags": [
+        "marriage",
+        "insurance",
+        "#StrictPolicy_QLE",
+        "denied"
+      ],
+      "category": "Policy / Enrollment Denied"
+    }
+  },
+  {
+    "id": "evt_0",
+    "entry_id": "demo_scenario2_seed",
+    "timestamp": "2025-12-08T21:39:06.683652",
+    "summary": "Technical Support Correction",
+    "source": "user_correction",
+    "changes": [
+      {
+        "field": "category",
+        "old": "Uncategorized",
+        "new": "Technical Support",
+        "type": "correction"
+      }
+    ],
+    "impact_score": 0.5,
+    "ai_prediction": {
+      "tags": [
+        "wifi"
+      ],
+      "category": "Uncategorized"
+    },
+    "human_correction": {
+      "tags": [
+        "wifi",
+        "network"
+      ],
+      "category": "Technical Support"
+    }
+  }
+]

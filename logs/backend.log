@@ -1,12 +1,12 @@
 INFO:     Will watch for changes in these directories: ['/Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api']
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [46679] using WatchFiles
-INFO:     Started server process [46682]
+INFO:     Started reloader process [85127] using WatchFiles
+INFO:     Started server process [85216]
 INFO:     Waiting for application startup.
 INFO:main:Knowledge-Weaver API starting up...
 INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
-INFO:services.vector_db:Collection 'knowledge_base' initialized with 72 entries
-INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 72, 'name': 'knowledge_base'}
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 76 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 76, 'name': 'knowledge_base'}
 INFO:services.gemini_client:GeminiClient initialized successfully
 INFO:main:Gemini Client initialized
 INFO:services.anonymizer:AnonymizerService initialized
@@ -14,49 +14,2325 @@ INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant a
 INFO:main:Chat Processor initialized
 INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
 INFO:main:Query Service initialized
-INFO:services.vision_service:VisionService initialized successfully with gemini-2.0-flash-exp
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
 INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
 INFO:main:All services initialized successfully
 INFO:     Application startup complete.
-INFO:     127.0.0.1:57231 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57233 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57236 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57231 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57238 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57233 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57240 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57241 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57240 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57233 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57238 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
 INFO:services.anonymizer:AnonymizerService initialized
-INFO:     127.0.0.1:57241 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:services.anonymizer:AnonymizerService initialized
 INFO:routes.api:Fetching dashboard metrics
 INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
-INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
-INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
-INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
 INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
 INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
 INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
 INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
 INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
-INFO:     127.0.0.1:57236 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61061 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61064 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
 INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
-INFO:     127.0.0.1:57231 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61063 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61067 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61068 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
 INFO:routes.api:Fetching dashboard metrics
 INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
-INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
-INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
-INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
 INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
 INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
 INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
 INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
 INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
-INFO:     127.0.0.1:57241 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61064 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61061 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
 INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
-INFO:     127.0.0.1:57236 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57261 - "OPTIONS /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61068 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61094 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61097 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61098 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61101 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61102 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61094 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61102 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61101 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61105 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61116 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61120 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61117 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61121 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61105 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61117 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61125 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61140 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61142 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61143 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61147 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61145 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61140 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61143 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61150 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61158 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61162 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61161 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61165 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61166 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61158 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61162 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61169 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61202 - "OPTIONS /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
 INFO:routes.api:Fetching recent knowledge (limit: 50, deleted_only: False)
-INFO:     127.0.0.1:57261 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61202 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'seed_learning.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [85216]
+INFO:     Started server process [85313]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 76 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 76, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized successfully
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
+INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'seed_learning.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [85313]
+INFO:     Started server process [85330]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 76 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 76, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized successfully
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
+INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'seed_learning.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [85330]
+INFO:     Started server process [85469]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 76 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 76, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized successfully
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
+INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+INFO:     127.0.0.1:61286 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61289 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61291 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61286 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61289 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61293 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61295 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61296 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:routes.api:Fetching dashboard metrics
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+INFO:     127.0.0.1:61291 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61286 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61293 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61289 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61295 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+INFO:     127.0.0.1:61293 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61291 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61289 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+INFO:     127.0.0.1:61341 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61343 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61345 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61348 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61349 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+INFO:     127.0.0.1:61341 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61352 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61349 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 50, deleted_only: False)
+INFO:     127.0.0.1:61363 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61373 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+INFO:     127.0.0.1:61370 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61376 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61374 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61378 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+INFO:     127.0.0.1:61370 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61380 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61374 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+INFO:     127.0.0.1:61416 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61418 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61420 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61423 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61424 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+INFO:     127.0.0.1:61416 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61420 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61424 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+INFO:     127.0.0.1:61455 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61458 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61459 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61462 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61463 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+INFO:     127.0.0.1:61455 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61459 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61463 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+INFO:     127.0.0.1:61465 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61474 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61475 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61479 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61478 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+ERROR:services.vector_db:Search failed: Error executing plan: Internal error: Error finding id
+INFO:     127.0.0.1:61465 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61478 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61479 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'seed_learning.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [85469]
+INFO:     Started server process [86522]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 77 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 77, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized successfully
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
+INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'seed_learning.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [86522]
+INFO:     Started server process [86707]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 77 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 77, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized successfully
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
+INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+WARNING:main:404 Not Found: http://localhost:8000/metrics/learning_stats
+INFO:     127.0.0.1:62887 - "GET /metrics/learning_stats HTTP/1.1" 404 Not Found
+WARNING:auth:API request without API key
+INFO:     127.0.0.1:63002 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 401 Unauthorized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:     127.0.0.1:63059 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63097 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'services/gemini_client.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [86707]
+INFO:     Started server process [87951]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 77 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 77, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized with models: Gen=gemini-2.0-flash, Embed=models/text-embedding-004
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
+INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'services/vision_service.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [87951]
+INFO:     Started server process [88235]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 77 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 77, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized with models: Gen=gemini-2.0-flash, Embed=models/text-embedding-004
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
+INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:64827 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64865 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64888 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51617 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51618 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51617 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51621 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51618 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51623 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51617 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51621 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51625 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51623 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51618 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51626 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:51617 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51625 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51623 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:51621 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51626 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:51618 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51617 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51625 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:51623 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51626 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51617 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:51625 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:52600 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:52603 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52607 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52608 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:52618 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52604 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52607 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:52600 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52608 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52603 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:52608 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:54051 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:54054 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54055 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54058 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54059 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:54051 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:54070 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54055 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54059 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54058 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:54051 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54055 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54255 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54257 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54260 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54255 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54261 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54257 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54263 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54257 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54260 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54255 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54261 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54264 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:54263 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:54264 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54255 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54260 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54257 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:54261 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:54263 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54255 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54257 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54260 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:54261 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54255 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57617 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57619 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57620 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57623 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57624 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57625 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57617 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57619 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57620 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57623 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57624 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57625 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57617 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57619 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57624 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57625 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57620 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57623 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57617 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57620 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57625 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57624 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57623 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57620 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57698 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57701 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57702 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57705 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57706 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57702 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57706 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57698 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57705 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57717 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57706 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57701 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57789 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57791 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57793 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57795 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57797 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57789 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57805 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57797 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57793 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57795 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57791 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57797 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57944 - "OPTIONS /api/v1/knowledge/trending?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching trending topics (limit: 5)
+INFO:     127.0.0.1:57944 - "GET /api/v1/knowledge/trending?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:58339 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:58342 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58343 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58347 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58346 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:58339 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:58357 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58346 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58347 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58343 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:58339 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58346 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58735 - "OPTIONS /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58736 - "OPTIONS /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 50, deleted_only: False)
+INFO:     127.0.0.1:58735 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 50, deleted_only: False)
+INFO:     127.0.0.1:58736 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 50, deleted_only: False)
+INFO:     127.0.0.1:58782 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 50, deleted_only: False)
+INFO:     127.0.0.1:58784 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58813 - "OPTIONS /api/v1/analyze HTTP/1.1" 200 OK
+INFO:routes.api:Analyzing content for URL: reanalysis_request_edit_modal
+INFO:routes.api:Found 3 similar verified entries for context
+INFO:     127.0.0.1:58813 - "POST /api/v1/analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58919 - "OPTIONS /api/v1/knowledge/1662897a-5d5b-4c5c-9c29-1df9b0666348 HTTP/1.1" 200 OK
+INFO:routes.api:Updating knowledge entry: 1662897a-5d5b-4c5c-9c29-1df9b0666348
+INFO:services.vector_db:Updated entry 1662897a-5d5b-4c5c-9c29-1df9b0666348 with updates={'category': 'Gap Resolution', 'tags': '#GapResolution', 'summary': 'The text provides steps for helping someone locked out of their account, including password reset, contacting support, and temporary access. Always document the steps taken to resolve the lockout.', 'verification_status': 'verified_human'} content_update=True
+INFO:     127.0.0.1:58919 - "PATCH /api/v1/knowledge/1662897a-5d5b-4c5c-9c29-1df9b0666348 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:58919 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58921 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'services/gemini_client.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [88235]
+INFO:     Started server process [94848]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 77 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 77, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized with models: Gen=gemini-2.0-flash, Embed=models/text-embedding-004
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
+INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'services/gemini_client.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [94848]
+INFO:     Started server process [94859]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 77 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 77, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized with models: Gen=gemini-2.0-flash, Embed=models/text-embedding-004
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
+INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+INFO:     127.0.0.1:60649 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60651 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60655 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60657 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60658 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60649 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60659 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60651 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60655 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60657 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60658 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60649 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:60659 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:60651 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60655 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60657 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60658 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:60649 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:60659 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60657 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60658 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60655 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:60649 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60651 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:60790 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:60793 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60794 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60796 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60798 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:60810 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:60790 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60794 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60796 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60798 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:60793 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60794 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61625 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61627 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61629 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61625 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61632 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61633 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61639 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61625 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61629 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61632 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61633 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61625 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64795 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64797 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64795 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64800 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64802 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64804 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64805 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64797 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64795 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64800 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64802 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64804 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:64805 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64797 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:64795 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64800 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64802 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:64804 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64797 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:64805 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64802 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64800 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:64797 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64802 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65036 - "OPTIONS /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65037 - "OPTIONS /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 20, deleted_only: True)
+INFO:     127.0.0.1:65037 - "GET /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 20, deleted_only: True)
+INFO:     127.0.0.1:65036 - "GET /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 20, deleted_only: True)
+INFO:     127.0.0.1:65036 - "GET /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:65037 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65037 - "OPTIONS /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65036 - "OPTIONS /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 50, deleted_only: False)
+INFO:     127.0.0.1:65036 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 50, deleted_only: False)
+INFO:     127.0.0.1:65037 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:65156 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:65159 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65161 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65163 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65164 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:65170 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:65156 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65161 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65164 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65163 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:65170 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65161 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:65418 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:65421 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65422 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65425 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65426 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:65432 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:65418 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65425 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65422 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65426 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:65432 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65422 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:49387 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:49389 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49391 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49394 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49395 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:49387 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49391 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:49405 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49394 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49395 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:49391 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49405 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:49466 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:49469 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49470 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49473 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49474 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:49466 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:49484 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49473 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49470 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49474 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:49466 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49470 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:49772 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:49775 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49776 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49779 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49780 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:49772 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49776 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49790 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49779 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:49780 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49772 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:49779 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:50403 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:50406 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50407 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50410 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50411 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:50403 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:50417 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50407 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50410 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50411 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:50406 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50410 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:50504 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:50507 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50508 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50511 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50512 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:50504 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:50518 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50511 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50508 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50512 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:50504 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50511 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:50672 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:50675 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50676 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50679 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50680 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:50672 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:50690 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50676 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50679 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50680 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:50675 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50690 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51546 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51548 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51551 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51546 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51553 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51548 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51551 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51555 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51546 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51556 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51553 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51548 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:51555 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:51551 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51556 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51546 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51553 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:51548 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:51555 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51553 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51556 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51546 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:51548 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51553 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52032 - "OPTIONS /api/v1/knowledge/trending?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching trending topics (limit: 5)
+INFO:     127.0.0.1:52032 - "GET /api/v1/knowledge/trending?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:52640 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:52642 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52644 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52647 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52648 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:52640 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:52660 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52644 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52647 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52648 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:52642 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52640 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52746 - "OPTIONS /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52746 - "OPTIONS /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 20, deleted_only: True)
+INFO:     127.0.0.1:52748 - "GET /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 20, deleted_only: True)
+INFO:     127.0.0.1:52746 - "GET /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 20, deleted_only: True)
+INFO:     127.0.0.1:52746 - "GET /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:52748 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57332 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57335 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57337 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57332 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57335 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57340 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57337 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57341 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57332 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57340 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57335 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57342 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57337 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57341 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57340 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57332 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57342 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57335 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57337 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57340 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57342 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57332 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57335 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57340 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57398 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57401 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57399 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57403 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57396 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57405 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57399 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57401 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57396 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57403 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57398 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57399 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57679 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57682 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57683 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57687 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57686 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57679 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57699 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57683 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57687 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57686 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57679 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57683 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57889 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57891 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57892 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57896 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57895 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:57889 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57896 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57892 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57895 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57906 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57891 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:57892 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58095 - "OPTIONS /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58096 - "OPTIONS /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 20, deleted_only: True)
+INFO:     127.0.0.1:58096 - "GET /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 20, deleted_only: True)
+INFO:     127.0.0.1:58095 - "GET /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 20, deleted_only: True)
+INFO:     127.0.0.1:58095 - "GET /api/v1/knowledge/recent?limit=20&deleted_only=true HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:58096 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:59159 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:59162 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59163 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59166 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59167 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:59159 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59163 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:59178 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59166 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59167 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:59159 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59163 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59467 - "OPTIONS /api/v1/redact HTTP/1.1" 200 OK
+INFO:routes.api:Redacting image from file upload: email benefits spouse.png
+INFO:services.vision_service:Sending image to Gemini for redaction...
+INFO:services.vision_service:Redaction successful. Returning types: <class 'str'>, <class 'str'>
+INFO:     127.0.0.1:59467 - "POST /api/v1/redact HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:59810 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:59810 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:59832 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59833 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59836 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59837 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:59810 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:59847 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59836 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59833 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59837 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59833 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:59837 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60512 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60514 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60516 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60512 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60518 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60514 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60516 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60521 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60512 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60518 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60522 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60516 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:60514 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:60521 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60512 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60518 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60522 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:60516 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:60514 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60512 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60518 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60522 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:60521 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60518 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'services/vision_service.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [94859]
+INFO:     Started server process [95651]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 77 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 77, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized with models: Gen=gemini-2.0-flash, Embed=models/text-embedding-004
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
+INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61564 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61571 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61568 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61567 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61572 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61564 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61584 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61568 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61571 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61572 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61564 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61584 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61665 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61668 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61669 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61672 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61673 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:61665 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61683 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61669 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61672 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61673 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:61665 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61668 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Redacting image from file upload: email benefits spouse.png
+INFO:services.vision_service:Sending image to Gemini for redaction...
+INFO:services.vision_service:Redaction successful. Returning types: <class 'str'>, <class 'str'>
+INFO:     127.0.0.1:61820 - "POST /api/v1/redact HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:62052 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:62055 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62056 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62059 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62060 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:62052 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:62070 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62059 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62056 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62060 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:62052 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62055 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:62973 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:62975 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62977 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62980 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62981 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:62973 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:62991 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62977 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62980 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62981 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:62973 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62977 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+WARNING:main:404 Not Found: http://localhost:8000/api/v1/metrics/knowledge_gaps
+INFO:     127.0.0.1:63140 - "GET /api/v1/metrics/knowledge_gaps HTTP/1.1" 404 Not Found
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:63167 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Received manual ingestion request for URL: dashboard_manual_entry
+INFO:routes.api:No AI Prediction in request
+INFO:services.vector_db:Added 1 knowledge entries to vector database
+INFO:     127.0.0.1:63210 - "POST /api/v1/ingest HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64116 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64118 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64120 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64123 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64125 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64116 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64126 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64118 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64120 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64123 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64125 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64116 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:64126 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:64118 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64120 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64123 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64116 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:64125 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:64126 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64123 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64116 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64120 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:64118 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64123 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:64821 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:64823 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64825 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64828 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64829 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:64821 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:64839 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64825 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64828 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64829 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:64821 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64823 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65178 - "OPTIONS /api/v1/redact HTTP/1.1" 200 OK
+INFO:routes.api:Redacting image from file upload: email benefits spouse.png
+INFO:services.vision_service:Sending image to Gemini for redaction...
+INFO:services.vision_service:Redaction successful. Returning types: <class 'str'>, <class 'str'>
+INFO:     127.0.0.1:65178 - "POST /api/v1/redact HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49295 - "OPTIONS /api/v1/ingest HTTP/1.1" 200 OK
+INFO:routes.api:Received manual ingestion request for URL: dashboard_manual_entry
+INFO:routes.api:No AI Prediction in request
+INFO:services.vector_db:Added 1 knowledge entries to vector database
+INFO:     127.0.0.1:49295 - "POST /api/v1/ingest HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:49295 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:49297 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:49295 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49307 - "OPTIONS /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49349 - "OPTIONS /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 50, deleted_only: False)
+INFO:     127.0.0.1:49349 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 50, deleted_only: False)
+INFO:     127.0.0.1:49307 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51892 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51894 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51897 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51899 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51892 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51900 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51894 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51897 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51902 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51899 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51892 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51900 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:51894 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:51902 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51897 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51899 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51892 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:51900 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51894 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51897 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51899 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:51892 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51894 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:51899 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53117 - "OPTIONS /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53118 - "OPTIONS /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 50, deleted_only: False)
+INFO:     127.0.0.1:53118 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 50, deleted_only: False)
+INFO:     127.0.0.1:53117 - "GET /api/v1/knowledge/recent?limit=50 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'routes/api.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [95651]
+INFO:     Started server process [96056]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 79 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 79, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized with models: Gen=gemini-2.0-flash, Embed=models/text-embedding-004
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
+INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'services/learning.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [96056]
+INFO:     Started server process [96110]
+INFO:     Waiting for application startup.
+INFO:main:Knowledge-Weaver API starting up...
+INFO:services.vector_db:VectorDatabase initialized with persist_directory: ./chroma_db
+INFO:services.vector_db:Collection 'knowledge_base' initialized with 79 entries
+INFO:main:Vector Database initialized: {'status': 'initialized', 'count': 79, 'name': 'knowledge_base'}
+INFO:services.gemini_client:GeminiClient initialized with models: Gen=gemini-2.0-flash, Embed=models/text-embedding-004
+INFO:main:Gemini Client initialized
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:services.chat_processor:ChatLogProcessor initialized with HIPAA-compliant anonymization
+INFO:main:Chat Processor initialized
+INFO:services.query_service:QueryService initialized, query log file: /Users/jmoncayopursuit.org/Desktop/kiro-dev-2025/Knowledge-Weaver/backend_api/query_log.jsonl
+INFO:main:Query Service initialized
+INFO:services.vision_service:VisionService initialized successfully with nano-banana-pro-preview
+INFO:main:Vision Service initialized
+INFO:services.learning:LearningService initialized
+INFO:main:Learning Service initialized
+INFO:main:All services initialized successfully
+INFO:     Application startup complete.
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 79, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:54950 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55539 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55540 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55542 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55545 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55546 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55548 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55539 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55540 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55542 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55545 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55546 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55548 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:services.anonymizer:AnonymizerService initialized
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:55539 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:55540 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55542 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55545 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55546 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:55548 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55546 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:55539 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55542 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55545 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:55546 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55545 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Health check: {'status': 'initialized', 'count': 79, 'name': 'knowledge_base'}
+INFO:     127.0.0.1:55927 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:55929 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Received manual ingestion request for URL: dashboard_manual_entry
+INFO:routes.api:No AI Prediction in request
+INFO:services.vector_db:Added 1 knowledge entries to vector database
+INFO:     127.0.0.1:55939 - "POST /api/v1/ingest HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 5, deleted_only: False)
+INFO:     127.0.0.1:55945 - "GET /api/v1/knowledge/recent?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55947 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:56341 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:56342 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56344 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56346 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56348 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:56341 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:56358 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56344 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56346 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56348 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:56342 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56341 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:56782 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:56783 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56785 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56788 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:56782 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56789 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:56795 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56785 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56788 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56782 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:56789 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56788 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:56838 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56839 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56842 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56843 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:56835 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56839 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:56845 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56842 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:56835 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56843 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:56838 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56842 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:58013 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:58016 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58017 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58021 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58020 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:58013 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58017 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:58034 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58021 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58020 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:58016 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58013 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58748 - "OPTIONS /api/v1/ingest HTTP/1.1" 200 OK
+INFO:routes.api:Received manual ingestion request for URL: dashboard_manual_entry
+INFO:routes.api:No AI Prediction in request
+INFO:services.vector_db:Added 1 knowledge entries to vector database
+INFO:     127.0.0.1:58748 - "POST /api/v1/ingest HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58748 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58752 - "OPTIONS /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58753 - "OPTIONS /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:58748 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:58753 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:58752 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59162 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59164 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59166 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:59157 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:59160 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59162 - "OPTIONS /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59167 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59164 - "OPTIONS /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59166 - "OPTIONS /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59167 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59157 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:59162 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:routes.api:Fetching dashboard metrics
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 1 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:services.vector_db:Search returned 0 matches above threshold 0.6 (total results: 1)
+INFO:     127.0.0.1:59166 - "GET /api/v1/metrics/dashboard HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59164 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59167 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59157 - "GET /api/v1/metrics/learning_stats HTTP/1.1" 200 OK
+INFO:routes.api:Fetching recent knowledge (limit: 10, deleted_only: False)
+INFO:     127.0.0.1:59160 - "GET /api/v1/knowledge/recent?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59167 - "GET /api/v1/metrics/learning?limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59166 - "GET /api/v1/metrics/cognitive_health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [96110]
+INFO:     Stopping reloader process [85127]

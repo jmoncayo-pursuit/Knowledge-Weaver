@@ -493,12 +493,12 @@ class VectorDatabase:
                 include=['documents', 'metadatas', 'embeddings']
             )
             
-            if result['ids']:
+            if result['ids'] is not None and len(result['ids']) > 0:
                 return {
                     'id': result['ids'][0],
                     'document': result['documents'][0],
                     'metadata': result['metadatas'][0],
-                    'embedding': result['embeddings'][0] if result['embeddings'] else None
+                    'embedding': result['embeddings'][0] if result['embeddings'] is not None and len(result['embeddings']) > 0 else None
                 }
             return None
         except Exception as e:

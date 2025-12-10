@@ -30,11 +30,14 @@ class GeminiClient:
         genai.configure(api_key=self.api_key)
         
         # Initialize models
-        # Using specific version widely supported
-        self.generation_model = genai.GenerativeModel('gemini-2.0-flash')
-        self.embedding_model = 'models/text-embedding-004'
+        # Using specific version widely supported, configurable via env
+        generation_model_name = os.getenv('GEMINI_GENERATION_MODEL', 'gemini-2.0-flash')
+        embedding_model_name = os.getenv('GEMINI_EMBEDDING_MODEL', 'models/text-embedding-004')
         
-        logger.info("GeminiClient initialized successfully")
+        self.generation_model = genai.GenerativeModel(generation_model_name)
+        self.embedding_model = embedding_model_name
+        
+        logger.info(f"GeminiClient initialized with models: Gen={generation_model_name}, Embed={embedding_model_name}")
     
     def extract_knowledge(
         self,
@@ -342,18 +345,31 @@ Extract knowledge:"""
         # Base prompt
         prompt = f"""Analyze the following text and provide:
 1. A category (e.g., "Policy", "Procedure", "Q&A", "Announcement", "Policy / Enrollment Denied", "Compliance / Authorization")
-2. A list of relevant tags (max 5)
+2. A list of relevant tags (MINIMUM 2, max 5) - IMPORTANT: You MUST always provide at least 2 tags. If no specific tags are obvious, infer topic-based tags from the content (e.g., "general", "internal", "communication", "workflow", "documentation").
 3. A concise summary (max 2 sentences)
+
+CRITICAL TAG REQUIREMENTS:
+- Never return an empty tags array
+- Always provide at least 2 relevant tags
+- Tags should describe the topic, domain, or subject matter
+- If content is generic, use descriptive tags like: "general", "operations", "internal", "communication", "process"
 
 Here are some examples of how to classify specific scenarios:
 
 Example 1 (Policy Denial):
 Input: "Agent: EE sent marriage certificate today, wedding was 45 days ago. Lead: Denied. QLE Policy requires docs within 31 days."
 Output Category: "Policy / Enrollment Denied"
+Output Tags: ["QLE", "marriage", "enrollment", "deadline", "policy"]
 
 Example 2 (HIPAA Compliance):
 Input: "Agent: Wife on line asking about husband's dental, he can't talk. Lead: Do not discuss unless she is Authorized Rep. Need EE permission."
 Output Category: "Compliance / Authorization"
+Output Tags: ["HIPAA", "authorization", "privacy", "dependent"]
+
+Example 3 (Generic Content):
+Input: "Team meeting notes from Monday standup."
+Output Category: "Internal"
+Output Tags: ["meeting", "internal", "operations"]
 """
 
         # Add dynamic examples if provided
@@ -366,6 +382,7 @@ Text to Analyze:
 {text}
 
 Format your response as a JSON object with keys: "category", "tags", "summary".
+REMINDER: The "tags" array MUST contain at least 2 items.
 """
         
         for attempt in range(max_retries):
@@ -382,10 +399,18 @@ Format your response as a JSON object with keys: "category", "tags", "summary".
                     json_str = json_match.group(0)
                     result = json.loads(json_str)
                     
+                    # Ensure tags is never empty
+                    tags = result.get("tags", [])
+                    if not tags or len(tags) < 2:
+                        # Fallback: infer basic tags from category
+                        category = result.get("category", "General")
+                        fallback_tags = [category.split("/")[0].strip().lower(), "captured"]
+                        tags = list(set(tags + fallback_tags))[:5]
+                    
                     # Validate structure
                     return {
                         "category": result.get("category", "Uncategorized"),
-                        "tags": result.get("tags", []),
+                        "tags": tags,
                         "summary": result.get("summary", "No summary available")
                     }
                 
@@ -393,7 +418,7 @@ Format your response as a JSON object with keys: "category", "tags", "summary".
                 logger.warning("No JSON found in analysis response")
                 return {
                     "category": "Uncategorized",
-                    "tags": [],
+                    "tags": ["general", "captured"],
                     "summary": "Analysis failed to produce structured output"
                 }
                 
