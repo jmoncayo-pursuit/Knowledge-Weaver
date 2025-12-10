@@ -597,6 +597,19 @@ async def ingest_knowledge(
                         f.write(json.dumps(learning_event) + '\n')
                         
                     logger.info("Logged learning event: Human corrected AI")
+
+                    # Also update aggregate stats for Cognitive Health graph
+                    try:
+                        changes = []
+                        if category_changed:
+                            changes.append({"field": "category", "type": "correction"})
+                        if tags_changed:
+                            changes.append({"field": "tags", "type": "refinement"})
+                        
+                        if changes and services.get("learning"):
+                            services["learning"]._update_stats(changes)
+                    except Exception as e:
+                        logger.error(f"Failed to update aggregate stats: {e}")
                     
             except Exception as e:
                 logger.error(f"Failed to log learning event: {e}")

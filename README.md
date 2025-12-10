@@ -51,7 +51,7 @@ The "Weaver" is the capture mechanism (Chrome Extension & Auto-Ingestion).
 Knowledge-Weaver was built using a "Robot-First" philosophy. We treat AI Agents not just as coding assistants, but as First-Class Users of the application.
 
 ### 1. Evaluation > Labeling
-Following the [suspicious link removed], we shifted our focus from manual data entry to Agent Evaluation. We use autonomous agents to run "Golden Path" regression tests on every commit, ensuring the system is operationally reliable.
+Following modern AI engineering principles, we shifted our focus from manual data entry to Agent Evaluation. We use autonomous agents to run "Golden Path" regression tests on every commit, ensuring the system is operationally reliable.
 
 ### 2. Self-Healing Capabilities
 By equipping our Dashboard with stable data-testid selectors, we enable AI agents (like the Antigravity Browser Subagent) to:
